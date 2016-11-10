@@ -60,7 +60,7 @@ gulp.task('release', ['build', 'clean:release'], function() {
             packageJson: require(`${dirBuild}/package.json`),
             release: dirRelease,
             cache: './cache',
-            version: 'v1.4.5',
+            version: 'v1.4.6',
             packaging: false,
             asar: true,
             platforms: ['darwin-x64']

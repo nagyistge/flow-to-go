@@ -1,11 +1,11 @@
 {
-  "name": "electron-boilerplate",
+  "name": "build",
   "version": "0.0.0",
   "scripts": {
     "restore": "git clean -xdf -e cache && yarn install && cd src && yarn install && cd ..",
     "debug": "gulp build && cross-env PLATFORM_TARGET=development electron dist/build/main.js",
     "release": "gulp release",
-    "start": "gulp release && dist/release/v1.4.5/darwin-x64/electron-node-red.app/Contents/MacOS/Electron"
+    "start": "gulp release && dist/release/v1.4.6/darwin-x64/red-to-go.app/Contents/MacOS/Electron"
   },
   "devDependencies": {
     "@types/electron": "^1.4.25",

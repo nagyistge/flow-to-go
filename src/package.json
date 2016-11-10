@@ -1,5 +1,5 @@
 {
-  "name": "electron-node-red",
+  "name": "red-to-go",
   "version": "0.0.1",
   "main": "main.js",
   "dependencies": {

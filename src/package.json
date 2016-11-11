@@ -4,9 +4,9 @@
   "main": "main.js",
   "dependencies": {
     "express": "^4.14.0",
+    "fix-path": "^2.1.0",
     "material-ui": "^0.16.1",
     "node-red": "^0.15.2",
-    "node-red-contrib-fs-ops": "^1.2.2",
     "node-red-contrib-traffic": "^0.2.1",
     "node-red-dashboard": "^2.1.0",
     "react": "^15.3.2",

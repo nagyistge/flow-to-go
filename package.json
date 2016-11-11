@@ -2,7 +2,7 @@
   "name": "build",
   "version": "0.0.0",
   "scripts": {
-    "restore": "git clean -xdf -e cache && yarn install && cd src && yarn install && cd ..",
+    "restore": "git clean -xdf -e cache && yarn && cd src && yarn --ignore-optional && cd ..",
     "debug": "gulp build && cross-env PLATFORM_TARGET=development electron dist/build/main.js",
     "release": "gulp release",
     "start": "gulp release && dist/release/v1.4.6/darwin-x64/red-to-go.app/Contents/MacOS/Electron"

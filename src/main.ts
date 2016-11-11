@@ -2,6 +2,8 @@ import * as path from "path";
 import * as nodeRed from "./main_process/node_red";
 
 const { app, BrowserWindow } = require("electron");
+const fixPath = require('fix-path');
+fixPath();
 
 app.once("ready", async () => {
   const defaultSettings = nodeRed.getDefaultSettings();

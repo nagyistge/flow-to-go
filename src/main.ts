@@ -27,9 +27,8 @@ app.once("ready", async () => {
       .catch((err:Error) => console.log("An error occurred: ", err));
   }
 
-  mainWindow.once("close", () => {
-    app.quit();
-  });
+  mainWindow.once("close", () => app.quit());
+  mainWindow.once("window-all-closed", () => app.quit());
 
   const settings = await redInitialization;
   (<any>global).nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;;

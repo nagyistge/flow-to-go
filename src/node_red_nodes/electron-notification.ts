@@ -1,5 +1,7 @@
-module.exports = function (RED:any) {
-  const { app } = require('electron');
+// import * as MessageBus from "../helpers/message_bus";
+
+module.exports = function (RED: any) {
+  const MessageBus = require("../../../../helpers/message_bus");
 
   function Initialize (config:any) {
     RED.nodes.createNode(this, config);
@@ -13,7 +15,7 @@ module.exports = function (RED:any) {
         title: node.title || msg.payload.title,
         body: node.body || msg.payload.body
       };
-      (<any>app).mainWindow.webContents.send('notification', notification);
+      MessageBus.publish('notification', notification);
     });
   }
 

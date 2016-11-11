@@ -1,6 +1,8 @@
-module.exports = function (RED: any) {
-  const { ipcMain, app } = require('electron');
+// import * as MessageBus from "../helpers/message_bus";
 
+module.exports = function (RED: any) {
+  const MessageBus = require("../../../../helpers/message_bus");
+  
   function Initialize(config: any) {
     RED.nodes.createNode(this, config);
     let node = this;
@@ -18,13 +20,13 @@ module.exports = function (RED: any) {
     };
 
     node.on('close', function () {
-      ipcMain.removeListener('online', emitOnline);
-      ipcMain.removeListener('offline', emitOffline);
+      onlineSubscription.Dispose();
+      offlineSubscription.Dispose();
     });
 
-    ipcMain.on('online', emitOnline);
-    ipcMain.on('offline', emitOffline);
-    (<any>app).mainWindow.webContents.send('online-status');
+    const onlineSubscription = MessageBus.subscribe('online', emitOnline);
+    const offlineSubscription = MessageBus.subscribe('offline', emitOffline);
+    MessageBus.publish('online-status');
   }
 
   RED.nodes.registerType('electron-online-status', Initialize);

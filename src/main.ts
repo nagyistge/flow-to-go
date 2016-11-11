@@ -17,7 +17,6 @@ app.once("ready", async () => {
     center: true,
     autoHideMenuBar: true
   });
-  (<any>app).mainWindow = mainWindow;
 
   if (process.env.PLATFORM_TARGET === "development") {
     BrowserWindow.addDevToolsExtension(path.join(__dirname, "../../node_modules/devtron"));
@@ -31,7 +30,7 @@ app.once("ready", async () => {
   mainWindow.once("window-all-closed", () => app.quit());
 
   const settings = await redInitialization;
-  (<any>global).nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;;
+  (<any>global).nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.once("ready-to-show", () => mainWindow.show());

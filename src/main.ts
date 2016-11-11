@@ -1,7 +1,8 @@
 import * as path from "path";
 import * as nodeRed from "./main_process/node_red";
+import * as ApplicationMenu from "./main_process/application_menu";
 
-const { app, BrowserWindow } = require("electron");
+const { app, shell, Menu, BrowserWindow } = require("electron");
 const fixPath = require('fix-path');
 fixPath();
 
@@ -34,5 +35,8 @@ app.once("ready", async () => {
   (<any>global).nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;;
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
-  mainWindow.once("ready-to-show", () =>  mainWindow.show());
+  mainWindow.once("ready-to-show", () => mainWindow.show());
+  
+  const menuTemplate = ApplicationMenu.createTemplate(app, shell);
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 });

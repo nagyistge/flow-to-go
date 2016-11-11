@@ -6,13 +6,9 @@ export function setupNotifications() {
   MessageBus.subscribe("notification", (event, arg) => new Notification(arg.title, { body: arg.body }));
 }
 
-function sendOnlineStatus() {
-  navigator.onLine ? MessageBus.publish("online") : MessageBus.publish("offline");
-}
-
 export function setupOnlineStatus() {
-  MessageBus.subscribe("online-status", (event, arg) => sendOnlineStatus());
-  sendOnlineStatus();
+  MessageBus.subscribe("online-status", (event, arg) => event.sender.send(navigator.onLine ? "online" : "offline"));
+  navigator.onLine ? MessageBus.publish("online") : MessageBus.publish("offline");
   window.addEventListener("online", () => MessageBus.publish("online"));
   window.addEventListener("offline", () => MessageBus.publish("offline"));
 }

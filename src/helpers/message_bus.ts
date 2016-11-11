@@ -45,8 +45,12 @@ export function subscribe(channel: string, listener: IpcEventListener) {
   }
 }
 
+interface IpcSender {
+  send(channel: string, ...args: any[]): void;
+}
+
 interface IpcEvent {
-  sender: any;
+  sender: IpcSender;
 }
 
 type IpcEventListener = (event: IpcEvent, ...args: any[]) => void;

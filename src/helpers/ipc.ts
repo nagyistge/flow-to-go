@@ -17,7 +17,7 @@ const isRenderer = (function () {
   return process.type === 'renderer';
 })();
 
-export function publish(channel:string,...args:any[]) {
+export function publishMessage(channel:string,...args:any[]) {
   if (isRenderer) {
     ipcRenderer.send(channel, ...args);
   } else {
@@ -27,7 +27,7 @@ export function publish(channel:string,...args:any[]) {
   }
 }
 
-export function subscribe(channel: string, listener: IpcEventListener) {
+export function subscribeMessage(channel: string, listener: IpcEventListener) {
   if (isRenderer) {
     ipcRenderer.on(channel, listener);
     return {
@@ -43,6 +43,38 @@ export function subscribe(channel: string, listener: IpcEventListener) {
       }
     };
   }
+}
+
+type StateChangeListener = (newState: Object) => void;
+
+let currentState: Object;
+const listeners = new Set<StateChangeListener>();
+const stateChannel = "update_shared_state";
+
+function refreshState(newState:Object) {
+  if (currentState === newState) {
+    return false;
+  }
+  Object.freeze(newState);
+  currentState = newState;
+  listeners.forEach(listener => listener(currentState));
+  return true;
+}
+
+subscribeMessage(stateChannel, (event, newState) => refreshState(newState));
+
+export function updateState(newState: Object) {
+  if (refreshState(newState)) {
+    publishMessage(stateChannel, currentState);
+  }
+}
+
+export function subscribeState(listener: StateChangeListener) {
+  listeners.add(listener);
+  listener(currentState);
+  return {
+    Dispose() { listeners.delete(listener); }
+  };
 }
 
 interface IpcSender {

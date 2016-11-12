@@ -1,7 +1,7 @@
-// import * as MessageBus from "../helpers/message_bus";
+// import * as ipc from "../helpers/ipc";
 
 module.exports = function(RED: any) {
-    const MessageBus = require("../../../../helpers/message_bus");
+    const ipc = require("../../../../helpers/ipc");
 
     function Initialize(config: any) {
         RED.nodes.createNode(this, config);
@@ -15,7 +15,7 @@ module.exports = function(RED: any) {
                 title: node.title || msg.payload.title,
                 body: node.body || msg.payload.body
             };
-            MessageBus.publish('notification', notification);
+            ipc.publishMessage('notification', notification);
         });
     }
 

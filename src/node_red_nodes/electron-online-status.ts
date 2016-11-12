@@ -1,7 +1,7 @@
-// import * as MessageBus from "../helpers/message_bus";
+// import * as ipc from "../helpers/ipc";
 
 module.exports = function (RED: any) {
-  const MessageBus = require("../../../../helpers/message_bus");
+  const ipc = require("../../../../helpers/ipc");
   
   function Initialize(config: any) {
     RED.nodes.createNode(this, config);
@@ -24,9 +24,9 @@ module.exports = function (RED: any) {
       offlineSubscription.Dispose();
     });
 
-    const onlineSubscription = MessageBus.subscribe('online', emitOnline);
-    const offlineSubscription = MessageBus.subscribe('offline', emitOffline);
-    MessageBus.publish('online-status');
+    const onlineSubscription = ipc.subscribeMessage('online', emitOnline);
+    const offlineSubscription = ipc.subscribeMessage('offline', emitOffline);
+    ipc.publishMessage('online-status');
   }
 
   RED.nodes.registerType('electron-online-status', Initialize);

@@ -63,11 +63,25 @@ function refreshState(newState:Object) {
 
 subscribeMessage(stateChannel, (event, newState) => refreshState(newState));
 
-export function updateState(newState: Object) {
+export function setState(newState: Object) {
   if (refreshState(newState)) {
     publishMessage(stateChannel, currentState);
   }
 }
+
+export async function getState() {
+  let subscription: { Dispose: () => void };
+  try {
+    return await new Promise<Object>((resolve, reject) => {
+      subscription = subscribeState(state => {
+          resolve(state);
+      });
+    });
+  } finally {
+    subscription.Dispose();
+  }
+}
+
 
 export function subscribeState(listener: StateChangeListener) {
   listeners.add(listener);

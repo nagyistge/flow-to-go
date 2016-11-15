@@ -47,8 +47,6 @@ export function subscribeMessage(channel: string, listener: IpcEventListener) {
   }
 }
 
-type StateChangeListener<T> = (newState: T) => void;
-
 const stateChannel = "update_shared_state";
 let currentState: any = isRenderer ? remote.getGlobal(stateChannel) : undefined;
 const listeners = new Set<StateChangeListener<any>>();
@@ -107,6 +105,8 @@ export function subscribeState<T>(listener: StateChangeListener<T>) {
     Dispose() { listeners.delete(listener); }
   };
 }
+
+type StateChangeListener<T> = (newState: T) => void;
 
 interface IpcSender {
   send(channel: string, ...args: any[]): void;

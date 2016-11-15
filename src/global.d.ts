@@ -1,3 +1,8 @@
-﻿interface globalState {
+﻿
+interface globalState {
   nodeRedUrl: string;
 }
+
+
+
+

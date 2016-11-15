@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 const { shell } = require("electron");
 const preload = "./helpers/webview.js";
 
-export interface WebviewProps { src: string; }
+interface WebviewProps { src: string; }
 
 export default class Webview extends React.Component<WebviewProps, {}> {
   

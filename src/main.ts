@@ -1,10 +1,12 @@
 import * as path from "path";
 import * as nodeRed from "./main_process/node_red";
 import * as ApplicationMenu from "./main_process/application_menu";
+import * as ipc from "./helpers/ipc";
 
 const { app, shell, Menu, BrowserWindow } = require("electron");
 const fixPath = require('fix-path');
 fixPath();
+
 
 app.once("ready", async () => {
   const defaultSettings = nodeRed.getDefaultSettings();
@@ -30,10 +32,13 @@ app.once("ready", async () => {
   mainWindow.once("window-all-closed", () => app.quit());
 
   const settings = await redInitialization;
-  (<any>global).nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;
+
+  ipc.updateState<globalState>({
+    nodeRedUrl: `http://localhost:${settings.functionGlobalContext.port}`
+  });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
-  mainWindow.once("ready-to-show", () => mainWindow.show());
+  mainWindow.once("ready-to-show", mainWindow.show);
   
   const menuTemplate = ApplicationMenu.createTemplate(app, shell);
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));

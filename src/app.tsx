@@ -3,17 +3,19 @@ import * as ReactDOM from "react-dom";
 import NodeRedView from "./components/node-red-view";
 import * as nodeRedIpc from "./components/node-red-ipc";
 import { MuiThemeProvider } from 'material-ui/styles';
+import * as ipc from "./helpers/ipc";
 
-const { remote } = require("electron");
 const injectTapEventPlugin = require('react-tap-event-plugin');
 
 injectTapEventPlugin();
 nodeRedIpc.setupNotifications();
 nodeRedIpc.setupOnlineStatus();
 
-ReactDOM.render(
-  <MuiThemeProvider>
-    <NodeRedView url={remote.getGlobal("nodeRedUrl")}/>
-  </MuiThemeProvider>,
-  document.getElementById("app")
-);
+ipc.subscribeState<globalState>(state => {
+  ReactDOM.render(
+    <MuiThemeProvider>
+      <NodeRedView url={state.nodeRedUrl} />
+    </MuiThemeProvider>,
+    document.getElementById("app")
+  );
+});

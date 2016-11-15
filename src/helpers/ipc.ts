@@ -1,4 +1,4 @@
-﻿import { BrowserWindow, ipcRenderer, ipcMain } from "electron";
+﻿const { BrowserWindow, ipcRenderer, ipcMain, remote } = require("electron");
 
 const isRenderer = (function () {
   // running in a web browser
@@ -18,10 +18,12 @@ const isRenderer = (function () {
 })();
 
 export function publishMessage(channel:string,...args:any[]) {
-  if (isRenderer) {
-    ipcRenderer.send(channel, ...args);
-  } else {
-    BrowserWindow.getAllWindows().forEach(win => {
+    if (isRenderer) {
+      // console.log("publishMessage renderer "+JSON.stringify(args));
+      ipcRenderer.send(channel, ...args);
+    } else {
+      // console.log("publishMessage main "+JSON.stringify(args));
+      BrowserWindow.getAllWindows().forEach(win => {
       win.webContents.send(channel, ...args);
     });
   }
@@ -45,36 +47,52 @@ export function subscribeMessage(channel: string, listener: IpcEventListener) {
   }
 }
 
-type StateChangeListener = (newState: Object) => void;
+type StateChangeListener<T> = (newState: T) => void;
 
-let currentState: Object;
-const listeners = new Set<StateChangeListener>();
 const stateChannel = "update_shared_state";
+let currentState: any = isRenderer ? remote.getGlobal(stateChannel) : undefined;
+const listeners = new Set<StateChangeListener<any>>();
 
-function refreshState(newState:Object) {
+function refreshState<T>(newState:T):boolean {
   if (currentState === newState) {
     return false;
   }
   Object.freeze(newState);
   currentState = newState;
+  if (!isRenderer) {
+    (<any>global)[stateChannel] = currentState;
+  }
+  // console.log("refreshState " + JSON.stringify(newState));
   listeners.forEach(listener => listener(currentState));
   return true;
 }
 
-subscribeMessage(stateChannel, (event, newState) => refreshState(newState));
+subscribeMessage(stateChannel, (event, newState) => {
+    refreshState(newState);
+});
 
-export function setState(newState: Object) {
-  if (refreshState(newState)) {
+export function setState<T>(newState: T) {
+  if (refreshState<T>(newState)) {
+    // console.log("setState "+JSON.stringify(newState));
     publishMessage(stateChannel, currentState);
   }
 }
 
-export async function getState() {
+export function updateState<T>(stateUpdate:T) {
+  const newState = Object.assign({}, currentState, stateUpdate);
+  // console.log("updateState "+JSON.stringify(newState));
+  setState<T>(newState);
+}
+
+export async function getState<T>(filter?: (state: T) => boolean): Promise<T> {
   let subscription: { Dispose: () => void };
   try {
-    return await new Promise<Object>((resolve, reject) => {
-      subscription = subscribeState(state => {
+    return await new Promise<T>((resolve, reject) => {
+        subscription = subscribeState<T>(state => {
+        const isMatch = filter && filter(state) || !filter;
+        if (isMatch)  {
           resolve(state);
+        }
       });
     });
   } finally {
@@ -82,8 +100,7 @@ export async function getState() {
   }
 }
 
-
-export function subscribeState(listener: StateChangeListener) {
+export function subscribeState<T>(listener: StateChangeListener<T>) {
   listeners.add(listener);
   listener(currentState);
   return {

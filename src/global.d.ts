@@ -1,0 +1,3 @@
+﻿interface globalState {
+  nodeRedUrl: string;
+}

@@ -5,7 +5,7 @@
     "restore": "git clean -xdf -e cache && yarn && cd src && yarn --ignore-optional && cd ..",
     "debug": "gulp build && cross-env PLATFORM_TARGET=development electron dist/build/main.js",
     "release": "gulp release",
-    "start": "gulp release && dist/release/v1.4.6/darwin-x64/red-to-go.app/Contents/MacOS/Electron"
+    "start": "gulp release && open dist/release/v1.4.7/darwin-x64/red-to-go.app"
   },
   "devDependencies": {
     "@types/electron": "^1.4.25",
@@ -17,9 +17,9 @@
     "cross-env": "^3.1.3",
     "del": "^2.2.2",
     "devtron": "^1.4.0",
+    "electron": "^1.4.7",
     "electron-devtools-installer": "^2.0.1",
     "electron-packager": "^8.1.0",
-    "electron-prebuilt": "^1.4.3",
     "gulp": "^3.9.1",
     "gulp-electron": "^0.1.3",
     "gulp-typescript": "^3.1.2",

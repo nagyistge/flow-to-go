@@ -24,6 +24,8 @@ gulp.task('build', ['clean:build'], function () {
     // build & copy application
     const copy_app = gulp.src([
       `${dirSource}/node_modules/**/*.*`,
+      `!${dirSource}/node_modules/**/*.?(md|markdown|txt)`,
+      `!${dirSource}/node_modules/**/test.js)`,
       `!${dirSource}/node_modules/node-red/nodes/core/hardware/**/*.*`,
       `${dirSource}/?(index.html|package.json)`
     ], { base: dirSource })

@@ -2,9 +2,7 @@
 import * as ReactDOM from "react-dom";
 import Webview from "./webview";
 import * as ipc from "../helpers/ipc";
-import FlatButton from 'material-ui/FlatButton';
 
-const style = { width: "100%", height: "100%", margin: 0, padding: 0, overflow: "hidden" };
 
 interface Properties {
   admin: string;
@@ -19,10 +17,7 @@ interface State {
 export default class NodeRedView extends React.Component<Properties,State> {
 
   render() {
-    return <div>
-      <Webview src={this.state.src} />
-      <FlatButton label="Toggle View" onTouchTap={this.handleToggleView} />
-    </div>;
+    return <Webview src={this.state.src}/>;
   }
 
   constructor(props:Properties) {

@@ -1,5 +1,6 @@
-﻿
-export function createTemplate(app: Electron.App, shell: Electron.Shell) {
+﻿import { setState } from "../helpers/ipc";
+
+export function createTemplate(state: globalState, app: Electron.App, shell: Electron.Shell) {
   const template = [
     {
       label: 'Edit',
@@ -49,6 +50,8 @@ export function createTemplate(app: Electron.App, shell: Electron.Shell) {
       submenu: [
         { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
         { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' },
+        { label: 'NodeRED-UI', click() { setState({ currentView: state.nodeRedUI }); } },
+        { label: 'NodeRED-Admin', click() { setState({ currentView: state.nodeRedAdmin }); }}
       ]
     },
     { label: 'Help', role: 'help',

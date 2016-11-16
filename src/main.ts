@@ -35,18 +35,19 @@ app.once("ready", async () => {
 
   const nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;
   const nodeRedAdmin = `${nodeRedUrl}/admin`;
-  const nodeRedUi = `${nodeRedUrl}/ui`;
-  
-  ipc.updateState<globalState>({
+  const nodeRedUI = `${nodeRedUrl}/ui`;
+  const initialState = {
     nodeRedUrl: `http://localhost:${settings.functionGlobalContext.port}`,
-    nodeRedAdmin: nodeRedAdmin,
-    nodeRedUI: nodeRedUi,
+    nodeRedAdmin,
+    nodeRedUI,
     currentView: nodeRedAdmin
-  });
+  };
+
+  ipc.updateState<globalState>(initialState);
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.once("ready-to-show", mainWindow.show);
   
-  const menuTemplate = ApplicationMenu.createTemplate(app, shell);
+  const menuTemplate = ApplicationMenu.createTemplate(initialState, app, shell);
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 });

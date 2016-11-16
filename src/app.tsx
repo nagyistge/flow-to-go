@@ -14,7 +14,10 @@ nodeRedIpc.setupOnlineStatus();
 ipc.subscribeState<globalState>(state => {
   ReactDOM.render(
     <MuiThemeProvider>
-      <NodeRedView url={state.nodeRedUrl} />
+      <NodeRedView
+        admin={state.nodeRedAdmin}
+        ui={state.nodeRedUI}
+      />
     </MuiThemeProvider>,
     document.getElementById("app")
   );

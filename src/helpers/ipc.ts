@@ -106,6 +106,10 @@ export function subscribeState<T>(listener: StateChangeListener<T>) {
   };
 }
 
+export function unsubscribeState<T>(listener: StateChangeListener<T>) {
+  return listeners.delete(listener);
+}
+
 type StateChangeListener<T> = (newState: T) => void;
 
 interface IpcSender {

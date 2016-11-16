@@ -38,15 +38,15 @@ export default class Webview extends React.Component<WebviewProps, {}> {
     const node = ReactDOM.findDOMNode(this);
     node.addEventListener("console-message", this.handleConsoleMessage);
     node.addEventListener("new-window", this.handleNewWindow);
-    node.addEventListener("did-start-loading", this.handleStartLoading);
-    node.addEventListener("did-stop-loading", this.handleStopLoading);
+    // node.addEventListener("did-start-loading", this.handleStartLoading);
+    // node.addEventListener("did-stop-loading", this.handleStopLoading);
   }
 
   componentWillUnmount() {
     const node = ReactDOM.findDOMNode(this);
     node.removeEventListener("console-message", this.handleConsoleMessage);
     node.removeEventListener("new-window", this.handleNewWindow);
-    node.removeEventListener("did-start-loading", this.handleStartLoading);
-    node.removeEventListener("did-stop-loading", this.handleStopLoading);
+    // node.removeEventListener("did-start-loading", this.handleStartLoading);
+    // node.removeEventListener("did-stop-loading", this.handleStopLoading);
   }
 }

@@ -33,8 +33,15 @@ app.once("ready", async () => {
 
   const settings = await redInitialization;
 
+  const nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;
+  const nodeRedAdmin = `${nodeRedUrl}/admin`;
+  const nodeRedUi = `${nodeRedUrl}/ui`;
+  
   ipc.updateState<globalState>({
-    nodeRedUrl: `http://localhost:${settings.functionGlobalContext.port}`
+    nodeRedUrl: `http://localhost:${settings.functionGlobalContext.port}`,
+    nodeRedAdmin: nodeRedAdmin,
+    nodeRedUI: nodeRedUi,
+    currentView: nodeRedAdmin
   });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);

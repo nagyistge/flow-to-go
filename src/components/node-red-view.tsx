@@ -37,13 +37,7 @@ export default class NodeRedView extends React.Component<Properties,State> {
 
   handleOnline = () => { this.setState({ online: true }); }
   handleOffline = () => { this.setState({ online: false }); }
-  handleToggleView = () => {
-    const newView = (this.state.src === this.props.ui)
-      ? this.props.admin
-      : this.props.ui;
-    ipc.updateState({ currentView: newView });
-  }
-  
+
   componentDidMount() {
     window.addEventListener("online", this.handleOnline);
     window.addEventListener("offline", this.handleOffline);

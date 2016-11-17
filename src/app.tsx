@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { render } from 'react-dom';
 import NodeRedView from "./components/node-red-view";
 import * as nodeRedIpc from "./components/node-red-ipc";
 import { MuiThemeProvider } from 'material-ui/styles';
@@ -11,14 +11,20 @@ injectTapEventPlugin();
 nodeRedIpc.setupNotifications();
 nodeRedIpc.setupOnlineStatus();
 
-ipc.subscribeState<globalState>(state => {
-  ReactDOM.render(
-    <MuiThemeProvider>
+class App extends React.Component<{ initialState: globalState },{}> {
+  render() {
+    return <MuiThemeProvider>
       <NodeRedView
-        admin={state.nodeRedAdmin}
-        ui={state.nodeRedUI}
+        admin={this.props.initialState.nodeRedAdmin}
+        ui={this.props.initialState.nodeRedUI}
       />
-    </MuiThemeProvider>,
+    </MuiThemeProvider >;
+  }
+}
+
+ipc.subscribeState<globalState>(state => {
+  render(
+    <App initialState={state}/>,
     document.getElementById("app")
   );
 });

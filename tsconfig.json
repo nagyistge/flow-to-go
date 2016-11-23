@@ -4,6 +4,8 @@
     "target": "es2015",
     "noImplicitAny": true,
     "removeComments": true,
-    "jsx": "react"
+    "jsx": "react",
+    "diagnostics": true,
+    "noEmitOnError": true
   }
 }

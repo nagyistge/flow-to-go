@@ -11,6 +11,6 @@
     "node-red-dashboard": "^2.1.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
-    "react-tap-event-plugin": "^1.0.0"
+    "react-tap-event-plugin": "^2.0.1"
   }
 }

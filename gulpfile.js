@@ -27,12 +27,16 @@ gulp.task('start:debug', ['build'], function () {
   gutil.log(gutil.colors.yellow('starting debug'));
   const env = Object.create( process.env );
   env.PLATFORM_TARGET = 'development';
-  return spawn('electron', [`${dirBuild}/main.js`], { env: env });
+  const proc = spawn('electron', [`${dirBuild}/main.js`], { env: env });
+  proc.stdout.pipe(process.stdout)
+  return proc;
 });
 
 gulp.task('start:darwin', ['release'], function () {
   gutil.log(gutil.colors.yellow('starting release'));
-  return spawn(`${dirRelease}/${electronVersion}/darwin-x64/red-to-go.app/Contents/MacOS/Electron`);
+  const proc = spawn(`${dirRelease}/${electronVersion}/darwin-x64/red-to-go.app/Contents/MacOS/Electron`);
+  proc.stdout.pipe(process.stdout)
+  return proc;
 });
 
 gulp.task('build', ['clean:build'], function () {

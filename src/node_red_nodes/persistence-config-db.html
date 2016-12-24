@@ -1,0 +1,18 @@
+﻿<script type="text/javascript">
+  RED.nodes.registerType('persistence-config-db',{
+    category: 'config',
+    defaults: {
+      name: {value: 'data', required:true },
+    },
+    label: function() {
+      return this.name;
+    }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="persistence-config-db">
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-database"></i> Name</label>
+    <input type="text" id="node-config-input-name">
+  </div>
+</script>

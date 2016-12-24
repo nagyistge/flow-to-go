@@ -1,0 +1,39 @@
+﻿<script type="text/x-red" data-template-name="persistence-db">
+
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-database"><i class="fa fa-database"></i> Database</label>
+    <input type="persistence-config-db" id="node-input-database">
+  </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="persistence-db">
+  <p>database node...</p>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('persistence-db',{
+    category: 'custom',
+    defaults: {
+      name: {value: ''},
+      database: {value:'', type:'persistence-config-db'},
+    },
+    inputs:1,
+    outputs:0,
+    color: "#3FADB5",
+    icon: 'db.png',
+    align: 'right',
+    paletteLabel: 'database',
+    label: function() {
+      return this.name || 'database'
+    },
+    labelStyle: function() {
+      return this.database ? '' : 'node_label_italic'
+    }
+  })
+</script>

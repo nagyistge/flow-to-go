@@ -7,8 +7,8 @@
   resolved "https://registry.yarnpkg.com/7zip/-/7zip-0.0.6.tgz#9cafb171af82329490353b4816f03347aa150a30"
 
 "@types/electron@^1.4.27":
-  version "1.4.29"
-  resolved "https://registry.yarnpkg.com/@types/electron/-/electron-1.4.29.tgz#f4555c669799f3b208e7de1770e3f4cbf9e9f0a2"
+  version "1.4.30"
+  resolved "https://registry.yarnpkg.com/@types/electron/-/electron-1.4.30.tgz#d79b1bc117b6cfa770220d6aeb5a475659cd7961"
   dependencies:
     "@types/node" "*"
 
@@ -30,8 +30,8 @@
   resolved "https://registry.yarnpkg.com/@types/mime/-/mime-0.0.29.tgz#fbcfd330573b912ef59eeee14602bface630754b"
 
 "@types/node@*", "@types/node@^6.0.51":
-  version "6.0.52"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.52.tgz#1ac3a99b42320f9e463482f25af4c2359473aaa6"
+  version "6.0.53"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.53.tgz#8c300ca8ba51f80f98f3525b932ff47c6efd6be1"
 
 "@types/react-dom@^0.14.19":
   version "0.14.19"
@@ -254,9 +254,9 @@ bluebird@^2.9.30:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
 
-bluebird@^3.1.1, bluebird@^3.3.5:
-  version "3.4.6"
-  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.6.tgz#01da8d821d87813d158967e743d5fe6c62cf8c0f"
+bluebird@^3.1.1, bluebird@^3.3.5, bluebird@^3.4.6:
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.4.7.tgz#f72d760be09b7f76d08ed8fae98b289a8d05fab3"
 
 boom@2.x.x:
   version "2.10.1"
@@ -521,9 +521,9 @@ debug@0.7.4:
   version "0.7.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-0.7.4.tgz#06e1ea8082c2cb14e39806e22e2f6f757f92af39"
 
-debug@2, debug@^2.1.3, debug@^2.2.0:
-  version "2.4.5"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-2.4.5.tgz#34c7b12a1ca96674428f41fe92c49b4ce7cd0607"
+debug@2, debug@^2.1.3, debug@^2.2.0, debug@^2.3.2:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.5.1.tgz#9107bb4a506052ec2a02314bc606313ed2b921c1"
   dependencies:
     ms "0.7.2"
 
@@ -655,8 +655,8 @@ electron-devtools-installer@^2.0.1:
     semver "^5.3.0"
 
 electron-download@^3.0.0, electron-download@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/electron-download/-/electron-download-3.0.1.tgz#27045028ee78b3b3dca9fdb35d4bb1262afa4d29"
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/electron-download/-/electron-download-3.0.2.tgz#d2e4552ae88f9a37a746e02da987caa60524be7c"
   dependencies:
     debug "^2.2.0"
     fs-extra "^0.30.0"
@@ -669,15 +669,15 @@ electron-download@^3.0.0, electron-download@^3.0.1:
     sumchecker "^1.2.0"
 
 electron-osx-sign@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/electron-osx-sign/-/electron-osx-sign-0.4.1.tgz#01d81645a1d3738c0780df02c971ea5e4d9bc21c"
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/electron-osx-sign/-/electron-osx-sign-0.4.2.tgz#518e3895a63d30c0d17520ad49c66a23d66a0cd3"
   dependencies:
-    bluebird "^3.3.5"
+    bluebird "^3.4.6"
     compare-version "^0.1.2"
-    debug "^2.2.0"
-    isbinaryfile "^3.0.0"
+    debug "^2.3.2"
+    isbinaryfile "^3.0.1"
     minimist "^1.2.0"
-    plist "^1.2.0"
+    plist "^2.0.1"
     tempfile "^1.1.1"
 
 electron-packager@^8.1.0:
@@ -699,9 +699,9 @@ electron-packager@^8.1.0:
     sanitize-filename "^1.6.0"
     semver "^5.3.0"
 
-electron@1.4.12:
-  version "1.4.12"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.4.12.tgz#ae6641aa1db01dd04e41c56639ca7b84b888767a"
+electron@^1.4.13:
+  version "1.4.13"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.4.13.tgz#aecc073484c25d351007d75ad8972b0f2f835ab3"
   dependencies:
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
@@ -779,8 +779,8 @@ extglob@^0.3.1:
     is-extglob "^1.0.0"
 
 extract-zip@^1.0.3:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/extract-zip/-/extract-zip-1.5.0.tgz#92ccf6d81ef70a9fa4c1747114ccef6d8688a6c4"
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/extract-zip/-/extract-zip-1.6.0.tgz#7f400c9607ea866ecab7aa6d54fb978eeb11621a"
   dependencies:
     concat-stream "1.5.0"
     debug "0.7.4"
@@ -1609,7 +1609,7 @@ isarray@1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
 
-isbinaryfile@^3.0.0:
+isbinaryfile@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isbinaryfile/-/isbinaryfile-3.0.1.tgz#6e99573675372e841a0520c036b41513d783e79e"
 
@@ -1670,8 +1670,8 @@ jsonparse@0.0.5:
   resolved "https://registry.yarnpkg.com/jsonparse/-/jsonparse-0.0.5.tgz#330542ad3f0a654665b778f3eb2d9a9fa507ac64"
 
 jsonpointer@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-4.0.0.tgz#6661e161d2fc445f19f98430231343722e1fcbd5"
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-4.0.1.tgz#4fd92cb34e0e9db3c89c8622ecf51f9b978c6cb9"
 
 jspm-config@^0.3.0:
   version "0.3.2"
@@ -2022,7 +2022,7 @@ minimatch@~0.2.11:
     lru-cache "2"
     sigmund "~1.0.0"
 
-minimist@0.0.8:
+minimist@0.0.8, minimist@~0.0.1:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
 
@@ -2030,17 +2030,13 @@ minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
 
-minimist@~0.0.1:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.10.tgz#de3f98543dbf96082be48ad1a0c7cda836301dcf"
-
-mkdirp@0.5.0, mkdirp@^0.5.0:
+mkdirp@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.0.tgz#1d73076a6df986cd9344e15e71fcc05a4c9abf12"
   dependencies:
     minimist "0.0.8"
 
-mkdirp@^0.5.1, mkdirp@~0.5.1:
+mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
@@ -2350,7 +2346,7 @@ plist@^1.2.0:
     xmlbuilder "4.0.0"
     xmldom "0.1.x"
 
-plist@^2.0.0:
+plist@^2.0.0, plist@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/plist/-/plist-2.0.1.tgz#0a32ca9481b1c364e92e18dc55c876de9d01da8b"
   dependencies:
@@ -2423,11 +2419,15 @@ progress@^1.1.8:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/progress/-/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
 
-promise-finally@^2.0.1, promise-finally@^2.2.1:
+promise-finally@^2.0.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/promise-finally/-/promise-finally-2.2.1.tgz#22616c4ba902916e988bd46c54d7caa08910cd77"
   dependencies:
     any-promise "^1.3.0"
+
+promise-finally@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/promise-finally/-/promise-finally-3.0.0.tgz#ddd5d0f895432b1206ceb8da1275064d18e7aa23"
 
 punycode@^1.4.1:
   version "1.4.1"
@@ -3009,8 +3009,8 @@ truncate-utf8-bytes@^1.0.0:
     utf8-byte-length "^1.0.1"
 
 tslint@^4.0.2:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-4.1.1.tgz#ae15c9478d92eb2f01d5102c69c493ec02d7e7e4"
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-4.2.0.tgz#b9f5c5b871b784ab2f4809e704ade42d62f523ad"
   dependencies:
     babel-code-frame "^6.20.0"
     colors "^1.1.2"
@@ -3038,7 +3038,7 @@ typescript@^2.0.10, typescript@^2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.4.tgz#b53b69fb841126acb1dd4b397d21daba87572251"
 
-typings-core@^2.0.0:
+typings-core@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/typings-core/-/typings-core-2.2.0.tgz#62771bb10f0ebf1c6ff5082356be412820ea5817"
   dependencies:
@@ -3076,10 +3076,9 @@ typings-core@^2.0.0:
     zip-object "^0.1.0"
 
 typings@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/typings/-/typings-2.0.0.tgz#d1d6fa14d3679a1d4dafd70093dbaa56f500be4b"
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/typings/-/typings-2.1.0.tgz#9cdbe0cd1626ab61b379e06ba4a3910d1d791006"
   dependencies:
-    any-promise "^1.3.0"
     archy "^1.0.0"
     bluebird "^3.1.1"
     chalk "^1.0.0"
@@ -3090,8 +3089,8 @@ typings@^2.0.0:
     listify "^1.0.0"
     log-update "^1.0.2"
     minimist "^1.2.0"
-    promise-finally "^2.2.1"
-    typings-core "^2.0.0"
+    promise-finally "^3.0.0"
+    typings-core "^2.2.0"
     update-notifier "^1.0.0"
     wordwrap "^1.0.0"
     xtend "^4.0.1"

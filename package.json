@@ -15,7 +15,7 @@
     "@types/react-dom": "^0.14.19",
     "del": "^2.2.2",
     "devtron": "^1.4.0",
-    "electron": "1.4.12",
+    "electron": "^1.4.13",
     "electron-devtools-installer": "^2.0.1",
     "electron-packager": "^8.1.0",
     "gulp": "^3.9.1",

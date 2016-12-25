@@ -6,7 +6,8 @@ const tsc = require('gulp-typescript');
 const merge = require('merge2');
 const spawn = require('child_process').spawn;
 const packageMetadata = require('./package.json');
-const electronVersion = `v${packageMetadata.devDependencies.electron}`;
+
+const electronVersion = `v${/\d+.\d+.\d+/g.exec(packageMetadata.devDependencies.electron)}`;
 
 const dirOutput = './dist'
 const dirRelease = `${dirOutput}/release`

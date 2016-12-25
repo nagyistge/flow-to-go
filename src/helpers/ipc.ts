@@ -1,4 +1,4 @@
-﻿const { BrowserWindow, ipcRenderer, ipcMain, remote } = require("electron");
+﻿const { webContents, ipcRenderer, ipcMain, remote } = require("electron");
 
 const isRenderer = (function () {
   // running in a web browser
@@ -23,8 +23,8 @@ export function publishMessage(channel:string,...args:any[]) {
       ipcRenderer.send(channel, ...args);
     } else {
       // console.log("publishMessage main "+JSON.stringify(args));
-      BrowserWindow.getAllWindows().forEach(win => {
-      win.webContents.send(channel, ...args);
+      webContents.getAllWebContents().forEach(item => {
+      item.send(channel, ...args);
     });
   }
 }

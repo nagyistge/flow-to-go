@@ -3,5 +3,5 @@
     RED.nodes.createNode(this, config);
     this.database = RED.nodes.getNode(config.database);
   }
-  RED.nodes.registerType("persistence-db", Initialize);
+  RED.nodes.registerType("storage", Initialize);
 };

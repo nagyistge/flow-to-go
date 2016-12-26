@@ -1,4 +1,4 @@
-﻿<script type="text/x-red" data-template-name="persistence-db">
+﻿<script type="text/x-red" data-template-name="storage">
 
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -7,30 +7,30 @@
 
   <div class="form-row">
     <label for="node-input-database"><i class="fa fa-database"></i> Database</label>
-    <input type="persistence-config-db" id="node-input-database">
+    <input type="storage-file" id="node-input-database">
   </div>
 
 </script>
 
-<script type="text/x-red" data-help-name="persistence-db">
+<script type="text/x-red" data-help-name="storage">
   <p>database node...</p>
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType('persistence-db',{
+  RED.nodes.registerType('storage',{
     category: 'custom',
     defaults: {
       name: {value: ''},
-      database: {value:'', type:'persistence-config-db'},
+      database: {value:'', type:'storage-file', required: true },
     },
     inputs:1,
     outputs:0,
     color: "#3FADB5",
     icon: 'db.png',
-    align: 'right',
-    paletteLabel: 'database',
+    align: 'center',
+    paletteLabel: 'storage',
     label: function() {
-      return this.name || 'database'
+      return this.name || 'storage'
     },
     labelStyle: function() {
       return this.database ? '' : 'node_label_italic'

@@ -7,7 +7,7 @@ module.exports = function (RED: any) {
 
   function Notification(config: any) {
       RED.nodes.createNode(this, config);
-      let node = this;
+      const node = this;
       node.topic = config.topic;
       node.title = config.title;
       node.body = config.body;
@@ -27,7 +27,7 @@ module.exports = function (RED: any) {
   
   function OnlineStatus(config: any) {
     RED.nodes.createNode(this, config);
-    let node = this;
+    const node = this;
     node.topic = config.topic;
     node.title = config.title;
 

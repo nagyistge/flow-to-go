@@ -10,7 +10,7 @@
 
     node.on('input', function (msg: any) {
       const data = msg.payload;
-      if (!data) return;
+      if (!data) { return; }
 
       db.insert(data, function (error: Error, newData: any) {
         if (error) {
@@ -22,7 +22,6 @@
       });
     });
   }
-
   RED.nodes.registerType("storage-in", StorageIn);
 
   // Configuration
@@ -30,16 +29,20 @@
   function StorageFile(config: any) {
     RED.nodes.createNode(this, config);
     const node = this;
-    node.filename = config.filename;
-
     const Datastore = require('nedb');
-    const { app } = require("electron");
-    const userData = app.getPath('userData');
-    const dbName = `${userData}/${this.filename}`;
-    node.log(`loading ${dbName}`);
-    node.database = new Datastore({ filename: dbName, autoload: true });
-  }
 
+    if (config.filename === '') {
+      node.log(`in-memory`);
+      node.database = new Datastore();
+    } else {
+      node.filename = config.filename;
+      const { app } = require("electron");
+      const userData = app.getPath('userData');
+      const dbName = `${userData}/${this.filename}`;
+      node.log(`Filename: ${dbName}`);
+      node.database = new Datastore({ filename: dbName, autoload: true });
+    }
+  }
   RED.nodes.registerType("storage-file", StorageFile);
 
 };

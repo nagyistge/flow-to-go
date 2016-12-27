@@ -44,7 +44,7 @@
   
   <div class="form-row">
     <label for="node-config-input-filename"><i class="fa fa-database"></i> File</label>
-    <input type="text" id="node-config-input-filename" placeholder="database.db">
+    <input type="text" id="node-config-input-filename" placeholder="database.db / blank for in-memory">
   </div>
 
 </script>
@@ -53,10 +53,13 @@
   RED.nodes.registerType('storage-file',{
     category: 'config',
     defaults: {
-      filename: {value: '', required:true, validate:RED.validators.regex(/\w+.db/) },
+      filename: {
+        value: '', 
+        required: false,
+        validate: RED.validators.regex(/^$|\w+.db/) },
     },
     label: function() {
-      return this.filename;
+      return this.filename || 'in-memory';
     }
   });
 </script>

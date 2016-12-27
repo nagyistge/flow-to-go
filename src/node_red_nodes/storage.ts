@@ -5,18 +5,20 @@
   function StorageIn(config: any) {
     RED.nodes.createNode(this, config);
     const node = this;
-    const db = RED.nodes.getNode(config.database);
+    const configNode = RED.nodes.getNode(config.database);
+    const db = configNode.database;
 
     node.on('input', function (msg: any) {
-      const data = <Object[]>msg.payload.data;
+      const data = <Object[]>msg.payload;
       if (!data) return;
 
-      db.insert(data, function (error: Error, data:any) {
+      db.insert(data, function (error: Error, newData: any) {
         if (error) {
-          node.error(error);
-          return;
+          node.error(error, msg);
+        } else {
+          msg.payload = newData;
+          node.send(msg);
         }
-        if (data) node.send({ payload: { data } });
       });
     });
   }

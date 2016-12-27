@@ -9,7 +9,7 @@
     const db = configNode.database;
 
     node.on('input', function (msg: any) {
-      const data = <Object[]>msg.payload;
+      const data = msg.payload;
       if (!data) return;
 
       db.insert(data, function (error: Error, newData: any) {

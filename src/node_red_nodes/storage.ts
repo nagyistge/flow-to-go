@@ -22,7 +22,34 @@
       });
     });
   }
-  RED.nodes.registerType("storage-in", StorageIn);
+  RED.nodes.registerType("storage-insert", StorageIn);
+
+  // Query
+ 
+  function StorageQuery(config: any) {
+    RED.nodes.createNode(this, config);
+    const node = this;
+    const db = RED.nodes.getNode(config.database).database;
+
+    node.on('input', function (msg: any) {
+      const query = config.query ? JSON.parse(config.query) : msg.query;
+      if (!query) {
+        node.error('No Query defined.', msg);
+      } else {
+        let cursor = db[config.method](query);
+        cursor = config.limit ? cursor.limit(config.limit) : cursor;
+        cursor.exec(function (error: Error, docs: any) {
+          if (error) {
+            node.error(error, msg);
+          } else {
+            msg.payload = docs;
+            node.send(msg);
+          }
+        });
+      }
+    });
+  }
+  RED.nodes.registerType("storage-query", StorageQuery);
 
   // Configuration
 

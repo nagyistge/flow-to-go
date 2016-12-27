@@ -1,4 +1,7 @@
-﻿<script type="text/x-red" data-template-name="storage-in">
+﻿
+<!-- Insert -->
+
+<script type="text/x-red" data-template-name="storage-insert">
 
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -12,12 +15,12 @@
 
 </script>
 
-<script type="text/x-red" data-help-name="storage-in">
-  <p>database node...</p>
+<script type="text/x-red" data-help-name="storage-insert">
+  <p>Stores the the message-payload as document. If the payload contains an array each entry is treated as single document. see: <a href="https://github.com/louischatriot/nedb/wiki/Inserting-documents"> inserting documents</a></p>
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType('storage-in', {
+  RED.nodes.registerType('storage-insert', {
     category: 'custom',
     defaults: {
       name: {value: ''},
@@ -28,9 +31,72 @@
     color: "#3FADB5",
     icon: 'db.png',
     align: 'right',
-    paletteLabel: 'storage in',
+    paletteLabel: 'storage insert',
     label: function() {
-      return this.name || 'storage in'
+      return this.name || 'storage insert'
+    },
+    labelStyle: function() {
+      return this.database ? '' : 'node_label_italic'
+    }
+  })
+</script>
+
+<!-- Query -->
+
+<script type="text/x-red" data-template-name="storage-query">
+
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-database"><i class="fa fa-database"></i> Database</label>
+    <input type="storage-file" id="node-input-database">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-method"><i class="fa fa-search"></i> Method</label>
+    <select type="text" id="node-input-method" placeholder="select method">
+      <option value="find">find documents</option>
+      <option value="count">count documents</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-query"><i class="fa fa-tag"></i> Query</label>
+    <input type="text" id="node-input-query" placeholder="leave blank if set in flow">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-limit"><i class="fa fa-tag"></i> Limit</label>
+    <input type="text" id="node-input-limit" placeholder="limit results">
+  </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="storage-query">
+  <p>see: <a href="https://github.com/louischatriot/nedb/wiki/Finding-documents"> finding documents</a></p>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('storage-query', {
+    category: 'custom',
+    defaults: {
+      name: { value: ''},
+      database: { value:'', type:'storage-file', required: true },
+      method: { value:'find', required:true },
+      query: { value:''},
+      limit: { value:'', validate:RED.validators.regex(/^$|\d+/), required: false },
+    },
+    inputs:1,
+    outputs:1,
+    color: "#3FADB5",
+    icon: 'db.png',
+    align: 'right',
+    paletteLabel: 'storage query',
+    label: function() {
+      return this.name || 'storage query'
     },
     labelStyle: function() {
       return this.database ? '' : 'node_label_italic'

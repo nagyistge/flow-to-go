@@ -31,13 +31,24 @@
     const node = this;
     const db = RED.nodes.getNode(config.database).database;
 
+    const getQuery = config.query ? () => JSON.parse(config.query) : (msg: any) => msg.query;
+    const getSort = config.sort ? () => JSON.parse(config.sort) : (msg: any) => msg.sort;
+    const getSkip = config.skip ? () => config.skip : (msg: any) => msg.skip;
+    const getLimit = config.limit ? () => config.limit : (msg: any) => msg.limit;
+
     node.on('input', function (msg: any) {
-      const query = config.query ? JSON.parse(config.query) : msg.query;
+      const query = getQuery(msg);
+      const sort = getSort(msg);
+      const skip = getSkip(msg);
+      const limit = getLimit(msg);
+
       if (!query) {
         node.error('No Query defined.', msg);
       } else {
         let cursor = db[config.method](query);
-        cursor = config.limit ? cursor.limit(config.limit) : cursor;
+        cursor = sort ? cursor.sort(sort) : cursor;
+        cursor = skip ? cursor.skip(skip) : cursor;
+        cursor = limit ? cursor.limit(limit) : cursor;
         cursor.exec(function (error: Error, docs: any) {
           if (error) {
             node.error(error, msg);

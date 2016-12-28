@@ -56,7 +56,7 @@
   </div>
 
   <div class="form-row">
-    <label for="node-input-method"><i class="fa fa-search"></i> Method</label>
+    <label for="node-input-method"><i class="fa fa-cogs"></i> Method</label>
     <select type="text" id="node-input-method" placeholder="select method">
       <option value="find">find documents</option>
       <option value="count">count documents</option>
@@ -64,19 +64,34 @@
   </div>
 
   <div class="form-row">
-    <label for="node-input-query"><i class="fa fa-tag"></i> Query</label>
+    <label for="node-input-query"><i class="fa fa-filter"></i> Query</label>
     <input type="text" id="node-input-query" placeholder="leave blank if set in flow">
   </div>
 
   <div class="form-row">
-    <label for="node-input-limit"><i class="fa fa-tag"></i> Limit</label>
+    <label for="node-input-skip"><i class="fa fa-filter"></i> Skip</label>
+    <input type="text" id="node-input-skip" placeholder="skip results">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-limit"><i class="fa fa-filter"></i> Limit</label>
     <input type="text" id="node-input-limit" placeholder="limit results">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-sort"><i class="fa fa-sort-amount-desc"></i> Sort</label>
+    <input type="text" id="node-input-sort" placeholder="sort results">
   </div>
 
 </script>
 
 <script type="text/x-red" data-help-name="storage-query">
-  <p>see: <a href="https://github.com/louischatriot/nedb/wiki/Finding-documents"> finding documents</a></p>
+  <p>see:
+    <ul>
+      <li><a href="https://github.com/louischatriot/nedb/wiki/Finding-documents#finding-documents">finding documents</a></li>
+      <li><a href="https://github.com/louischatriot/nedb/wiki/Finding-documents#sorting-and-paginating">sorting and pagination</a></li>
+    </ul>
+  </p>
 </script>
 
 <script type="text/javascript">
@@ -88,6 +103,8 @@
       method: { value:'find', required:true },
       query: { value:''},
       limit: { value:'', validate:RED.validators.regex(/^$|\d+/), required: false },
+      skip: { value:'', validate:RED.validators.regex(/^$|\d+/), required: false },
+      sort: { value:''},
     },
     inputs:1,
     outputs:1,

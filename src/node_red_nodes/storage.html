@@ -60,6 +60,7 @@
     <select type="text" id="node-input-method" placeholder="select method">
       <option value="find">find documents</option>
       <option value="count">count documents</option>
+      <option value="remove">remove documents</option>
     </select>
   </div>
 
@@ -118,6 +119,14 @@
     },
     labelStyle: function() {
       return this.database ? '' : 'node_label_italic'
+    },
+    oneditprepare: function() {
+      $("#node-input-method").change(function(){
+        let removeSelected = $(this).val() === 'remove';
+        $("#node-input-skip").prop("readonly", removeSelected);
+        $("#node-input-limit").prop("readonly", removeSelected);
+        $("#node-input-sort").prop("readonly", removeSelected);
+      });
     }
   })
 </script>

@@ -37,6 +37,7 @@
     const getLimit = config.limit ? () => config.limit : (msg: any) => msg.limit;
 
     node.on('input', function (msg: any) {
+      
       const query = getQuery(msg);
       const sort = getSort(msg);
       const skip = getSkip(msg);
@@ -45,6 +46,17 @@
       if (!query) {
         node.error('No Query defined.', msg);
       } else {
+        if (config.method === 'remove') {
+          db.remove(query, { multi: true }, function (error:Error, numRemoved:number) {
+            if (error) {
+              node.error(error, msg);
+            } else {
+              msg.payload = numRemoved;
+              node.send(msg);
+            }
+          });
+          return;
+        }
         let cursor = db[config.method](query);
         cursor = sort ? cursor.sort(sort) : cursor;
         cursor = skip ? cursor.skip(skip) : cursor;

@@ -28,12 +28,30 @@
     }
   }
 
-  function Query(node: any, db: any, method: string, query: any, sort: any, skip: any, limit: any, msg: any) {
+  function Find(node: any, db: any, method: string, query: any, sort: any, skip: any, limit: any, msg: any) {
     if (!query) {
       node.error('No Query defined.', msg);
     } else {
-      let cursor = db[method](query);
+      let cursor = db.find(query);
       cursor = sort ? cursor.sort(sort) : cursor;
+      cursor = skip ? cursor.skip(skip) : cursor;
+      cursor = limit ? cursor.limit(limit) : cursor;
+      cursor.exec(function (error: Error, docs: any) {
+        if (error) {
+          node.error(error, msg);
+        } else {
+          msg.payload = docs;
+          node.send(msg);
+        }
+      });
+    }
+  }
+
+  function Count(node: any, db: any, method: string, query: any, skip: any, limit: any, msg: any) {
+    if (!query) {
+      node.error('No Query defined.', msg);
+    } else {
+      let cursor = db.count(query);
       cursor = skip ? cursor.skip(skip) : cursor;
       cursor = limit ? cursor.limit(limit) : cursor;
       cursor.exec(function (error: Error, docs: any) {
@@ -64,12 +82,16 @@
           Remove(node, db, getQuery(msg), msg);
           break;
         case 'find':
+          Find(node, db, config.method, getQuery(msg), getSort(msg), getSkip(msg), getLimit(msg), msg);
+          break;
         case 'count':
-          Query(node, db, config.method, getQuery(msg), getSort(msg), getSkip(msg), getLimit(msg), msg);
+          Count(node, db, config.method, getQuery(msg), getSkip(msg), getLimit(msg), msg);
           break;
         case 'insert':
           Insert(node, db, msg);
           break;
+        default:
+          node.error(`unknown method ${config.method}`, msg);
       }
     });
   }

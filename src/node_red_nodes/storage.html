@@ -16,30 +16,45 @@
     <label for="node-input-method"><i class="fa fa-cogs"></i> Method</label>
     <select type="text" id="node-input-method" placeholder="select method">
       <option value="insert">insert documents</option>
+      <option value="update">update documents</option>
       <option value="find">find documents</option>
       <option value="count">count documents</option>
       <option value="remove">remove documents</option>
     </select>
   </div>
 
-  <div class="form-row">
+  <div id="query-row" class="form-row">
     <label for="node-input-query"><i class="fa fa-filter"></i> Query</label>
     <input type="text" id="node-input-query" placeholder="leave blank if set in flow">
   </div>
 
-  <div class="form-row">
-    <label for="node-input-skip"><i class="fa fa-filter"></i> Skip</label>
-    <input type="text" id="node-input-skip" placeholder="skip results">
+  <div id="filter-group">
+    <div class="form-row">
+      <label for="node-input-skip"><i class="fa fa-filter"></i> Skip</label>
+      <input type="text" id="node-input-skip" placeholder="skip results">
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-limit"><i class="fa fa-filter"></i> Limit</label>
+      <input type="text" id="node-input-limit" placeholder="limit results">
+    </div>
   </div>
 
-  <div class="form-row">
-    <label for="node-input-limit"><i class="fa fa-filter"></i> Limit</label>
-    <input type="text" id="node-input-limit" placeholder="limit results">
-  </div>
-
-  <div class="form-row">
+  <div id="sort-row" class="form-row">
     <label for="node-input-sort"><i class="fa fa-sort-amount-desc"></i> Sort</label>
     <input type="text" id="node-input-sort" placeholder="sort results">
+  </div>
+
+  <div id="update-group">
+    <div class="form-row">
+      <label for="node-input-update"><i class="fa fa-pencil-square-o"></i> Update</label>
+      <input type="text" id="node-input-update" placeholder="update statement">
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-options"><i class="fa fa-pencil-square-o"></i> Options</label>
+      <input type="text" id="node-input-options" placeholder="update options">
+    </div>
   </div>
 
   <div class="form-tips"><b>See:</b>
@@ -68,6 +83,8 @@
       limit: { value:'', validate:RED.validators.regex(/^$|\d+/), required: false },
       skip: { value:'', validate:RED.validators.regex(/^$|\d+/), required: false },
       sort: { value:''},
+      update: { value: ''},
+      options: { value: ''},
     },
     inputs:1,
     outputs:1,
@@ -83,36 +100,42 @@
     },
     oneditprepare: function() {
       $("#node-input-method").change(function(){
-        const queryElement = $("#node-input-query");
-        const skipElement = $("#node-input-skip");
-        const limitElement = $("#node-input-limit");
-        const sortElement = $("#node-input-sort");
+        const queryRow = $("#query-row");
+        const sortRow = $("#sort-row");
+        const filterGroup = $("#filter-group");
+        const updateGroup = $("#update-group");
 
         switch ($(this).val()) {
           case 'remove':
-            queryElement.prop('disabled', false);
-            skipElement.prop('disabled', true);
-            skipElement.val('');
-            limitElement.prop('disabled', true);
-            limitElement.val('');
-            sortElement.prop('disabled', true);
-            sortElement.val('');
+            queryRow.show();
+            filterGroup.hide();
+            updateGroup.hide();
+            sortRow.hide();
+            break;
+          case 'update':
+            queryRow.show();
+            filterGroup.hide();
+            updateGroup.show();
+            sortRow.hide();
+            break;
+          case 'find':
+            queryRow.show();
+            filterGroup.show();
+            updateGroup.hide();
+            sortRow.show();
+            break;
+          case 'count':
+            queryRow.show();
+            filterGroup.show();
+            updateGroup.hide();
+            sortRow.hide();
             break;
           case 'insert':
-            queryElement.prop('disabled', true);
-            queryElement.val('');
-            skipElement.prop('disabled', true);
-            skipElement.val('');
-            limitElement.prop('disabled', true);
-            limitElement.val('');
-            sortElement.prop('disabled', true);
-            sortElement.val('');
-            break;
           default:
-            queryElement.prop('disabled', false);
-            skipElement.prop('disabled', false);
-            limitElement.prop('disabled', false);
-            sortElement.prop('disabled', false);
+            queryRow.hide();
+            filterGroup.hide();
+            updateGroup.hide();
+            sortRow.hide();
             break;
         }
       });

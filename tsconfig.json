@@ -1,7 +1,7 @@
 ﻿{
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2015",
+    "target": "ES6",
     "noImplicitAny": true,
     "removeComments": true,
     "jsx": "react",

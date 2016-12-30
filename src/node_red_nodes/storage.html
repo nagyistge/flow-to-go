@@ -1,49 +1,6 @@
-﻿
-<!-- Insert -->
+﻿<!-- Storage-Node -->
 
-<script type="text/x-red" data-template-name="storage-insert">
-
-  <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-input-name" placeholder="Name">
-  </div>
-
-  <div class="form-row">
-    <label for="node-input-database"><i class="fa fa-database"></i> Database</label>
-    <input type="storage-file" id="node-input-database">
-  </div>
-
-</script>
-
-<script type="text/x-red" data-help-name="storage-insert">
-  <p>Stores the the message-payload as document. If the payload contains an array each entry is treated as single document. see: <a href="https://github.com/louischatriot/nedb/wiki/Inserting-documents"> inserting documents</a></p>
-</script>
-
-<script type="text/javascript">
-  RED.nodes.registerType('storage-insert', {
-    category: 'custom',
-    defaults: {
-      name: {value: ''},
-      database: {value:'', type:'storage-file', required: true },
-    },
-    inputs:1,
-    outputs:1,
-    color: "#3FADB5",
-    icon: 'db.png',
-    align: 'right',
-    paletteLabel: 'storage insert',
-    label: function() {
-      return this.name || 'storage insert'
-    },
-    labelStyle: function() {
-      return this.database ? '' : 'node_label_italic'
-    }
-  })
-</script>
-
-<!-- Query -->
-
-<script type="text/x-red" data-template-name="storage-query">
+<script type="text/x-red" data-template-name="storage">
 
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -58,6 +15,7 @@
   <div class="form-row">
     <label for="node-input-method"><i class="fa fa-cogs"></i> Method</label>
     <select type="text" id="node-input-method" placeholder="select method">
+      <option value="insert">insert documents</option>
       <option value="find">find documents</option>
       <option value="count">count documents</option>
       <option value="remove">remove documents</option>
@@ -86,23 +44,26 @@
 
   <div class="form-tips"><b>See:</b>
     <ul>
-      <li><a href="https://github.com/louischatriot/nedb/wiki/Finding-documents#finding-documents">finding documents</a></li>
+      <li><a href="https://github.com/louischatriot/nedb/wiki/Inserting-documents"> insert documents</a></br>
+      Stores the message-payload as document. If the payload contains an array each entry is treated as single document.
+      </li>
+      <li><a href="https://github.com/louischatriot/nedb/wiki/Finding-documents#finding-documents">find documents</a></li>
       <li><a href="https://github.com/louischatriot/nedb/wiki/Finding-documents#sorting-and-paginating">sorting and pagination</a></li>
     </ul>
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="storage-query">
+<script type="text/x-red" data-help-name="storage">
   <p></p>
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType('storage-query', {
+  RED.nodes.registerType('storage', {
     category: 'custom',
     defaults: {
       name: { value: ''},
       database: { value:'', type:'storage-file', required: true },
-      method: { value:'find', required:true },
+      method: { value:'insert', required:true },
       query: { value:''},
       limit: { value:'', validate:RED.validators.regex(/^$|\d+/), required: false },
       skip: { value:'', validate:RED.validators.regex(/^$|\d+/), required: false },
@@ -113,25 +74,53 @@
     color: "#3FADB5",
     icon: 'db.png',
     align: 'right',
-    paletteLabel: 'storage query',
+    paletteLabel: 'storage',
     label: function() {
-      return this.name || 'storage query'
+      return this.name || `storage (${this.method})`
     },
     labelStyle: function() {
       return this.database ? '' : 'node_label_italic'
     },
     oneditprepare: function() {
       $("#node-input-method").change(function(){
-        let removeSelected = $(this).val() === 'remove';
-        $("#node-input-skip").prop("readonly", removeSelected);
-        $("#node-input-limit").prop("readonly", removeSelected);
-        $("#node-input-sort").prop("readonly", removeSelected);
+        const queryElement = $("#node-input-query");
+        const skipElement = $("#node-input-skip");
+        const limitElement = $("#node-input-limit");
+        const sortElement = $("#node-input-sort");
+
+        switch ($(this).val()) {
+          case 'remove':
+            queryElement.prop('disabled', false);
+            skipElement.prop('disabled', true);
+            skipElement.val('');
+            limitElement.prop('disabled', true);
+            limitElement.val('');
+            sortElement.prop('disabled', true);
+            sortElement.val('');
+            break;
+          case 'insert':
+            queryElement.prop('disabled', true);
+            queryElement.val('');
+            skipElement.prop('disabled', true);
+            skipElement.val('');
+            limitElement.prop('disabled', true);
+            limitElement.val('');
+            sortElement.prop('disabled', true);
+            sortElement.val('');
+            break;
+          default:
+            queryElement.prop('disabled', false);
+            skipElement.prop('disabled', false);
+            limitElement.prop('disabled', false);
+            sortElement.prop('disabled', false);
+            break;
+        }
       });
     }
   })
 </script>
 
-<!-- Configuration -->
+<!-- Configuration-Node -->
 
 <script type="text/x-red" data-template-name="storage-file">
   

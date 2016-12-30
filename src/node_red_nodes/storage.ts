@@ -1,32 +1,54 @@
 ﻿module.exports = function (RED: any) {
-  
-  // Input
- 
-  function StorageIn(config: any) {
-    RED.nodes.createNode(this, config);
-    const node = this;
-    const configNode = RED.nodes.getNode(config.database);
-    const db = configNode.database;
+  function Insert(node: any, db: any, msg: any) {
+    const data = msg.payload;
+    if (!data) { return; }
 
-    node.on('input', function (msg: any) {
-      const data = msg.payload;
-      if (!data) { return; }
+    db.insert(data, function (error: Error, newData: any) {
+      if (error) {
+        node.error(error, msg);
+      } else {
+        msg.payload = newData;
+        node.send(msg);
+      }
+    });
+  }
 
-      db.insert(data, function (error: Error, newData: any) {
+  function Remove(node: any, db: any, query: any, msg: any) {
+    if (!query) {
+      node.error('No Query defined.', msg);
+    } else {
+      db.remove(query, { multi: true }, function (error: Error, numRemoved: number) {
         if (error) {
           node.error(error, msg);
         } else {
-          msg.payload = newData;
+          msg.payload = numRemoved;
           node.send(msg);
         }
       });
-    });
+    }
   }
-  RED.nodes.registerType("storage-insert", StorageIn);
 
-  // Query
+  function Query(node: any, db: any, method: string, query: any, sort: any, skip: any, limit: any, msg: any) {
+    if (!query) {
+      node.error('No Query defined.', msg);
+    } else {
+      let cursor = db[method](query);
+      cursor = sort ? cursor.sort(sort) : cursor;
+      cursor = skip ? cursor.skip(skip) : cursor;
+      cursor = limit ? cursor.limit(limit) : cursor;
+      cursor.exec(function (error: Error, docs: any) {
+        if (error) {
+          node.error(error, msg);
+        } else {
+          msg.payload = docs;
+          node.send(msg);
+        }
+      });
+    }
+  }
  
-  function StorageQuery(config: any) {
+  // Storage-Node
+  function Storage(config: any) {
     RED.nodes.createNode(this, config);
     const node = this;
     const db = RED.nodes.getNode(config.database).database;
@@ -37,45 +59,24 @@
     const getLimit = config.limit ? () => config.limit : (msg: any) => msg.limit;
 
     node.on('input', function (msg: any) {
-      
-      const query = getQuery(msg);
-      const sort = getSort(msg);
-      const skip = getSkip(msg);
-      const limit = getLimit(msg);
-
-      if (!query) {
-        node.error('No Query defined.', msg);
-      } else {
-        if (config.method === 'remove') {
-          db.remove(query, { multi: true }, function (error:Error, numRemoved:number) {
-            if (error) {
-              node.error(error, msg);
-            } else {
-              msg.payload = numRemoved;
-              node.send(msg);
-            }
-          });
-          return;
-        }
-        let cursor = db[config.method](query);
-        cursor = sort ? cursor.sort(sort) : cursor;
-        cursor = skip ? cursor.skip(skip) : cursor;
-        cursor = limit ? cursor.limit(limit) : cursor;
-        cursor.exec(function (error: Error, docs: any) {
-          if (error) {
-            node.error(error, msg);
-          } else {
-            msg.payload = docs;
-            node.send(msg);
-          }
-        });
+      switch (config.method) {
+        case 'remove':
+          Remove(node, db, getQuery(msg), msg);
+          break;
+        case 'find':
+        case 'count':
+          Query(node, db, config.method, getQuery(msg), getSort(msg), getSkip(msg), getLimit(msg), msg);
+          break;
+        case 'insert':
+          Insert(node, db, msg);
+          break;
       }
     });
   }
-  RED.nodes.registerType("storage-query", StorageQuery);
 
-  // Configuration
+  RED.nodes.registerType("storage", Storage);
 
+  // Configuration-Node
   function StorageFile(config: any) {
     RED.nodes.createNode(this, config);
     const node = this;

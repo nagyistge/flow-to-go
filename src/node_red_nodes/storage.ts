@@ -28,6 +28,30 @@
     }
   }
 
+    function Update(node: any, db: any, query: any, update: any, options: any, msg: any) {
+    if (!query) {
+      node.error('No Query defined.', msg);
+      return;
+    }
+
+    if (!update) {
+      node.error('No Update defined.', msg);
+      return;
+    }
+    
+    const callback = function (error: Error, numReplaced: number) {
+      if (error) {
+        node.error(error, msg);
+      } else {
+        msg.payload = numReplaced;
+        node.send(msg);
+      };
+    };
+
+    if (options) { db.update(query, update, options, callback); }
+    else { db.update(query, update, callback); }
+  }
+
   function Find(node: any, db: any, method: string, query: any, sort: any, skip: any, limit: any, msg: any) {
     if (!query) {
       node.error('No Query defined.', msg);
@@ -75,11 +99,16 @@
     const getSort = config.sort ? () => JSON.parse(config.sort) : (msg: any) => msg.sort;
     const getSkip = config.skip ? () => config.skip : (msg: any) => msg.skip;
     const getLimit = config.limit ? () => config.limit : (msg: any) => msg.limit;
+    const getUpdate = config.update ? () => JSON.parse(config.update) : (msg: any) => msg.update;
+    const getOptions = config.options ? () => JSON.parse(config.options) : (msg: any) => msg.options;
 
     node.on('input', function (msg: any) {
       switch (config.method) {
         case 'remove':
           Remove(node, db, getQuery(msg), msg);
+          break;
+        case 'update':
+          Update(node, db, getQuery(msg), getUpdate(msg), getOptions(msg), msg);
           break;
         case 'find':
           Find(node, db, config.method, getQuery(msg), getSort(msg), getSkip(msg), getLimit(msg), msg);

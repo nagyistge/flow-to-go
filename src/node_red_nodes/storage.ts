@@ -141,6 +141,8 @@
       const dbName = `${RED.settings.userDir}/data/${this.filename}`;
       node.log(`Filename: ${dbName}`);
       node.database = new Datastore({ filename: dbName, autoload: true });
+      const indexes = node.database.indexes;
+      console.log(JSON.stringify(indexes));
     }
   }
   RED.nodes.registerType("storage-file", StorageFile);

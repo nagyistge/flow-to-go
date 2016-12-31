@@ -1,6 +1,5 @@
 ﻿import * as express from "express";
 import * as http from "http";
-import * as os from "os";
 
 const { app } = require("electron");
 const RED = require("node-red");
@@ -49,8 +48,7 @@ export function getDefaultSettings() {
       }
     },
     functionGlobalContext: {
-      os: os,
-      port: 0
+      port: 0,
     }
   };
 }

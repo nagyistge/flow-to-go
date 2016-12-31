@@ -138,9 +138,7 @@
       node.database = new Datastore();
     } else {
       node.filename = config.filename;
-      const { app } = require("electron");
-      const userData = app.getPath('userData');
-      const dbName = `${userData}/${this.filename}`;
+      const dbName = `${RED.settings.userDir}/data/${this.filename}`;
       node.log(`Filename: ${dbName}`);
       node.database = new Datastore({ filename: dbName, autoload: true });
     }

@@ -180,8 +180,7 @@
       const indexContainer = $('#node-config-input-index-container')
       indexContainer.css('min-height', '250px').css('min-width', '450px').editableList({
         addItem: function (container, index, data) {
-          data = JSON.parse((typeof data === 'string' ) ? data : '{ "fieldName": "somefield", "unique": true, "sparse": true }')
-          
+          data = (typeof data === 'string' ) ? JSON.parse(data) : { fieldName: '', unique: false, sparse: false }
           
           const row1 = $('<div/>').appendTo(container);
           const row2 = $('<div/>',{style:"padding-top: 5px;"}).appendTo(container);

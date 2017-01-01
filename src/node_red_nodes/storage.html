@@ -77,34 +77,34 @@
   RED.nodes.registerType('storage', {
     category: 'custom',
     defaults: {
-      name: { value: ''},
-      database: { value:'', type:'storage-file', required: true },
-      method: { value:'insert', required:true },
-      query: { value:''},
-      limit: { value:'', validate:RED.validators.regex(/^$|\d+/), required: false },
-      skip: { value:'', validate:RED.validators.regex(/^$|\d+/), required: false },
-      sort: { value:''},
-      update: { value: ''},
-      options: { value: ''},
+      name: { value: '' },
+      database: { value: '', type: 'storage-file', required: true },
+      method: { value: 'insert', required: true },
+      query: { value: '' },
+      limit: { value: '', validate: RED.validators.regex(/^$|\d+/), required: false },
+      skip: { value: '', validate: RED.validators.regex(/^$|\d+/), required: false },
+      sort: { value: '' },
+      update: { value: '' },
+      options: { value: '' },
     },
-    inputs:1,
-    outputs:1,
+    inputs: 1,
+    outputs: 1,
     color: "#3FADB5",
     icon: 'db.png',
     align: 'right',
     paletteLabel: 'storage',
-    label: function() {
+    label: function () {
       return this.name || `storage (${this.method})`
     },
-    labelStyle: function() {
+    labelStyle: function () {
       return this.database ? '' : 'node_label_italic'
     },
-    oneditprepare: function() {
-      $("#node-input-method").change(function(){
-        const queryRow = $("#query-row");
-        const sortRow = $("#sort-row");
-        const filterGroup = $("#filter-group");
-        const updateGroup = $("#update-group");
+    oneditprepare: function () {
+      $('#node-input-method').change(function () {
+        const queryRow = $('#query-row');
+        const sortRow = $('#sort-row');
+        const filterGroup = $('#filter-group');
+        const updateGroup = $('#update-group');
 
         switch ($(this).val()) {
           case 'remove':
@@ -153,19 +153,81 @@
     <input type="text" id="node-config-input-filename" placeholder="database.db / blank for in-memory">
   </div>
 
+  <div class="form-row node-config-input-index-container-row">
+    <ol id="node-config-input-index-container"></ol>
+  </div>
+
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType('storage-file',{
+  RED.nodes.registerType('storage-file', {
     category: 'config',
     defaults: {
       filename: {
-        value: '', 
+        value: '',
         required: false,
-        validate: RED.validators.regex(/^$|\w+.db/) },
+        validate: RED.validators.regex(/^$|\w+.db/)
+      },
+      indexes: {
+        value: [],
+        required: false
+      },
     },
-    label: function() {
+    label: function () {
       return this.filename || 'in-memory';
+    },
+    oneditprepare: function () {
+      const indexContainer = $('#node-config-input-index-container')
+      indexContainer.css('min-height', '250px').css('min-width', '450px').editableList({
+        addItem: function (container, index, data) {
+          data = (typeof data === 'string' ) ? data : '{ "fieldName": "somefield", "unique": true, "sparse": true }'
+          const row1 = $('<div/>').appendTo(container);
+          const row2 = $('<div/>',{style:"padding-top: 5px;"}).appendTo(container);
+          
+          $('<input/>', {
+            id:`index-field-${index}`,
+            type: 'text',
+            style: 'width: 100%',
+            placeholder: 'indexed field'
+          }).val(data).appendTo(row1);
+
+          $(`<label for="index-unique-${index}" style="width:auto;margin-left: 5px;margin-right: 5px;"><i class="fa fa-key"></i> Unique:</label>`).appendTo(row2);
+          $('<input/>', {
+            id:`index-unique-${index}`,
+            type:'checkbox',
+            style:'width:auto;vertical-align:top'
+          }).prop('checked', true).appendTo(row2);
+
+          $(`<label for="index-sparse-${index}" style="width:auto;margin-left: 5px;margin-right: 5px;"><i class="fa fa-filter"></i> Sparse:</label>`).appendTo(row2);
+          $('<input/>', {
+            id:`index-sparse-${index}`,
+            type:'checkbox',
+            style:'width:auto;vertical-align:top'
+          }).prop('checked', true).appendTo(row2);
+
+        },
+        removable: true,
+        addButton: 'add Index'
+      });
+      this.indexes.forEach(data => {
+        indexContainer.editableList('addItem', data);
+      });
+    },
+    oneditresize: function (size) {
+      const rows = $('#dialog-form>div:not(.node-config-input-index-container-row)');
+      let height = size.height;
+      rows.each(i => height -= $(rows[i]).outerHeight(true));
+      var editorRow = $('#dialog-form>div.node-config-input-index-container-row');
+      height -= (parseInt(editorRow.css('marginTop')) + parseInt(editorRow.css('marginBottom')));
+      $('#node-config-input-index-container').editableList('height', height);
+    },
+    oneditsave: function() {
+      const items = $('#node-config-input-index-container').editableList('items');
+      const results = [];
+      items.each(function(i) {
+        results.push($(this).find(`#index-field-${i}`).val());
+      });
+      this.indexes = $.unique(results);
     }
   });
 </script>

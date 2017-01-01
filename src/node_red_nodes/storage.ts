@@ -141,9 +141,21 @@
       const dbName = `${RED.settings.userDir}/data/${this.filename}`;
       node.log(`Filename: ${dbName}`);
       node.database = new Datastore({ filename: dbName, autoload: true });
-      const indexes = node.database.indexes;
-      console.log(JSON.stringify(indexes));
     }
+
+    (config.indexes as [string]).forEach(item => {
+      const newIndex = JSON.parse(item);
+      node.database.ensureIndex(newIndex, function (error: Error) {
+        if (error) {
+          node.error(error);
+        } else {
+          node.log(`index on: ${newIndex.fieldName}`);
+        }
+      });
+    });
+
+    const indexes = node.database.indexes;
+    console.log(JSON.stringify(indexes));
   }
   RED.nodes.registerType("storage-file", StorageFile);
 

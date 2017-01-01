@@ -5,6 +5,7 @@ const del = require('del');
 const tsc = require('gulp-typescript');
 const merge = require('merge2');
 const spawn = require('child_process').spawn;
+const platform = require('os').platform();
 const packageMetadata = require('./package.json');
 
 const electronVersion = `v${/\d+.\d+.\d+/g.exec(packageMetadata.devDependencies.electron)}`;
@@ -15,6 +16,8 @@ const dirBuild = `${dirOutput}/build`
 const dirBuildNodes = `${dirBuild}/node_modules/node-red/nodes/custom`
 const dirSource = './src'
 const dirSourceNodes = `${dirSource}/node_red_nodes`
+
+const app = getAppPath(platform);
 
 gulp.task('clean:release', function() {
     return del([dirRelease]);
@@ -34,8 +37,7 @@ gulp.task('start:debug', ['build'], function () {
   return proc;
 });
 
-gulp.task('start:darwin', ['release'], function () {
-  const app = `${dirRelease}/${electronVersion}/darwin-x64/red-to-go.app/Contents/MacOS/Electron`
+gulp.task('start:release', ['release'], function () {
   gutil.log(gutil.colors.yellow(`starting release: ${app}`));
   const proc = spawn(app);
   proc.stdout.pipe(process.stdout)
@@ -89,7 +91,14 @@ gulp.task('release', ['build', 'clean:release'], function() {
             version: electronVersion,
             packaging: false,
             asar: true,
-            platforms: ['darwin-x64']
+            platforms: [`${platform}-x64`]
         }))
         .pipe(gulp.dest(""));
 });
+
+function getAppPath(platform) {
+  switch (platform) {
+    case 'darwin': return `${dirRelease}/${electronVersion}/darwin-x64/red-to-go.app/Contents/MacOS/Electron`;
+    case 'win32': return `${dirRelease}/${electronVersion}/win32-x64/red-to-go.exe`;
+  }
+}

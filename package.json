@@ -5,7 +5,7 @@
     "restore": "git clean -xdf -e cache && yarn && cd src && yarn --ignore-optional && cd ..",
     "debug": "gulp start:debug",
     "release": "gulp release",
-    "start": "gulp start:darwin"
+    "start": "gulp start:release"
   },
   "devDependencies": {
     "@types/electron": "^1.4.30",

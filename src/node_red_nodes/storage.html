@@ -180,7 +180,9 @@
       const indexContainer = $('#node-config-input-index-container')
       indexContainer.css('min-height', '250px').css('min-width', '450px').editableList({
         addItem: function (container, index, data) {
-          data = (typeof data === 'string' ) ? data : '{ "fieldName": "somefield", "unique": true, "sparse": true }'
+          data = JSON.parse((typeof data === 'string' ) ? data : '{ "fieldName": "somefield", "unique": true, "sparse": true }')
+          
+          
           const row1 = $('<div/>').appendTo(container);
           const row2 = $('<div/>',{style:"padding-top: 5px;"}).appendTo(container);
           
@@ -189,21 +191,21 @@
             type: 'text',
             style: 'width: 100%',
             placeholder: 'indexed field'
-          }).val(data).appendTo(row1);
+          }).val(data.fieldName).appendTo(row1);
 
           $(`<label for="index-unique-${index}" style="width:auto;margin-left: 5px;margin-right: 5px;"><i class="fa fa-key"></i> Unique:</label>`).appendTo(row2);
           $('<input/>', {
             id:`index-unique-${index}`,
             type:'checkbox',
             style:'width:auto;vertical-align:top'
-          }).prop('checked', true).appendTo(row2);
+          }).prop('checked', data.unique).appendTo(row2);
 
           $(`<label for="index-sparse-${index}" style="width:auto;margin-left: 5px;margin-right: 5px;"><i class="fa fa-filter"></i> Sparse:</label>`).appendTo(row2);
           $('<input/>', {
             id:`index-sparse-${index}`,
             type:'checkbox',
             style:'width:auto;vertical-align:top'
-          }).prop('checked', true).appendTo(row2);
+          }).prop('checked', data.sparse).appendTo(row2);
 
         },
         removable: true,
@@ -225,7 +227,12 @@
       const items = $('#node-config-input-index-container').editableList('items');
       const results = [];
       items.each(function(i) {
-        results.push($(this).find(`#index-field-${i}`).val());
+        const value = {
+          fieldName: $(this).find(`#index-field-${i}`).val(),
+          unique:$(this).find(`#index-unique-${i}`).prop('checked'),
+          sparse:$(this).find(`#index-sparse-${i}`).prop('checked'),
+        }
+        results.push(JSON.stringify(value));
       });
       this.indexes = $.unique(results);
     }

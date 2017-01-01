@@ -4,8 +4,8 @@ nodeRED + electron + awesome = red-to-go
 
 - [x] app - bundle [NodeRED](https://github.com/node-red/node-red) with [Electron](https://github.com/electron/electron)
 - [ ] app - custom theme
-- [x] build - osx
-- [ ] build - windows
+- [x] build - osx-x64
+- [x] build - windows-x64
 - [ ] build - recompile node (serialport support)
 - [x] node - online status
 - [x] node - system notification

@@ -2,7 +2,7 @@
 
 nodeRED + electron + awesome = red-to-go
 
-- [x] app - bundle nodeRED with electron
+- [x] app - bundle [NodeRED](https://github.com/node-red/node-red) with [Electron](https://github.com/electron/electron)
 - [ ] app - custom theme
 - [x] build - osx
 - [ ] build - windows
@@ -11,9 +11,4 @@ nodeRED + electron + awesome = red-to-go
 - [x] node - system notification
 - [ ] node - system tray
 - [ ] node - print-to-pdf
-- [ ] node - storage
-
-# see also
-
-- https://github.com/electron/electron
-- https://github.com/node-red/node-red
+- [x] node - storage ([NeDB](https://github.com/louischatriot/nedb))

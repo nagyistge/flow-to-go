@@ -92,9 +92,9 @@
     color: "#3FADB5",
     icon: 'db.png',
     align: 'right',
-    paletteLabel: 'storage',
+    paletteLabel: 'NeDB',
     label: function () {
-      return this.name || `storage (${this.method})`
+      return this.name || `NeDB (${this.method})`
     },
     labelStyle: function () {
       return this.database ? '' : 'node_label_italic'
@@ -155,6 +155,12 @@
 
   <div class="form-row node-config-input-index-container-row">
     <ol id="node-config-input-index-container"></ol>
+  </div>
+
+  <div class="form-tips"><b>See:</b>
+    <ul>
+      <li><a href="https://github.com/louischatriot/nedb/wiki/Indexing">indexing</a></li>
+    </ul>
   </div>
 
 </script>

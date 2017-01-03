@@ -52,4 +52,34 @@ module.exports = function (RED: any) {
   }
 
   RED.nodes.registerType('electron-online-status', OnlineStatus);
+
+  // BrowserWindow
+  function BrowserWindow(config: any) {
+    RED.nodes.createNode(this, config);
+
+    const { BrowserWindow } = require('electron');
+    
+    this.browser = new BrowserWindow({
+      title: config.name,
+      width: 1024,
+      height: 768,
+      show: config.show,
+      center: true,
+      autoHideMenuBar: true
+    });
+
+    this.on('close', (done:Function) => {
+      this.browser.on('closed', done);
+      this.browser.destroy();
+    });
+  }
+  RED.nodes.registerType('electron-browser-window', BrowserWindow);
+
+  // Browser
+  function Browser(config: any) {
+    RED.nodes.createNode(this, config);
+    // const node = this;
+  }
+
+  RED.nodes.registerType('electron-browser', Browser);
 };

@@ -92,3 +92,65 @@
     }
   })
 </script>
+
+<!-- Browser (Config-Node) -->
+
+<script type="text/x-red" data-template-name="electron-browser-window">
+
+  <div class="form-row">
+    <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-config-input-show"><i class="fa fa-eye"></i> Show</label>
+    <input id="node-config-input-show" type="checkbox">
+  </div>
+
+  <div class="form-tips"><b>See:</b>
+    <a href="http://electron.atom.io/docs/api/browser-window/">BrowserWindow</a>
+  </div>
+
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('electron-browser-window', {
+    category: 'config',
+    defaults: {
+      name: { value: ''},
+      show: { value: true },
+    },
+    label: function () {
+      return this.name || 'browser-window';
+    }
+  });
+</script>
+
+<!-- Browser -->
+
+<script type="text/x-red" data-template-name="electron-browser">
+
+  <div class="form-row">
+    <label for="node-input-window"><i class="fa fa-chrome"></i> Window</label>
+    <input type="electron-browser-window" id="node-input-window">
+  </div>
+
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('electron-browser', {
+    category: 'custom',
+    defaults: {
+      window: { value: '', type: 'electron-browser-window', required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    color: "#3FADB5",
+    icon: 'white-globe.png',
+    align: 'right',
+    paletteLabel: 'browser',
+    label: function () {
+      return this.name || 'browser';
+    }
+  });
+</script>

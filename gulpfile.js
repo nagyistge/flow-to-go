@@ -21,18 +21,18 @@ const dirSourceNodes = `${dirSource}/node_red_nodes`
 
 const app = getAppPath(platform);
 
-gulp.task('clean:release', function() {
-    return del([dirRelease]);
+gulp.task('clean:release', function () {
+  return del([dirRelease]);
 });
 
-gulp.task('clean:build', function() {
-    return del([dirBuild]);
+gulp.task('clean:build', function () {
+  return del([dirBuild]);
 });
 
 gulp.task('start:debug', ['build'], function () {
   const app = `${dirBuild}/main.js`
   gutil.log(gutil.colors.yellow(`starting debug: ${app}`));
-  const env = Object.create( process.env );
+  const env = Object.create(process.env);
   env.PLATFORM_TARGET = 'development';
   const proc = spawn('./node_modules/.bin/electron', [app], { env: env });
   proc.stdout.pipe(process.stdout)
@@ -57,7 +57,7 @@ gulp.task('build', ['clean:build'], function () {
     `${dirSource}/?(index.html|package.json)`
   ], { base: dirSource })
     .pipe(gulp.dest(dirBuild));
-  
+
   const tsAppProject = tsc.createProject("./tsconfig.json");
   tsAppProject.outDir = dirBuild;
   const transpile_app = gulp.src([
@@ -69,7 +69,7 @@ gulp.task('build', ['clean:build'], function () {
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dirBuild));
-    
+
   // build & copy custom nodes
   const copy_nodes = gulp.src([
     `${dirSourceNodes}/**/*.html`
@@ -85,23 +85,23 @@ gulp.task('build', ['clean:build'], function () {
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dirBuildNodes));
-  
+
   return merge([copy_app, copy_nodes, transpile_app, transpile_nodes]);
 });
 
-gulp.task('release', ['build', 'clean:release'], function() {
-    return gulp.src("")
-        .pipe(electron({
-            src: dirBuild,
-            packageJson: require(`${dirBuild}/package.json`),
-            release: dirRelease,
-            cache: './cache',
-            version: electronVersion,
-            packaging: false,
-            asar: true,
-            platforms: [`${platform}-x64`]
-        }))
-        .pipe(gulp.dest(""));
+gulp.task('release', ['build', 'clean:release'], function () {
+  return gulp.src("")
+    .pipe(electron({
+      src: dirBuild,
+      packageJson: require(`${dirBuild}/package.json`),
+      release: dirRelease,
+      cache: './cache',
+      version: electronVersion,
+      packaging: false,
+      asar: true,
+      platforms: [`${platform}-x64`]
+    }))
+    .pipe(gulp.dest(""));
 });
 
 function getAppPath(platform) {

@@ -4,6 +4,7 @@ const electron = require('gulp-electron');
 const del = require('del');
 const tsc = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
+const plumber = require('gulp-plumber');
 const buffer = require('vinyl-buffer');
 const merge = require('merge2');
 const spawn = require('child_process').spawn;
@@ -64,7 +65,8 @@ gulp.task('build', ['clean:build'], function () {
     `${dirSource}/**/*.?(ts|tsx)`,
     `!${dirSource}/node_modules/**`,
     `!${dirSourceNodes}/**`,
-  ]).pipe(tsAppProject())
+  ]).pipe(plumber())
+    .pipe(tsAppProject())
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sourcemaps.write('./'))
@@ -80,7 +82,8 @@ gulp.task('build', ['clean:build'], function () {
   tsNodesProject.outDir = dirBuildNodes;
   const transpile_nodes = gulp.src([
     `${dirSourceNodes}/**/*.ts`
-  ]).pipe(tsNodesProject())
+  ]).pipe(plumber())
+    .pipe(tsNodesProject())
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sourcemaps.write('./'))
@@ -91,6 +94,7 @@ gulp.task('build', ['clean:build'], function () {
 
 gulp.task('release', ['build', 'clean:release'], function () {
   return gulp.src("")
+    .pipe(plumber())
     .pipe(electron({
       src: dirBuild,
       packageJson: require(`${dirBuild}/package.json`),

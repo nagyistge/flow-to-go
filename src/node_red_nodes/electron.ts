@@ -68,9 +68,9 @@ module.exports = function (RED: any) {
       autoHideMenuBar: true
     });
 
-    this.on('close', (done:Function) => {
-      this.browser.on('closed', done);
+    this.on('close', () => {
       this.browser.destroy();
+      this.browser = null;
     });
   }
   RED.nodes.registerType('electron-browser-window', BrowserWindow);

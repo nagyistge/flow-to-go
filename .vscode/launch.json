@@ -4,7 +4,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug main process",
+      "name": "Main Process (Debug)",
       "program": "${workspaceRoot}/src/main.ts",
       "stopOnEntry": false,
       "cwd": "${workspaceRoot}/dist/build",

@@ -3,6 +3,8 @@ const gutil = require('gulp-util');
 const electron = require('gulp-electron');
 const del = require('del');
 const tsc = require('gulp-typescript');
+const sourcemaps = require('gulp-sourcemaps');
+const buffer = require('vinyl-buffer');
 const merge = require('merge2');
 const spawn = require('child_process').spawn;
 const platform = require('os').platform();
@@ -63,6 +65,9 @@ gulp.task('build', ['clean:build'], function () {
     `!${dirSource}/node_modules/**`,
     `!${dirSourceNodes}/**`,
   ]).pipe(tsAppProject())
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dirBuild));
     
   // build & copy custom nodes
@@ -76,6 +81,9 @@ gulp.task('build', ['clean:build'], function () {
   const transpile_nodes = gulp.src([
     `${dirSourceNodes}/**/*.ts`
   ]).pipe(tsNodesProject())
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dirBuildNodes));
   
   return merge([copy_app, copy_nodes, transpile_app, transpile_nodes]);

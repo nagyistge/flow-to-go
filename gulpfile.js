@@ -9,6 +9,7 @@ const buffer = require('vinyl-buffer');
 const merge = require('merge2');
 const spawn = require('child_process').spawn;
 const platform = require('os').platform();
+const path = require('path');
 const packageMetadata = require('./package.json');
 
 const electronVersion = `v${/\d+.\d+.\d+/g.exec(packageMetadata.devDependencies.electron)}`;
@@ -66,10 +67,13 @@ gulp.task('build', ['clean:build'], function () {
     `!${dirSource}/node_modules/**`,
     `!${dirSourceNodes}/**`,
   ]).pipe(plumber())
+    .pipe(sourcemaps.init())
     .pipe(tsAppProject())
     .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(sourcemaps.write('./'))
+    .pipe(sourcemaps.write('.', {
+      includeContent: false,
+      sourceRoot: path.relative(dirBuild, dirSource)
+    }))
     .pipe(gulp.dest(dirBuild));
 
   // build & copy custom nodes
@@ -83,10 +87,10 @@ gulp.task('build', ['clean:build'], function () {
   const transpile_nodes = gulp.src([
     `${dirSourceNodes}/**/*.ts`
   ]).pipe(plumber())
+    .pipe(sourcemaps.init())
     .pipe(tsNodesProject())
     .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(sourcemaps.write('./'))
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(dirBuildNodes));
 
   return merge([copy_app, copy_nodes, transpile_app, transpile_nodes]);

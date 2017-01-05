@@ -4,22 +4,24 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Programm starten",
-      "program": "${workspaceRoot}/dist/build/main.js",
-      "cwd": "${workspaceRoot}",
+      "name": "Debug main process",
+      "program": "${workspaceRoot}/src/main.ts",
+      "stopOnEntry": false,
+      "cwd": "${workspaceRoot}/dist/build",
+      "preLaunchTask": "build",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
       "runtimeArgs": [
         "${workspaceRoot}/dist/build/main.js",
         "--enable-logging"
       ],
-      "env": {},
-      "console": "internalConsole"
-    },
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "An den Prozess anfügen",
-      "port": 5858
+      "env": {
+        "PLATFORM_TARGET": "development"
+      },
+      "console": "internalConsole",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/dist/build/**/*.js"
+      ]
     }
   ]
 }

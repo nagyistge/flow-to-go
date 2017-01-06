@@ -1,7 +1,7 @@
-// import * as ipc from "../helpers/ipc";
+// import * as ipc from '../helpers/ipc';
 
 module.exports = function (RED: any) {
-  const ipc = require("../../../../helpers/ipc");
+  const ipc = require('../../../../helpers/ipc');
 
   // Notification
 
@@ -81,6 +81,10 @@ module.exports = function (RED: any) {
     RED.nodes.createNode(this, config);
     const node = this;
     const browser = RED.nodes.getNode(config.window).browser as Electron.BrowserWindow;
+
+    browser.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+      node.error(`Error ${errorCode}: ${errorDescription}`, { errorCode, errorDescription });
+    });
 
     if (config.url) {
       browser.loadURL(config.url);

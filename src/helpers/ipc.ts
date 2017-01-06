@@ -1,4 +1,4 @@
-﻿const { webContents, ipcRenderer, ipcMain, remote } = require("electron");
+﻿const { webContents, ipcRenderer, ipcMain, remote } = require('electron');
 
 const isRenderer = (function () {
   // running in a web browser
@@ -19,10 +19,10 @@ const isRenderer = (function () {
 
 export function publishMessage(channel:string,...args:any[]) {
     if (isRenderer) {
-      // console.log("publishMessage renderer "+JSON.stringify(args));
+      // console.log('publishMessage renderer '+JSON.stringify(args));
       ipcRenderer.send(channel, ...args);
     } else {
-      // console.log("publishMessage main "+JSON.stringify(args));
+      // console.log('publishMessage main '+JSON.stringify(args));
       webContents.getAllWebContents().forEach(item => {
       item.send(channel, ...args);
     });
@@ -47,7 +47,7 @@ export function subscribeMessage(channel: string, listener: IpcEventListener) {
   }
 }
 
-const stateChannel = "update_shared_state";
+const stateChannel = 'update_shared_state';
 let currentState: any = isRenderer ? remote.getGlobal(stateChannel) : undefined;
 const listeners = new Set<StateChangeListener<any>>();
 
@@ -60,7 +60,7 @@ function refreshState<T>(newState:T):boolean {
   if (!isRenderer) {
     (<any>global)[stateChannel] = currentState;
   }
-  // console.log("refreshState " + JSON.stringify(newState));
+  // console.log('refreshState ' + JSON.stringify(newState));
   listeners.forEach(listener => listener(currentState));
   return true;
 }
@@ -71,14 +71,14 @@ subscribeMessage(stateChannel, (event, newState) => {
 
 export function setState<T>(newState: T) {
   if (refreshState<T>(newState)) {
-    // console.log("setState "+JSON.stringify(newState));
+    // console.log('setState '+JSON.stringify(newState));
     publishMessage(stateChannel, currentState);
   }
 }
 
 export function updateState<T>(stateUpdate:T) {
   const newState = Object.assign({}, currentState, stateUpdate);
-  // console.log("updateState "+JSON.stringify(newState));
+  // console.log('updateState '+JSON.stringify(newState));
   setState<T>(newState);
 }
 

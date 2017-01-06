@@ -6,9 +6,14 @@ nodeRED + electron + awesome = red-to-go
 - [ ] app - custom theme
 - [x] build - osx-x64
 - [x] build - windows-x64
+- [x] build - debug Main Process (with vscode)
+- [ ] build - debug Renderer Process (with vscode)
 - [ ] build - recompile node (serialport support)
+- [ ] build - release
 - [x] node - online status
 - [x] node - system notification
 - [ ] node - system tray
-- [ ] node - print-to-pdf
+- [ ] node - browser
 - [x] node - storage ([NeDB](https://github.com/louischatriot/nedb))
+- [ ] doc - prerequisites + getting started
+- [ ] doc - ghpage

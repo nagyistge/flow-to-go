@@ -1,4 +1,4 @@
-﻿import { setState } from "../helpers/ipc";
+﻿import { setState } from '../helpers/ipc';
 
 export function createTemplate(state: globalState, app: Electron.App, shell: Electron.Shell) {
   const template = [

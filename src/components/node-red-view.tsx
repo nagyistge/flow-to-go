@@ -1,7 +1,7 @@
-﻿import * as React from "react";
-import * as ReactDOM from "react-dom";
-import Webview from "./webview";
-import * as ipc from "../helpers/ipc";
+﻿import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import Webview from './webview';
+import * as ipc from '../helpers/ipc';
 
 
 interface Properties {
@@ -39,14 +39,14 @@ export default class NodeRedView extends React.Component<Properties,State> {
   handleOffline = () => { this.setState({ online: false }); }
 
   componentDidMount() {
-    window.addEventListener("online", this.handleOnline);
-    window.addEventListener("offline", this.handleOffline);
+    window.addEventListener('online', this.handleOnline);
+    window.addEventListener('offline', this.handleOffline);
     ipc.subscribeState<globalState>(this.handleStateChange);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("online", this.handleOnline);
-    window.removeEventListener("offline", this.handleOffline);
+    window.removeEventListener('online', this.handleOnline);
+    window.removeEventListener('offline', this.handleOffline);
     ipc.unsubscribeState<globalState>(this.handleStateChange);
   }
 }

@@ -20,13 +20,13 @@ app.once('ready', async () => {
     autoHideMenuBar: true,
   });
 
-  if (process.env.PLATFORM_TARGET === 'development') {
-    const extensions = BrowserWindow.getDevToolsExtensions();
-    if (!extensions['devtron']) {
-      BrowserWindow.addDevToolsExtension(path.join(__dirname, '../../node_modules/devtron'));
-    }
-    mainWindow.webContents.openDevTools();
+  // @if DEBUG
+  const extensions = BrowserWindow.getDevToolsExtensions();
+  if (!extensions['devtron']) {
+    BrowserWindow.addDevToolsExtension(path.join(__dirname, '../../node_modules/devtron'));
   }
+  mainWindow.webContents.openDevTools();
+  // @endif
 
   mainWindow.once('close', () => app.quit());
 

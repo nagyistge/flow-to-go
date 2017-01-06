@@ -8,14 +8,13 @@
       "program": "${workspaceRoot}/src/main.ts",
       "stopOnEntry": false,
       "cwd": "${workspaceRoot}/dist/build",
-      "preLaunchTask": "build",
+      "preLaunchTask": "build:debug",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
       "runtimeArgs": [
         "${workspaceRoot}/dist/build/main.js",
         "--enable-logging"
       ],
       "env": {
-        "PLATFORM_TARGET": "development"
       },
       "console": "internalConsole",
       "sourceMaps": true,

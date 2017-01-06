@@ -5,6 +5,7 @@ const del = require('del');
 const tsc = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
+const preprocess = require('gulp-preprocess');
 const buffer = require('vinyl-buffer');
 const merge = require('merge2');
 const spawn = require('child_process').spawn;
@@ -22,6 +23,7 @@ const dirSource = './src'
 const dirSourceNodes = `${dirSource}/node_red_nodes`
 
 const app = getAppPath(platform);
+const preprocessContext = { DEBUG: false };
 
 gulp.task('clean:release', function () {
   return del([dirRelease]);
@@ -31,11 +33,10 @@ gulp.task('clean:build', function () {
   return del([dirBuild]);
 });
 
-gulp.task('start:debug', ['build'], function () {
+gulp.task('start:debug', ['build:debug'], function () {
   const app = `${dirBuild}/main.js`
   gutil.log(gutil.colors.yellow(`starting debug: ${app}`));
   const env = Object.create(process.env);
-  env.PLATFORM_TARGET = 'development';
   const proc = spawn('./node_modules/.bin/electron', [app], { env: env });
   proc.stdout.pipe(process.stdout)
   return proc;
@@ -46,6 +47,12 @@ gulp.task('start:release', ['release'], function () {
   const proc = spawn(app);
   proc.stdout.pipe(process.stdout)
   return proc;
+});
+
+gulp.task('build:debug', function() {
+  preprocessContext.DEBUG = true;
+  gutil.log(gutil.colors.yellow('DEBUG BUILD') );
+  return gulp.tasks.build.fn();
 });
 
 gulp.task('build', ['clean:build'], function () {
@@ -60,13 +67,14 @@ gulp.task('build', ['clean:build'], function () {
   ], { base: dirSource })
     .pipe(gulp.dest(dirBuild));
 
-  const tsAppProject = tsc.createProject("./tsconfig.json");
+  const tsAppProject = tsc.createProject('./tsconfig.json');
   tsAppProject.outDir = dirBuild;
   const transpile_app = gulp.src([
     `${dirSource}/**/*.?(ts|tsx)`,
     `!${dirSource}/node_modules/**`,
     `!${dirSourceNodes}/**`,
   ]).pipe(plumber())
+    .pipe(preprocess({ context: preprocessContext }))
     .pipe(sourcemaps.init())
     .pipe(tsAppProject())
     .pipe(buffer())
@@ -82,11 +90,12 @@ gulp.task('build', ['clean:build'], function () {
   ], { base: dirSourceNodes })
     .pipe(gulp.dest(dirBuildNodes));
 
-  const tsNodesProject = tsc.createProject("./tsconfig.json");
+  const tsNodesProject = tsc.createProject('./tsconfig.json');
   tsNodesProject.outDir = dirBuildNodes;
   const transpile_nodes = gulp.src([
     `${dirSourceNodes}/**/*.ts`
   ]).pipe(plumber())
+    .pipe(preprocess({ context: preprocessContext }))
     .pipe(sourcemaps.init())
     .pipe(tsNodesProject())
     .pipe(buffer())
@@ -97,7 +106,7 @@ gulp.task('build', ['clean:build'], function () {
 });
 
 gulp.task('release', ['build', 'clean:release'], function () {
-  return gulp.src("")
+  return gulp.src('')
     .pipe(plumber())
     .pipe(electron({
       src: dirBuild,
@@ -109,7 +118,7 @@ gulp.task('release', ['build', 'clean:release'], function () {
       asar: true,
       platforms: [`${platform}-x64`]
     }))
-    .pipe(gulp.dest(""));
+    .pipe(gulp.dest(''));
 });
 
 function getAppPath(platform) {

@@ -66,7 +66,10 @@ module.exports = function (RED: any) {
       show: config.show,
       autoHideMenuBar: true,
       skipTaskbar: true,
-      closable: false
+      closable: false,
+      webPreferences: {
+        nodeIntegration: false,
+      },
     });
 
     this.on('close', () => {

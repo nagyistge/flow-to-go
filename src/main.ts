@@ -29,7 +29,6 @@ app.once('ready', async () => {
   }
 
   mainWindow.once('close', () => app.quit());
-  mainWindow.once('window-all-closed', () => app.quit());
 
   const settings = await redInitialization;
 

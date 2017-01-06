@@ -64,8 +64,8 @@ module.exports = function (RED: any) {
       width: 1024,
       height: 768,
       show: config.show,
-      center: true,
       autoHideMenuBar: true,
+      skipTaskbar: true,
       closable: false
     });
 
@@ -108,7 +108,6 @@ module.exports = function (RED: any) {
         default:
           node.error(`unknown action ${config.action}`, msg);
       }
-
 
       const payload = msg.payload;
       if (payload.url) {

@@ -76,6 +76,7 @@ export async function initialize(nodeSettings: NodeRedSettings) {
     server.listen(nodeSettings.functionGlobalContext.port, '127.0.0.1', async () => {
       nodeSettings.functionGlobalContext.port = server.address().port;
       await redInitialization;
+      app.on('before-quit', () => RED.stop());
       RED.log.info(`port: ${nodeSettings.functionGlobalContext.port}`);
       RED.log.info(`userDir: ${nodeSettings.userDir}`);
       RED.log.info('private access on localhost');

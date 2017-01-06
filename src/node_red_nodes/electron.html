@@ -135,6 +135,24 @@
     <input type="electron-browser-window" id="node-input-window">
   </div>
 
+  <div class="form-row">
+    <label for="node-config-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-config-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-action"><i class="fa fa-cogs"></i> Action</label>
+    <select type="text" id="node-input-action" placeholder="select action">
+      <option value="loadURL">loadURL</option>
+      <option value="printToPDF">printToPDF</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-url"><i class="fa fa-bookmark"></i> Url</label>
+    <input type="text" id="node-input-url" placeholder="Url">
+  </div>
+
 </script>
 
 <script type="text/javascript">
@@ -142,6 +160,9 @@
     category: 'custom',
     defaults: {
       window: { value: '', type: 'electron-browser-window', required: true },
+      name: {value: ''},
+      action: {value: 'loadURL'},
+      url: { value: '' },
     },
     inputs: 1,
     outputs: 1,
@@ -150,7 +171,7 @@
     align: 'right',
     paletteLabel: 'browser',
     label: function () {
-      return this.name || 'browser';
+      return this.name || `browser (${this.action})`
     }
   });
 </script>

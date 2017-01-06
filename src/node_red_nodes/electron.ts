@@ -6,25 +6,25 @@ module.exports = function (RED: any) {
   // Notification
 
   function Notification(config: any) {
-      RED.nodes.createNode(this, config);
-      const node = this;
-      node.topic = config.topic;
-      node.title = config.title;
-      node.body = config.body;
+    RED.nodes.createNode(this, config);
+    const node = this;
+    node.topic = config.topic;
+    node.title = config.title;
+    node.body = config.body;
 
-      node.on('input', function(msg: any) {
-          const notification = {
-              title: node.title || msg.payload.title,
-              body: node.body || msg.payload.body
-          };
-          ipc.publishMessage('notification', notification);
-      });
+    node.on('input', function (msg: any) {
+      const notification = {
+        title: node.title || msg.payload.title,
+        body: node.body || msg.payload.body
+      };
+      ipc.publishMessage('notification', notification);
+    });
   }
 
   RED.nodes.registerType('electron-notification', Notification);
 
   // OnlineStatus
-  
+
   function OnlineStatus(config: any) {
     RED.nodes.createNode(this, config);
     const node = this;
@@ -58,14 +58,15 @@ module.exports = function (RED: any) {
     RED.nodes.createNode(this, config);
 
     const { BrowserWindow } = require('electron');
-    
+
     this.browser = new BrowserWindow({
       title: config.name,
       width: 1024,
       height: 768,
       show: config.show,
       center: true,
-      autoHideMenuBar: true
+      autoHideMenuBar: true,
+      closable: false
     });
 
     this.on('close', () => {
@@ -78,7 +79,38 @@ module.exports = function (RED: any) {
   // Browser
   function Browser(config: any) {
     RED.nodes.createNode(this, config);
-    // const node = this;
+    const node = this;
+    const browser = RED.nodes.getNode(config.window).browser as Electron.BrowserWindow;
+
+    if (config.url) {
+      browser.loadURL(config.url);
+    }
+
+    node.on('input', function (msg: any) {
+      switch (config.action) {
+        case 'loadURL':
+          if (!msg.payload.url) { node.error(`payload.url must not be empty`); }
+          else { browser.loadURL(msg.payload.url); }
+          break;
+        case 'printToPDF':
+          browser.webContents.printToPDF({}, (error, buffer) => {
+            if (error) { node.error(error); }
+            else {
+              msg.payload = buffer;
+              node.send(msg);
+            }
+          });
+          break;
+        default:
+          node.error(`unknown action ${config.action}`, msg);
+      }
+
+
+      const payload = msg.payload;
+      if (payload.url) {
+        browser.loadURL(payload.url);
+      }
+    });
   }
 
   RED.nodes.registerType('electron-browser', Browser);

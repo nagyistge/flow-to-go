@@ -17,15 +17,15 @@ app.once('ready', async () => {
     height: 768,
     show: false,
     center: true,
-    autoHideMenuBar: true
+    autoHideMenuBar: true,
   });
 
   if (process.env.PLATFORM_TARGET === 'development') {
-    BrowserWindow.addDevToolsExtension(path.join(__dirname, '../../node_modules/devtron'));
-    const installExtension = require('electron-devtools-installer');
-    installExtension.default(installExtension.REACT_DEVELOPER_TOOLS)
-      .then((name:string) => mainWindow.webContents.openDevTools())
-      .catch((err:Error) => console.log('An error occurred: ', err));
+    const extensions = BrowserWindow.getDevToolsExtensions();
+    if (!extensions['devtron']) {
+      BrowserWindow.addDevToolsExtension(path.join(__dirname, '../../node_modules/devtron'));
+    }
+    mainWindow.webContents.openDevTools();
   }
 
   mainWindow.once('close', () => app.quit());

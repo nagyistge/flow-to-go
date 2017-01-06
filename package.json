@@ -16,7 +16,6 @@
     "del": "^2.2.2",
     "devtron": "^1.4.0",
     "electron": "^1.4.13",
-    "electron-devtools-installer": "^2.0.1",
     "electron-packager": "^8.1.0",
     "gulp": "^3.9.1",
     "gulp-electron": "^0.1.3",

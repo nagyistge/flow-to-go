@@ -68,7 +68,7 @@ module.exports = function (RED: any) {
       skipTaskbar: true,
       closable: false,
       webPreferences: {
-        nodeIntegration: false,
+        nodeIntegration: config.nodeIntegration,
       },
     });
 
@@ -84,7 +84,7 @@ module.exports = function (RED: any) {
     RED.nodes.createNode(this, config);
     const node = this;
     const browser = RED.nodes.getNode(config.window).browser as Electron.BrowserWindow;
-
+    
     browser.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
       node.error(`Error ${errorCode}: ${errorDescription}`, { errorCode, errorDescription });
     });
@@ -100,7 +100,14 @@ module.exports = function (RED: any) {
           else { browser.loadURL(msg.payload.url); }
           break;
         case 'printToPDF':
-          browser.webContents.printToPDF({}, (error, buffer) => {
+          const options = {
+            marginsType: config.marginsType,
+            pageSize: config.pageSize,
+            printBackground: config.printBackground,
+            printSelectionOnly: config.printSelectionOnly,
+            landscape: config.landscape,
+          };
+          browser.webContents.printToPDF(options, (error, buffer) => {
             if (error) { node.error(error); }
             else {
               msg.payload = buffer;

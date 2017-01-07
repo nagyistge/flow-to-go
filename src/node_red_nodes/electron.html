@@ -107,6 +107,11 @@
     <input id="node-config-input-show" type="checkbox">
   </div>
 
+  <div class="form-row">
+    <label for="node-config-input-nodeIntegration"><i class="fa fa-tachometer"></i> Node</label>
+    <input id="node-config-input-nodeIntegration" type="checkbox">
+  </div>
+
   <div class="form-tips"><b>See:</b>
     <a href="http://electron.atom.io/docs/api/browser-window/">BrowserWindow</a>
   </div>
@@ -119,6 +124,7 @@
     defaults: {
       name: { value: ''},
       show: { value: true },
+      nodeIntegration: { value: false },
     },
     label: function () {
       return this.name || 'browser-window';
@@ -136,21 +142,63 @@
   </div>
 
   <div class="form-row">
-    <label for="node-config-name"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-config-name" placeholder="Name">
-  </div>
-
-  <div class="form-row">
-    <label for="node-input-action"><i class="fa fa-cogs"></i> Action</label>
-    <select type="text" id="node-input-action" placeholder="select action">
-      <option value="loadURL">loadURL</option>
-      <option value="printToPDF">printToPDF</option>
-    </select>
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
   </div>
 
   <div class="form-row">
     <label for="node-input-url"><i class="fa fa-bookmark"></i> Url</label>
     <input type="text" id="node-input-url" placeholder="Url">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-action"><i class="fa fa-cogs"></i> Action</label>
+    <select type="text" id="node-input-action">
+      <option value="loadURL">loadURL</option>
+      <option value="printToPDF">printToPDF</option>
+    </select>
+  </div>
+
+  <div id="pdf-options">
+
+    <div class="form-row">
+      <label for="node-input-marginsType"><i class="fa fa-arrows"></i> Margin</label>
+      <select type="text" id="node-input-marginsType">
+        <option value="0">default</option>
+        <option value="1">no margin</option>
+        <option value="2">minimum margin</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-pageSize"><i class="fa fa-file-pdf-o"></i> Format</label>
+      <select type="text" id="node-input-pageSize">
+        <option value="A3">A3</option>
+        <option value="A4">A4</option>
+        <option value="A5">A5</option>
+        <option value="Legal">Legal</option>
+        <option value="Letter">Letter</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-printBackground"><i class="fa fa-picture-o"></i> Background</label>
+      <input id="node-input-printBackground" type="checkbox">
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-printSelectionOnly"><i class="fa fa-paperclip"></i> Selection</label>
+      <input id="node-input-printSelectionOnly" type="checkbox">
+    </div>
+
+    <div class="form-row">
+      <label for="node-input-orientation"><i class="fa fa-repeat"></i> Orientation</label>
+      <select type="text" id="node-input-orientation">
+        <option value="landscape">landscape</option>
+        <option value="portrait">portrait</option>
+      </select>
+    </div>
+
   </div>
 
 </script>
@@ -163,6 +211,11 @@
       name: {value: ''},
       action: {value: 'loadURL'},
       url: { value: '' },
+      marginsType: { value: 0 },
+      pageSize: { value: 'A4' },
+      printBackground: { value: false },
+      printSelectionOnly: { value: false },
+      landscape: { value: false },
     },
     inputs: 1,
     outputs: 1,
@@ -172,6 +225,25 @@
     paletteLabel: 'browser',
     label: function () {
       return this.name || `browser (${this.action})`
+    },
+    oneditprepare: function () {
+      console
+      $('#node-input-orientation').val(this.landscape ? 'landscape' : 'portrait');
+
+      $('#node-input-action').change(function () {
+        const pdfOptions = $('#pdf-options');
+        switch ($(this).val()) {
+          case 'printToPDF':
+            pdfOptions.show();
+            break;
+          default:
+            pdfOptions.hide();
+            break;
+        }
+      });
+    },
+    oneditsave: function() {
+      this.landscape = $('#node-input-orientation').val() === 'landscape';
     }
   });
 </script>

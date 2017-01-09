@@ -79,10 +79,11 @@ module.exports = function (RED: any) {
   }
   RED.nodes.registerType('electron-browser-window', BrowserWindow);
 
-  // Browser
-  function Browser(config: any) {
+  // print-pdf
+  function PrintPDF(config: any) {
     RED.nodes.createNode(this, config);
     const node = this;
+    node.status({});
     const browser = RED.nodes.getNode(config.window).browser as Electron.BrowserWindow;
 
     const loadFailureStream = Observable
@@ -93,11 +94,10 @@ module.exports = function (RED: any) {
 
     const pdfTasks = new Subject<{ msg: any, options: Electron.PrintToPDFOptions }>();
     function setStatus(status: string, url: string) {
-      const msg = { payload: { status, url } };
       switch (status) {
         case 'loading':
           node.status({ fill: 'yellow', shape: 'ring', text: url });
-          node.send(msg);
+          node.send({ payload: { isReady: false, url } });
           break;
         case 'error':
           node.error(`Load failed ${url}`);
@@ -105,7 +105,7 @@ module.exports = function (RED: any) {
           break;
         case 'ready':
           node.status({ fill: 'green', shape: 'dot', text: url });
-          node.send(msg);
+          node.send({ payload: { isReady: true, url } });
           break;
       }
     }
@@ -127,15 +127,15 @@ module.exports = function (RED: any) {
         )
         .filter(isReady => isReady)
         .combineLatest(pdfTasks)
-        .debounce(1000)
+        .debounce(500)
         .do(async data => {
           const [, pdfTask] = data;
-          return await new Promise<void>((reject, resolve) =>
-            browser.webContents.printToPDF(pdfTask.options,(error, data) => {
+          return await new Promise((reject, resolve) =>
+            browser.webContents.printToPDF(pdfTask.options,(error, buffer) => {
               if (error) { reject(); }
               else {
-                pdfTask.msg.payload = data;
-                node.send(pdfTask.msg);
+                pdfTask.msg.payload = buffer;
+                node.send([,pdfTask.msg]);
                 resolve();
               }
             })
@@ -152,24 +152,18 @@ module.exports = function (RED: any) {
       if (msg.payload.url){
         loadURL(msg.payload.url);
       }
-      switch (config.action) {
-        case 'printToPDF':
-          pdfTasks.onNext({
-            msg,
-            options: {
-              marginsType: config.marginsType,
-              pageSize: config.pageSize,
-              printBackground: config.printBackground,
-              printSelectionOnly: config.printSelectionOnly,
-              landscape: config.landscape,
-            }
-          });
-          break;
-        default:
-          node.error(`unknown action ${config.action}`, msg);
-      }
+      pdfTasks.onNext({
+        msg,
+        options: {
+          marginsType: config.marginsType,
+          pageSize: config.pageSize,
+          printBackground: config.printBackground,
+          printSelectionOnly: config.printSelectionOnly,
+          landscape: config.landscape,
+        }
+      });
     });
   }
 
-  RED.nodes.registerType('electron-browser', Browser);
+  RED.nodes.registerType('electron-print-pdf', PrintPDF);
 };

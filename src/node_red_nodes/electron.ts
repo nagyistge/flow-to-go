@@ -1,4 +1,4 @@
-// import * as ipc from '../helpers/ipc';
+import { Observable, Subject, SerialDisposable } from 'rx';
 
 module.exports = function (RED: any) {
   const ipc = require('../../../../helpers/ipc');
@@ -65,7 +65,7 @@ module.exports = function (RED: any) {
       height: 768,
       show: config.show,
       autoHideMenuBar: true,
-      skipTaskbar: true,
+      skipTaskbar: false,
       closable: false,
       webPreferences: {
         nodeIntegration: config.nodeIntegration,
@@ -84,44 +84,89 @@ module.exports = function (RED: any) {
     RED.nodes.createNode(this, config);
     const node = this;
     const browser = RED.nodes.getNode(config.window).browser as Electron.BrowserWindow;
-    
-    browser.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
-      node.error(`Error ${errorCode}: ${errorDescription}`, { errorCode, errorDescription });
-    });
 
-    if (config.url) {
-      browser.loadURL(config.url);
+    const loadFailureStream = Observable
+      .fromEvent<{ event: Electron.Event, errorCode: number, errorDescription: string }>(browser.webContents, 'did-fail-load')
+
+    const loadFinishStream = Observable
+      .fromEvent(browser.webContents, 'did-finish-load');
+
+    const pdfTasks = new Subject<{ msg: any, options: Electron.PrintToPDFOptions }>();
+    function setStatus(status: string, url: string) {
+      const msg = { payload: { status, url } };
+      switch (status) {
+        case 'loading':
+          node.status({ fill: 'yellow', shape: 'ring', text: url });
+          node.send(msg);
+          break;
+        case 'error':
+          node.error(`Load failed ${url}`);
+          node.status({ fill: 'red', shape: 'dot', text: url });
+          break;
+        case 'ready':
+          node.status({ fill: 'green', shape: 'dot', text: url });
+          node.send(msg);
+          break;
+      }
     }
 
-    node.on('input', function (msg: any) {
+    const subscription = new SerialDisposable();
+
+    function loadURL(newUrl: string) {
+      subscription.setDisposable(Observable
+        .return(newUrl)
+        .filter(url => !!url === true)
+        .do(url => {
+          browser.webContents.loadURL(url);
+          setStatus('loading', url);
+        })
+        .flatMap(url => Observable.amb(
+          loadFailureStream.do(_ => setStatus('error', url)).map(_ => false),
+          loadFinishStream.do(_ => setStatus('ready', url)).map(_ => true)
+        ).first()
+        )
+        .filter(isReady => isReady)
+        .combineLatest(pdfTasks)
+        .debounce(1000)
+        .do(async data => {
+          const [, pdfTask] = data;
+          return await new Promise<void>((reject, resolve) =>
+            browser.webContents.printToPDF(pdfTask.options,(error, data) => {
+              if (error) { reject(); }
+              else {
+                pdfTask.msg.payload = data;
+                node.send(pdfTask.msg);
+                resolve();
+              }
+            })
+          );
+        })
+        .subscribe()
+      );
+    }
+
+    loadURL(config.url);
+
+    node.on('close', () => subscription.dispose());
+    node.on('input', async function (msg: any) {
+      if (msg.payload.url){
+        loadURL(msg.payload.url);
+      }
       switch (config.action) {
-        case 'loadURL':
-          if (!msg.payload.url) { node.error(`payload.url must not be empty`); }
-          else { browser.loadURL(msg.payload.url); }
-          break;
         case 'printToPDF':
-          const options = {
-            marginsType: config.marginsType,
-            pageSize: config.pageSize,
-            printBackground: config.printBackground,
-            printSelectionOnly: config.printSelectionOnly,
-            landscape: config.landscape,
-          };
-          browser.webContents.printToPDF(options, (error, buffer) => {
-            if (error) { node.error(error); }
-            else {
-              msg.payload = buffer;
-              node.send(msg);
+          pdfTasks.onNext({
+            msg,
+            options: {
+              marginsType: config.marginsType,
+              pageSize: config.pageSize,
+              printBackground: config.printBackground,
+              printSelectionOnly: config.printSelectionOnly,
+              landscape: config.landscape,
             }
           });
           break;
         default:
           node.error(`unknown action ${config.action}`, msg);
-      }
-
-      const payload = msg.payload;
-      if (payload.url) {
-        browser.loadURL(payload.url);
       }
     });
   }

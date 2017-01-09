@@ -13,6 +13,7 @@
     "@types/node": "^6.0.51",
     "@types/react": "^0.14.50",
     "@types/react-dom": "^0.14.19",
+    "@types/rx": "^4.1.1",
     "del": "^2.2.2",
     "devtron": "^1.4.0",
     "electron": "^1.4.13",
@@ -29,5 +30,6 @@
     "typescript": "^2.1.4",
     "typings": "^2.0.0",
     "vinyl-buffer": "^1.0.0"
-  }
+  },
+  "dependencies": {}
 }

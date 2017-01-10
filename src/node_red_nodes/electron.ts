@@ -59,22 +59,29 @@ module.exports = function (RED: any) {
 
     const { BrowserWindow } = require('electron');
 
-    this.browser = new BrowserWindow({
+    const node = this as { browser: Electron.BrowserWindow, on:any };
+    node.browser = new BrowserWindow({
       title: config.name,
-      width: 1024,
-      height: 768,
+      width: 800,
+      height: 600,
       show: config.show,
       autoHideMenuBar: true,
       skipTaskbar: false,
       closable: false,
       webPreferences: {
         nodeIntegration: config.nodeIntegration,
-      },
+        devTools: config.devtools && config.show,
+        webSecurity: true
+      }
     });
 
-    this.on('close', () => {
-      this.browser.destroy();
-      this.browser = null;
+    if (config.devtools && config.show) {
+      node.browser.webContents.openDevTools({ mode: 'bottom' });
+    }
+
+    node.on('close', () => {
+      node.browser.destroy();
+      node.browser = null;
     });
   }
   RED.nodes.registerType('electron-browser-window', BrowserWindow);

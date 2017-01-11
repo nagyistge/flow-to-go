@@ -99,7 +99,6 @@ module.exports = function (RED: any) {
     const loadFinishStream = Observable
       .fromEvent(browser.webContents, 'did-finish-load');
 
-    const pdfTasks = new Subject<{ msg: any, options: Electron.PrintToPDFOptions }>();
     function setStatus(status: string, url: string) {
       switch (status) {
         case 'loading':
@@ -116,7 +115,7 @@ module.exports = function (RED: any) {
           break;
       }
     }
-
+    const pdfTasks = new Subject<any>();
     const subscription = new SerialDisposable();
 
     function loadURL(newUrl: string) {

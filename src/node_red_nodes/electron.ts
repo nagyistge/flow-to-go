@@ -155,8 +155,8 @@ module.exports = function (RED: any) {
 
     node.on('close', () => subscription.dispose());
     node.on('input', async function (msg: any) {
-      if (msg.payload.url){
-        loadURL(msg.payload.url);
+      if (msg.url){
+        loadURL(msg.url);
       }
       pdfTasks.onNext({
         msg,

@@ -4,12 +4,33 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Main Process (Debug)",
+      "name": "Main Process (Debug-darwin)",
       "program": "${workspaceRoot}/src/main.ts",
       "stopOnEntry": false,
       "cwd": "${workspaceRoot}/dist/build",
       "preLaunchTask": "build:debug",
       "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "runtimeArgs": [
+        "${workspaceRoot}/dist/build/main.js",
+        "--enable-logging"
+      ],
+      "env": {
+      },
+      "console": "internalConsole",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceRoot}/dist/build/**/*.js"
+      ]
+    },
+     {
+      "type": "node",
+      "request": "launch",
+      "name": "Main Process (Debug-win)",
+      "program": "${workspaceRoot}/src/main.ts",
+      "stopOnEntry": false,
+      "cwd": "${workspaceRoot}/dist/build",
+      "preLaunchTask": "build:debug",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
       "runtimeArgs": [
         "${workspaceRoot}/dist/build/main.js",
         "--enable-logging"

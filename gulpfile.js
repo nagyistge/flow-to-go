@@ -52,7 +52,8 @@ gulp.task('start:release', ['release'], function () {
 gulp.task('build:debug', function() {
   preprocessContext.DEBUG = true;
   gutil.log(gutil.colors.yellow('DEBUG BUILD') );
-  return gulp.tasks.build.fn();
+  // return gulp.tasks.build.fn();
+  return gulp.start('build');
 });
 
 gulp.task('build', ['clean:build'], function () {

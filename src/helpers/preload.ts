@@ -3,14 +3,14 @@
 (function () {
   'use strict';
   document.addEventListener('click', event => {
-    // console.debug('webview-helper onclick');
+    // console.info('webview-helper onclick');
     const checkDomElement = function (element: Element) {
       let anchor: HTMLAnchorElement;
       if (element.nodeName === 'A') {
         anchor = <HTMLAnchorElement>element;
         if (anchor.href.endsWith('#')) { return; }
         // @if DEBUG
-        console.debug(`anchor clicked: ${anchor}`);
+        console.info(`anchor clicked: ${anchor}`);
         // @endif
         event.preventDefault();
         openUrl(anchor.href);

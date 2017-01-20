@@ -19,7 +19,7 @@ export default class Webview extends React.Component<WebviewProps, {}> {
     const message = `Webview: ${event.message} [${event.sourceId} line: ${event.line}]`;
     switch (event.level) {
        case -1:
-        console.debug(message);
+        console.info(message);
         return;
       case 1:
         console.warn(message);
@@ -34,8 +34,8 @@ export default class Webview extends React.Component<WebviewProps, {}> {
   }
 
   handleNewWindow = (event: Electron.WebViewElement.NewWindowEvent) => openUrl(event.url);
-  handleStartLoading = () => console.debug('Webview: did-start-loading');
-  handleStopLoading = () => console.debug('Webview: did-stop-loading');
+  handleStartLoading = () => console.info('Webview: did-start-loading');
+  handleStopLoading = () => console.info('Webview: did-stop-loading');
 
   componentDidMount() {
     const node = ReactDOM.findDOMNode(this) as Electron.WebViewElement;

@@ -1,11 +1,15 @@
 ﻿import { parse } from 'url';
 const { BrowserWindow, shell } = require('electron').remote;
 
-export function openUrl(href: string): void {
+export function openUrl(href: string): boolean {
   const url = parse(href) as URL;
-// @if DEBUG
+  if (url.hash) {
+    return false;
+  }
+  // @if DEBUG
   console.info(`openUrl: ${JSON.stringify(url)}`);
-// @endif
+  // @endif
+
   switch (url.hostname) {
     case 'localhost':
       let win = new BrowserWindow({
@@ -28,4 +32,5 @@ export function openUrl(href: string): void {
     default:
       shell.openExternal(url.href);
   }
+  return true;
 }

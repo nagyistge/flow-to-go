@@ -8,12 +8,12 @@
       let anchor: HTMLAnchorElement;
       if (element.nodeName === 'A') {
         anchor = <HTMLAnchorElement>element;
-        if (anchor.href.endsWith('#')) { return; }
         // @if DEBUG
         console.info(`anchor clicked: ${anchor}`);
         // @endif
-        event.preventDefault();
-        openUrl(anchor.href);
+        if (openUrl(anchor.href)) {
+          event.preventDefault();
+        }
       } else if (element.parentElement) {
         checkDomElement(element.parentElement);
       }

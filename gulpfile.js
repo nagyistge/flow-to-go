@@ -57,7 +57,7 @@ gulp.task('build:debug', function() {
   return gulp.start('build');
 });
 
-gulp.task('build', ['clean:build', 'license-info'], function () {
+gulp.task('build', ['clean:build'], function () {
   gutil.log(gutil.colors.yellow(`electron: ${electronVersion}`));
   // build & copy application
   const copy_app = gulp.src([
@@ -107,7 +107,7 @@ gulp.task('build', ['clean:build', 'license-info'], function () {
   return merge([copy_app, copy_nodes, transpile_app, transpile_nodes]);
 });
 
-gulp.task('release', ['build', 'clean:release'], function () {
+gulp.task('release', ['build', 'clean:release', 'license-info'], function () {
   return gulp.src('')
     .pipe(plumber())
     .pipe(electron({

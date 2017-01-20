@@ -7,7 +7,7 @@ export function openUrl(href: string): boolean {
     return false;
   }
   // @if DEBUG
-  console.info(`openUrl: ${JSON.stringify(url)}`);
+  console.info(`openUrl: ${url.href}`);
   // @endif
 
   switch (url.hostname) {

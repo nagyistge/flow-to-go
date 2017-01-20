@@ -12,26 +12,28 @@ const spawn = require('child_process').spawn;
 const platform = require('os').platform();
 const path = require('path');
 const packageMetadata = require('./package.json');
+const licenseFinder = require('nlf');
+const fs = require('fs');
 
 const electronVersion = `v${/\d+.\d+.\d+/g.exec(packageMetadata.devDependencies.electron)}`;
 
-const dirOutput = './dist'
-const dirRelease = `${dirOutput}/release`
-const dirBuild = `${dirOutput}/build`
-const dirBuildNodes = `${dirBuild}/node_modules/node-red/nodes/custom`
-const dirSource = './src'
-const dirSourceNodes = `${dirSource}/node_red_nodes`
+const dirOutput = path.join(__dirname, 'dist');
+const dirLicense = `${dirOutput}/license`;
+const dirRelease = `${dirOutput}/release`;
+const dirBuild = `${dirOutput}/build`;
+const dirBuildNodes = `${dirBuild}/node_modules/node-red/nodes/custom`;
+const dirSource = path.join(__dirname, 'src');
+const dirSourceNodes = `${dirSource}/node_red_nodes`;
 
 const app = getAppPath(platform);
 const preprocessContext = { DEBUG: false };
+const licenseOptions = { directory: dirSource, production: true, depth: 0, summaryMode: 'detail' };
 
-gulp.task('clean:release', function () {
-  return del([dirRelease]);
-});
+if (!fs.existsSync(dirOutput)) { fs.mkdirSync(dirOutput); }
 
-gulp.task('clean:build', function () {
-  return del([dirBuild]);
-});
+gulp.task('clean:release', () => del([dirRelease]).then(() => fs.mkdirSync(dirRelease)));
+gulp.task('clean:build', () => del([dirBuild]).then(() => fs.mkdirSync(dirBuild)))
+gulp.task('clean:license', () => del([dirLicense]).then(() => fs.mkdirSync(dirLicense)))
 
 gulp.task('start:debug', ['build:debug'], function () {
   const app = `${dirBuild}/main.js`
@@ -52,11 +54,10 @@ gulp.task('start:release', ['release'], function () {
 gulp.task('build:debug', function() {
   preprocessContext.DEBUG = true;
   gutil.log(gutil.colors.yellow('DEBUG BUILD') );
-  // return gulp.tasks.build.fn();
   return gulp.start('build');
 });
 
-gulp.task('build', ['clean:build'], function () {
+gulp.task('build', ['clean:build', 'license-info'], function () {
   gutil.log(gutil.colors.yellow(`electron: ${electronVersion}`));
   // build & copy application
   const copy_app = gulp.src([
@@ -118,8 +119,7 @@ gulp.task('release', ['build', 'clean:release'], function () {
       packaging: false,
       asar: true,
       platforms: [`${platform}-x64`]
-    }))
-    .pipe(gulp.dest(''));
+    }));
 });
 
 function getAppPath(platform) {
@@ -128,3 +128,20 @@ function getAppPath(platform) {
     case 'win32': return `${dirRelease}/${electronVersion}/win32-x64/red-to-go.exe`;
   }
 }
+
+gulp.task('license-info', ['clean:license'], callback => {
+  const filename = path.join(dirLicense, 'license-info.txt');
+  
+  licenseFinder.find(licenseOptions, (err, data) => {
+    if (err) { throw new gutil.PluginError('licenseFinder', err, { showStack: true }) };
+    
+    licenseFinder.standardFormatter.render(data, licenseOptions, (err, output) => {
+      if (err) { throw new gutil.PluginError('licenseFinder', err, { showStack: true }) };
+      
+      fs.writeFile(filename, output, err => {
+        if (err) { throw new gutil.PluginError('licenseFinder', err, { showStack: true }) };
+        callback();
+      })
+    });
+  });
+})

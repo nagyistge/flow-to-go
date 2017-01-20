@@ -186,7 +186,7 @@ any-promise@^1.0.0, any-promise@^1.1.0, any-promise@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/any-promise/-/any-promise-1.3.0.tgz#abc6afeedcea52e809cdc0376aed3ce39635d17f"
 
-archy@^1.0.0:
+archy@1.0.0, archy@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/archy/-/archy-1.0.0.tgz#f9c8c13757cc1dd7bc379ac77b2c62a5c2868c40"
 
@@ -229,6 +229,10 @@ array-unique@^0.2.1:
 arrify@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
+
+asap@^2.0.0:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.5.tgz#522765b50c3510490e52d7dcfe085ef9ba96958f"
 
 asar@^0.10.0:
   version "0.10.0"
@@ -526,7 +530,7 @@ combined-stream@~0.0.4, combined-stream@~0.0.5:
   dependencies:
     delayed-stream "0.0.5"
 
-commander@^2.8.1, commander@^2.9.0:
+commander@2.9.0, commander@^2.8.1, commander@^2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -535,6 +539,10 @@ commander@^2.8.1, commander@^2.9.0:
 compare-version@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/compare-version/-/compare-version-0.1.2.tgz#0162ec2d9351f5ddd59a9202cba935366a725080"
+
+compare-versions@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-2.0.2.tgz#27690cc49e35d782f7d1fb6edb9ee6432d3bfc8d"
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -633,6 +641,10 @@ debug@2, debug@2.X, debug@^2.1.3, debug@^2.2.0, debug@^2.3.2:
   dependencies:
     ms "0.7.2"
 
+debuglog@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/debuglog/-/debuglog-1.0.1.tgz#aa24ffb9ac3df9a2351837cfb2d279360cd78492"
+
 decamelize@^1.1.2:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -716,6 +728,13 @@ devtron@^1.4.0:
     accessibility-developer-tools "^2.11.0"
     highlight.js "^9.3.0"
     humanize-plus "^1.8.1"
+
+dezalgo@^1.0.0:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/dezalgo/-/dezalgo-1.0.3.tgz#7f742de066fc748bc8db820569dddce49bf0d456"
+  dependencies:
+    asap "^2.0.0"
+    wrappy "1"
 
 diff@^3.0.1:
   version "3.2.0"
@@ -1087,6 +1106,13 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+"glob-all@3.1.0  ":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/glob-all/-/glob-all-3.1.0.tgz#8913ddfb5ee1ac7812656241b03d5217c64b02ab"
+  dependencies:
+    glob "^7.0.5"
+    yargs "~1.2.6"
+
 glob-base@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/glob-base/-/glob-base-0.3.0.tgz#dbb164f6221b1c0b1ccf82aea328b497df0ea3c4"
@@ -1162,7 +1188,7 @@ glob@^5.0.3, glob@~5.0.0:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^6.0.1, glob@^6.0.4:
+glob@^6.0.0, glob@^6.0.1, glob@^6.0.4:
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/glob/-/glob-6.0.4.tgz#0f08860f6a155127b2fadd4f9ce24b1aab6e4d22"
   dependencies:
@@ -1757,6 +1783,10 @@ isstream@~0.1.1, isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
+jju@^1.1.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/jju/-/jju-1.3.0.tgz#dadd9ef01924bc728b03f2f7979bdbd62f7a2aaa"
+
 jodid25519@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/jodid25519/-/jodid25519-1.0.2.tgz#06d4912255093419477d425633606e0e90782967"
@@ -1774,6 +1804,12 @@ js-tokens@^3.0.0:
 jsbn@~0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.0.tgz#650987da0dd74f4ebf5a11377a2aa2d273e97dfd"
+
+json-parse-helpfulerror@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/json-parse-helpfulerror/-/json-parse-helpfulerror-1.0.3.tgz#13f14ce02eed4e981297b64eb9e3b932e2dd13dc"
+  dependencies:
+    jju "^1.1.0"
 
 json-schema@0.2.3:
   version "0.2.3"
@@ -2168,6 +2204,10 @@ minimist@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
 
+minimist@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.1.0.tgz#99df657a52574c21c9057497df742790b2b4c0de"
+
 minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
@@ -2234,6 +2274,16 @@ ncp@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
 
+nlf@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/nlf/-/nlf-1.4.2.tgz#f341cc4e061f1e8386aa1553736dc29036868e8e"
+  dependencies:
+    archy "1.0.0"
+    commander "2.9.0"
+    compare-versions "2.0.2"
+    glob-all "3.1.0  "
+    read-installed "4.0.3"
+
 node-status-codes@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-status-codes/-/node-status-codes-1.0.0.tgz#5ae5541d024645d32a58fcddc9ceecea7ae3ac2f"
@@ -2254,7 +2304,7 @@ nopt@~1.0.10:
   dependencies:
     abbrev "1"
 
-normalize-package-data@^2.3.2, normalize-package-data@^2.3.4:
+normalize-package-data@^2.0.0, normalize-package-data@^2.3.2, normalize-package-data@^2.3.4:
   version "2.3.5"
   resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-2.3.5.tgz#8d924f142960e1777e7ffe170543631cc7cb02df"
   dependencies:
@@ -2628,6 +2678,29 @@ read-all-stream@^3.0.0:
     pinkie-promise "^2.0.0"
     readable-stream "^2.0.0"
 
+read-installed@4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/read-installed/-/read-installed-4.0.3.tgz#ff9b8b67f187d1e4c29b9feb31f6b223acd19067"
+  dependencies:
+    debuglog "^1.0.1"
+    read-package-json "^2.0.0"
+    readdir-scoped-modules "^1.0.0"
+    semver "2 || 3 || 4 || 5"
+    slide "~1.1.3"
+    util-extend "^1.0.1"
+  optionalDependencies:
+    graceful-fs "^4.1.2"
+
+read-package-json@^2.0.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/read-package-json/-/read-package-json-2.0.4.tgz#61ed1b2256ea438d8008895090be84b8e799c853"
+  dependencies:
+    glob "^6.0.0"
+    json-parse-helpfulerror "^1.0.2"
+    normalize-package-data "^2.0.0"
+  optionalDependencies:
+    graceful-fs "^4.1.2"
+
 read-pkg-up@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/read-pkg-up/-/read-pkg-up-1.0.1.tgz#9d63c13276c065918d57f002a57f40a1b643fb02"
@@ -2698,6 +2771,15 @@ readable-stream@~2.0.0:
     process-nextick-args "~1.0.6"
     string_decoder "~0.10.x"
     util-deprecate "~1.0.1"
+
+readdir-scoped-modules@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/readdir-scoped-modules/-/readdir-scoped-modules-1.0.2.tgz#9fafa37d286be5d92cbaebdee030dc9b5f406747"
+  dependencies:
+    debuglog "^1.0.1"
+    dezalgo "^1.0.0"
+    graceful-fs "^4.1.2"
+    once "^1.3.0"
 
 rechoir@^0.6.2:
   version "0.6.2"
@@ -2909,7 +2991,7 @@ slice-ansi@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-0.0.4.tgz#edbf8903f66f7ce2f8eafd6ceed65e264c831b35"
 
-slide@^1.1.5:
+slide@^1.1.5, slide@~1.1.3:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
 
@@ -3331,6 +3413,10 @@ util-deprecate@1.0.2, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
 
+util-extend@^1.0.1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/util-extend/-/util-extend-1.0.3.tgz#a7c216d267545169637b3b6edc6ca9119e2ff93f"
+
 uuid@^2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
@@ -3498,6 +3584,12 @@ xtend@~2.1.1:
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-2.1.2.tgz#6efecc2a4dad8e6962c4901b337ce7ba87b5d28b"
   dependencies:
     object-keys "~0.4.0"
+
+yargs@~1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-1.2.6.tgz#9c7b4a82fd5d595b2bf17ab6dcc43135432fe34b"
+  dependencies:
+    minimist "^0.1.0"
 
 yauzl@2.4.1:
   version "2.4.1"

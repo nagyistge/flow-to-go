@@ -15,10 +15,27 @@ export default class Webview extends React.Component<WebviewProps, {}> {
     });
   }
 
-  handleConsoleMessage = (event: Electron.WebViewElement.ConsoleMessageEvent) => console.log(`Webview: ${JSON.stringify(event)}`);
+  handleConsoleMessage = (event: Electron.WebViewElement.ConsoleMessageEvent) => {
+    const message = `Webview: ${event.message} [${event.sourceId} line: ${event.line}]`;
+    switch (event.level) {
+       case -1:
+        console.debug(message);
+        return;
+      case 1:
+        console.warn(message);
+        return;
+      case 2:
+        console.error(message);
+        return;
+      default:
+        console.log(message);
+        return;
+    }
+  }
+
   handleNewWindow = (event: Electron.WebViewElement.NewWindowEvent) => openUrl(event.url);
-  handleStartLoading = () => console.log('Webview: did-start-loading');
-  handleStopLoading = () => console.log('Webview: did-stop-loading');
+  handleStartLoading = () => console.debug('Webview: did-start-loading');
+  handleStopLoading = () => console.debug('Webview: did-stop-loading');
 
   componentDidMount() {
     const node = ReactDOM.findDOMNode(this) as Electron.WebViewElement;

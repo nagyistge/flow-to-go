@@ -4,7 +4,7 @@ const { BrowserWindow, shell } = require('electron').remote;
 export function openUrl(href: string): void {
   const url = parse(href) as URL;
 // @if DEBUG
-  console.log(`openUrl: ${JSON.stringify(url)}`);
+  console.debug(`openUrl: ${JSON.stringify(url)}`);
 // @endif
   switch (url.hostname) {
     case 'localhost':

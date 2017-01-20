@@ -94,7 +94,7 @@ module.exports = function (RED: any) {
     const browser = RED.nodes.getNode(config.window).browser as Electron.BrowserWindow;
 
     const loadFailureStream = Observable
-      .fromEvent<{ event: Electron.Event, errorCode: number, errorDescription: string }>(browser.webContents, 'did-fail-load')
+      .fromEvent<{ event: Electron.Event, errorCode: number, errorDescription: string }>(browser.webContents, 'did-fail-load');
 
     const loadFinishStream = Observable
       .fromEvent(browser.webContents, 'did-finish-load');

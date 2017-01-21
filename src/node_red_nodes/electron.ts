@@ -1,4 +1,5 @@
 import { Observable, Subject, SerialDisposable } from 'rx';
+import * as uuid from 'uuid';
 
 module.exports = function (RED: any) {
   const ipc = require('../../../../helpers/ipc');
@@ -68,10 +69,12 @@ module.exports = function (RED: any) {
       autoHideMenuBar: true,
       skipTaskbar: false,
       closable: false,
+      enableLargerThanScreen: true,
       webPreferences: {
         nodeIntegration: config.nodeIntegration,
         devTools: config.devtools && config.show,
-        webSecurity: true
+        webSecurity: true,
+        partition: uuid.v1()
       }
     });
 
@@ -92,9 +95,13 @@ module.exports = function (RED: any) {
     const node = this;
     node.status({});
     const browser = RED.nodes.getNode(config.window).browser as Electron.BrowserWindow;
-
     const loadFailureStream = Observable
-      .fromEvent<{ event: Electron.Event, errorCode: number, errorDescription: string }>(browser.webContents, 'did-fail-load');
+      .fromEventPattern(
+        h => browser.webContents.addListener('did-fail-load', h),
+        h => browser.webContents.addListener('did-fail-load', h),
+        (event: Electron.Event, errorCode: number, errorDescription: string) => { return { errorCode, errorDescription }; }
+      )
+      .filter(failure => failure.errorCode !== -3);
 
     const loadFinishStream = Observable
       .fromEvent(browser.webContents, 'did-finish-load');

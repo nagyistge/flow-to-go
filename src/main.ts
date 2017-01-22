@@ -1,12 +1,10 @@
+require('fix-path')();
+
 import * as path from 'path';
 import * as nodeRed from './main_process/node_red';
 import * as ApplicationMenu from './main_process/application_menu';
 import * as ipc from './helpers/ipc';
-
-const { app, shell, Menu, BrowserWindow } = require('electron');
-const fixPath = require('fix-path');
-fixPath();
-
+import { app, shell, Menu, BrowserWindow } from 'electron';
 
 app.once('ready', async () => {
   const defaultSettings = nodeRed.getDefaultSettings();

@@ -17,7 +17,7 @@
     "@types/uuid": "^2.0.29",
     "del": "^2.2.2",
     "devtron": "^1.4.0",
-    "electron": "^1.4.14",
+    "electron": "^1.4.15",
     "electron-packager": "^8.5.0",
     "gulp": "^3.9.1",
     "gulp-electron": "^0.1.3",

@@ -1,7 +1,12 @@
 {
   "name": "red-to-go",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
+  "license": "MIT",
   "main": "main.js",
+  "homepage": "https://shortsn.github.io/red-to-go/",
+  "bugs": {
+    "url": "https://github.com/shortsn/red-to-go/issues"
+  },
   "dependencies": {
     "express": "^4.14.0",
     "fix-path": "^2.1.0",

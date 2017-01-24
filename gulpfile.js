@@ -1,6 +1,6 @@
 ﻿const gulp = require('gulp');
 const gutil = require('gulp-util');
-const electron = require('gulp-electron');
+const packager = require('electron-packager')
 const del = require('del');
 const tsc = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
@@ -9,13 +9,9 @@ const preprocess = require('gulp-preprocess');
 const buffer = require('vinyl-buffer');
 const merge = require('merge2');
 const spawn = require('child_process').spawn;
-const platform = require('os').platform();
 const path = require('path');
-const packageMetadata = require('./package.json');
 const licenseFinder = require('nlf');
 const fs = require('fs');
-
-const electronVersion = `v${/\d+.\d+.\d+/g.exec(packageMetadata.devDependencies.electron)}`;
 
 const dirOutput = path.join(__dirname, 'dist');
 const dirLicense = `${dirOutput}/license`;
@@ -25,7 +21,6 @@ const dirBuildNodes = `${dirBuild}/node_modules/node-red/nodes/custom`;
 const dirSource = path.join(__dirname, 'src');
 const dirSourceNodes = `${dirSource}/node_red_nodes`;
 
-const app = getAppPath(platform);
 const preprocessContext = { DEBUG: false };
 const licenseOptions = { directory: dirSource, production: true, depth: 0, summaryMode: 'detail' };
 
@@ -45,6 +40,13 @@ gulp.task('start:debug', ['build:debug'], function () {
 });
 
 gulp.task('start:release', ['release'], function () {
+  const packageJson = require(path.join(dirSource, 'package.json'));
+  const platform = require('os').platform()
+
+  const app = (platform === 'darwin')
+    ? `${dirRelease}/${packageJson.name}-${platform}-x64/${packageJson.name}.app/Contents/MacOS/${packageJson.name}`
+    : `${dirRelease}/${packageJson.name}-${platform}-x64/${packageJson.name}/red-to-go.exe`;
+
   gutil.log(gutil.colors.yellow(`starting release: ${app}`));
   const proc = spawn(app);
   proc.stdout.pipe(process.stdout)
@@ -58,7 +60,6 @@ gulp.task('build:debug', function() {
 });
 
 gulp.task('build', ['clean:build'], function () {
-  gutil.log(gutil.colors.yellow(`electron: ${electronVersion}`));
   // build & copy application
   const copy_app = gulp.src([
     `${dirSource}/node_modules/**/*.*`,
@@ -107,27 +108,21 @@ gulp.task('build', ['clean:build'], function () {
   return merge([copy_app, copy_nodes, transpile_app, transpile_nodes]);
 });
 
-gulp.task('release', ['build', 'clean:release', 'license-info'], function () {
-  return gulp.src('')
-    .pipe(plumber())
-    .pipe(electron({
-      src: dirBuild,
-      packageJson: require(`${dirBuild}/package.json`),
-      release: dirRelease,
-      cache: './cache',
-      version: electronVersion,
-      packaging: false,
-      asar: true,
-      platforms: [`${platform}-x64`]
-    }));
+gulp.task('release', ['build', 'clean:release', 'license-info'], done => {
+  packager({
+    dir: dirBuild,
+    prune: true,
+    cache: './cache',
+    arch: 'x64',
+    asar: true,
+    out: dirRelease
+  }, (err, appPaths) => {
+    if (err) {
+      throw new gutil.PluginError('electron-packager', err, { showStack: false })
+    }
+    done();
+  });
 });
-
-function getAppPath(platform) {
-  switch (platform) {
-    case 'darwin': return `${dirRelease}/${electronVersion}/darwin-x64/red-to-go.app/Contents/MacOS/Electron`;
-    case 'win32': return `${dirRelease}/${electronVersion}/win32-x64/red-to-go.exe`;
-  }
-}
 
 gulp.task('license-info', ['clean:license'], callback => {
   const filename = path.join(dirLicense, 'license-info.txt');

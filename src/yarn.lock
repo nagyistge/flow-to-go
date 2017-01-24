@@ -1642,10 +1642,6 @@ node-pre-gyp@0.6.32:
     tar "~2.2.1"
     tar-pack "~3.3.0"
 
-node-red-contrib-traffic@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/node-red-contrib-traffic/-/node-red-contrib-traffic-0.2.1.tgz#37d9a9fc852af5413d0ea093cc46bb9a8225e7ee"
-
 node-red-dashboard@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/node-red-dashboard/-/node-red-dashboard-2.2.1.tgz#8fae8e66a48c1017e625d74ec1739a8f440f2979"

@@ -45,7 +45,7 @@ gulp.task('start:release', ['release'], function () {
 
   const app = (platform === 'darwin')
     ? `${dirRelease}/${packageJson.name}-${platform}-x64/${packageJson.name}.app/Contents/MacOS/${packageJson.name}`
-    : `${dirRelease}/${packageJson.name}-${platform}-x64/${packageJson.name}/red-to-go.exe`;
+    : `${dirRelease}/${packageJson.name}-${platform}-x64/red-to-go.exe`;
 
   gutil.log(gutil.colors.yellow(`starting release: ${app}`));
   const proc = spawn(app);

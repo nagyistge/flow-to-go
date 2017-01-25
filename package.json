@@ -2,7 +2,7 @@
   "name": "build",
   "version": "0.0.0",
   "scripts": {
-    "restore": "git clean -xdf -e cache && yarn && cd src && yarn --ignore-optional && cd ..",
+    "restore": "yarn && cd src && yarn --ignore-optional && cd ..",
     "debug": "gulp start:debug",
     "release": "gulp release",
     "start": "gulp start:release"

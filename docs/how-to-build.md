@@ -1,4 +1,4 @@
-﻿# How to Build the Project?
+﻿## How to Build the Project?
 
 ## Prepare your System
 
@@ -23,3 +23,10 @@ $ yarn restore
 1. The *root folder* contains a `package.json` for development dependencies (gulp, typings...)
 2. The *src folder* contains the application and a `package.json` for all bundled dependencies
 
+## When should I use which Gulp-Task ?
+
+- `build:debug` - transpile, copy files and **keep debug outputs**
+- `build` - transpile, copy files and **remove debug outputs**
+- `start:debug` - build with debug output and start `main.js`
+- `release` - transpile, copy files, remove debug outputs, collect license info and build electron app
+- `start release` - build and start the electron app

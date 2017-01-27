@@ -1,4 +1,4 @@
-![icon](./../app.png = 100x)
+<img src="https://github.com/shortsn/red-to-go/blob/master/app.png" width="100">
 ================================
 
 ## Features

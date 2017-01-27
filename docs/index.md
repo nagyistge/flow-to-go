@@ -1,4 +1,5 @@
-<img src="https://github.com/shortsn/red-to-go/blob/master/app.png" width="100">
+red-to-go
+================================
 
 ## Features
 - embedded [NodeRED](https://github.com/node-red/node-red)

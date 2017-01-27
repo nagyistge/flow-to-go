@@ -115,6 +115,7 @@ gulp.task('release', ['build', 'clean:release', 'license-info'], done => {
     cache: './cache',
     arch: 'x64',
     asar: true,
+    icon: './app',
     out: dirRelease
   }, (err, appPaths) => {
     if (err) {

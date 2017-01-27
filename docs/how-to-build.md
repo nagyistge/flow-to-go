@@ -1,4 +1,6 @@
-﻿Follow these instructions to build the Project on your own.
+﻿[back](index)
+
+Follow these instructions to build the Project on your own.
 
 ## Prepare your System
 
@@ -30,3 +32,5 @@ $ yarn restore
 - `start:debug` - build with debug output and start `main.js`
 - `release` - transpile, copy files, remove debug outputs, collect license info and build electron app
 - `start release` - build and start the electron app
+
+[back](index)

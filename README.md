@@ -1,4 +1,8 @@
-# red-to-go
+![icon](app.png = 100x)
+
+red-to-go
+================================
+
 
 nodeRED + electron + awesome = red-to-go
 

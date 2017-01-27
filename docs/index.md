@@ -1,4 +1,5 @@
-![icon](../app.png = 100x)
+![icon](./../app.png = 100x)
+================================
 
 ## Features
 - embedded [NodeRED](https://github.com/node-red/node-red)
@@ -10,4 +11,6 @@
 - **online status** - handle [online/offline Events](http://electron.atom.io/docs/tutorial/online-offline-events/) from Electron in Flows
 - **print pdf** - PDF-Automation using [Electron's PDF-Features](http://electron.atom.io/docs/api/web-contents/)
 
-## [How to build the Source](how-to-build)
+## Doc
+
+- [How to build the Source](how-to-build)

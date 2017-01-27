@@ -1,4 +1,7 @@
-﻿[back](index)
+﻿How to build?
+================================
+
+[back](index)
 
 Follow these instructions to build the Project on your own.
 

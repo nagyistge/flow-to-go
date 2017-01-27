@@ -1,4 +1,4 @@
-﻿## How to Build the Project?
+﻿Follow these instructions to build the Project on your own.
 
 ## Prepare your System
 

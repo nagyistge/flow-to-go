@@ -13,7 +13,7 @@ Follow these instructions to build the Project on your own.
 
 ## Checkout the Code
 ```bash
-$ git clone https://github.com/shortsn/red-to-go.git
+$ git clone https://github.com/shortsn/flow-to-go.git
 ```
 
 ## Restore Packages

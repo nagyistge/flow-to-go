@@ -1,10 +1,10 @@
-<img src="https://github.com/shortsn/red-to-go/blob/master/app.png" width="100">
+<img src="https://github.com/shortsn/flow-to-go/blob/master/app.png" width="100">
 
-[red-to-go](https://shortsn.github.io/red-to-go)
+[flow-to-go](https://shortsn.github.io/flow-to-go)
 ================================
 
 
-nodeRED + electron + awesome = red-to-go
+nodeRED + electron + awesome = flow-to-go
 
 - [x] app - bundle [NodeRED](https://github.com/node-red/node-red) with [Electron](https://github.com/electron/electron)
 - [ ] app - custom theme

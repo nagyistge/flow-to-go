@@ -1,6 +1,4 @@
-flow-to-go
-================================
-
+ 
 ## Features
 - embedded [NodeRED](https://github.com/node-red/node-red)
 - embedded [node-red-dashboard](https://github.com/node-red/node-red-dashboard)

@@ -109,12 +109,17 @@ gulp.task('build', ['clean:build'], function () {
 });
 
 gulp.task('release', ['build', 'clean:release', 'license-info'], done => {
+  
+  const devPackageJson = require('./package.json');
+  const electronVersion = `${/\d+.\d+.\d+/g.exec(devPackageJson.devDependencies.electron)}`;
+
   packager({
     dir: dirBuild,
     prune: true,
     cache: './cache',
     arch: 'x64',
     asar: true,
+    electronVersion,
     icon: './app',
     out: dirRelease
   }, (err, appPaths) => {

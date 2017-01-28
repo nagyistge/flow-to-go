@@ -2,7 +2,7 @@
   "name": "build",
   "version": "0.0.0",
   "scripts": {
-    "restore": "yarn && cd src && yarn --ignore-optional && cd ..",
+    "restore": "yarn && cd src && yarn --ignore-optional --production && cd ..",
     "debug": "gulp start:debug",
     "release": "gulp release",
     "start": "gulp start:release"

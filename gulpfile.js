@@ -1,17 +1,15 @@
 ﻿const gulp = require('gulp');
 const gutil = require('gulp-util');
 const packager = require('electron-packager')
-const del = require('del');
 const tsc = require('gulp-typescript');
 const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
 const preprocess = require('gulp-preprocess');
 const buffer = require('vinyl-buffer');
 const merge = require('merge2');
-const spawn = require('child_process').spawn;
+const { spawn, exec } = require('child_process');
 const path = require('path');
-const licenseFinder = require('nlf');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 const dirOutput = path.join(__dirname, 'dist');
 const dirLicense = `${dirOutput}/license`;
@@ -24,11 +22,11 @@ const dirSourceNodes = `${dirSource}/node_red_nodes`;
 const preprocessContext = { DEBUG: false };
 const licenseOptions = { directory: dirSource, production: true, depth: 0, summaryMode: 'detail' };
 
-if (!fs.existsSync(dirOutput)) { fs.mkdirSync(dirOutput); }
+fs.ensureDirSync(dirOutput);
 
-gulp.task('clean:release', () => del([dirRelease]).then(() => fs.mkdirSync(dirRelease)));
-gulp.task('clean:build', () => del([dirBuild]).then(() => fs.mkdirSync(dirBuild)))
-gulp.task('clean:license', () => del([dirLicense]).then(() => fs.mkdirSync(dirLicense)))
+gulp.task('clean:release', () => fs.emptyDirSync(dirRelease));
+gulp.task('clean:build', () => fs.emptyDirSync(dirBuild));
+gulp.task('clean:license', () => fs.emptyDirSync(dirLicense));
 
 gulp.task('start:debug', ['build:debug'], function () {
   const app = `${dirBuild}/main.js`
@@ -109,7 +107,6 @@ gulp.task('build', ['clean:build'], function () {
 });
 
 gulp.task('release', ['build', 'clean:release', 'license-info'], done => {
-  
   const devPackageJson = require('./package.json');
   const electronVersion = `${/\d+.\d+.\d+/g.exec(devPackageJson.devDependencies.electron)}`;
 
@@ -126,23 +123,18 @@ gulp.task('release', ['build', 'clean:release', 'license-info'], done => {
     if (err) {
       throw new gutil.PluginError('electron-packager', err, { showStack: false })
     }
+    appPaths.forEach(appPath => {
+      fs.copySync(dirLicense, appPath);
+    });
     done();
   });
 });
 
 gulp.task('license-info', ['clean:license'], callback => {
-  const filename = path.join(dirLicense, 'license-info.txt');
-  
-  licenseFinder.find(licenseOptions, (err, data) => {
-    if (err) { throw new gutil.PluginError('licenseFinder', err, { showStack: true }) };
-    
-    licenseFinder.standardFormatter.render(data, licenseOptions, (err, output) => {
-      if (err) { throw new gutil.PluginError('licenseFinder', err, { showStack: true }) };
-      
-      fs.writeFile(filename, output, err => {
-        if (err) { throw new gutil.PluginError('licenseFinder', err, { showStack: true }) };
-        callback();
-      })
-    });
+  const filename = path.join(dirLicense, 'LICENSES.THIRD.PARTY');
+
+  exec(`yarn licenses generate-disclaimer > ${filename}`, { cwd: dirSource }, (error, stdout, stderr) => {
+    if (error) { throw new gutil.PluginError('license-info', error) };
+    callback();
   });
 })

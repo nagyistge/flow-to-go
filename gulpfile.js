@@ -7,7 +7,7 @@ const plumber = require('gulp-plumber');
 const preprocess = require('gulp-preprocess');
 const buffer = require('vinyl-buffer');
 const merge = require('merge2');
-const { spawn, exec } = require('child_process');
+const { spawn, exec, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs-extra');
 
@@ -19,8 +19,10 @@ const dirBuildNodes = `${dirBuild}/node_modules/node-red/nodes/custom`;
 const dirSource = path.join(__dirname, 'src');
 const dirSourceNodes = `${dirSource}/node_red_nodes`;
 
+const commitId = execSync('git rev-parse HEAD').toString()
+
 const packageJson = require(path.join(dirSource, 'package.json'));
-const preprocessContext = { DEBUG: false, packageJson };
+const preprocessContext = { DEBUG: false, packageJson, commitId };
 const licenseOptions = { directory: dirSource, production: true, depth: 0, summaryMode: 'detail' };
 
 fs.ensureDirSync(dirOutput);

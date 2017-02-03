@@ -11,6 +11,9 @@ Follow these instructions to build the Project on your own.
 - [node.js](https://nodejs.org/en/)
 - [yarn](https://yarnpkg.com) - The project is using yarn to ensure a deterministic dependency management.
 
+- [Visual Studio Code](https://code.visualstudio.com)
+- [VS Code - Debugger for Chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
+
 ## Checkout the Code
 ```bash
 $ git clone https://github.com/shortsn/flow-to-go.git
@@ -27,6 +30,15 @@ $ yarn restore
 
 1. The *root folder* contains a `package.json` for development dependencies (gulp, typings...)
 2. The *src folder* contains the application and a `package.json` for all bundled dependencies
+
+## Debuging (VS Code)
+
+There are two preconfigured lauch-configurations:
+
+1. Main Process - Debug Electrons Main-Process
+2. Renderer Process - Debug Electrons Renderer-Process
+
+(thx to http://code.matsu.io/1)
 
 ## When should I use which Gulp-Task ?
 

@@ -22,7 +22,7 @@
       "env": {
       },
       "skipFiles": [
-        "${workspaceRoot}/dist/node_modules/**/.*js",
+        "${workspaceRoot}/dist/build/node_modules/**/.*js",
         "<node_internals>/**/*.js",
         "!<node_internals>/events.js"
       ],
@@ -32,6 +32,28 @@
       "outFiles": [
         "${workspaceRoot}/dist/build/**/*.js"
       ]
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Renderer Process",
+      "webRoot": "${workspaceRoot}",
+      "preLaunchTask": "build",
+      "osx": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron"
+      },
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      },
+      "runtimeArgs": [
+        "${workspaceRoot}/dist/build/main.js",
+         "--remote-debugging-port=9222"
+      ],
+      "skipFiles": [
+        "${workspaceRoot}/dist/build/node_modules/**/.*js",
+        "<node_internals>/**/*.js"
+      ],
+      "sourceMaps": true
     }
   ]
 }

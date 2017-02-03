@@ -35,10 +35,10 @@ $ yarn restore
 
 There are two preconfigured lauch-configurations:
 
-1. Main Process - Debug Electrons Main-Process
-2. Renderer Process - Debug Electrons Renderer-Process
+1. Main Process - debug electrons main-process
+2. Renderer Process - debug electrons renderer-process
 
-(thx to http://code.matsu.io/1)
+(thx to [code.matsu.io](http://code.matsu.io/1))
 
 ## When should I use which Gulp-Task ?
 

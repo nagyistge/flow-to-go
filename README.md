@@ -2,6 +2,6 @@
 
 flow-to-go
 ================================
-nodeRED + electron = awesome
+[nodeRED](http://nodered.org) + [electron](http://electron.atom.io) = awesome
 
 https://shortsn.github.io/flow-to-go

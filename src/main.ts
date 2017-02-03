@@ -23,7 +23,6 @@ app.once('ready', async () => {
   if (!extensions['devtron']) {
     BrowserWindow.addDevToolsExtension(path.join(__dirname, '../../node_modules/devtron'));
   }
-  mainWindow.webContents.openDevTools();
   // @endif
 
   mainWindow.once('close', () => app.quit());

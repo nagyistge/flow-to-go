@@ -38,7 +38,7 @@
       "request": "launch",
       "name": "Renderer Process",
       "webRoot": "${workspaceRoot}",
-      "preLaunchTask": "build",
+      "preLaunchTask": "build:debug",
       "osx": {
         "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron"
       },
@@ -47,7 +47,7 @@
       },
       "runtimeArgs": [
         "${workspaceRoot}/dist/build/main.js",
-         "--remote-debugging-port=9222"
+         "--remote-debugging-port=9222",
       ],
       "port": 9222,
       "diagnosticLogging": false,

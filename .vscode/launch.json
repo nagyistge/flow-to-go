@@ -4,40 +4,30 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Main Process (Debug-darwin)",
+      "name": "Main Process",
       "program": "${workspaceRoot}/src/main.ts",
       "stopOnEntry": false,
       "cwd": "${workspaceRoot}/dist/build",
       "preLaunchTask": "build:debug",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "osx": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron"
+      },
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
+      },
       "runtimeArgs": [
-        "${workspaceRoot}/dist/build/main.js",
-        "--enable-logging"
+        "${workspaceRoot}/dist/build/main.js"
+        //,"--enable-logging"
       ],
       "env": {
       },
-      "console": "internalConsole",
-      "sourceMaps": true,
-      "outFiles": [
-        "${workspaceRoot}/dist/build/**/*.js"
-      ]
-    },
-     {
-      "type": "node",
-      "request": "launch",
-      "name": "Main Process (Debug-win)",
-      "program": "${workspaceRoot}/src/main.ts",
-      "stopOnEntry": false,
-      "cwd": "${workspaceRoot}/dist/build",
-      "preLaunchTask": "build:debug",
-      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
-      "runtimeArgs": [
-        "${workspaceRoot}/dist/build/main.js",
-        "--enable-logging"
+      "skipFiles": [
+        "${workspaceRoot}/dist/node_modules/**/.*js",
+        "<node_internals>/**/*.js",
+        "!<node_internals>/events.js"
       ],
-      "env": {
-      },
       "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
       "sourceMaps": true,
       "outFiles": [
         "${workspaceRoot}/dist/build/**/*.js"

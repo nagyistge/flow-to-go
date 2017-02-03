@@ -49,6 +49,8 @@
         "${workspaceRoot}/dist/build/main.js",
          "--remote-debugging-port=9222"
       ],
+      "port": 9222,
+      "diagnosticLogging": false,
       "skipFiles": [
         "${workspaceRoot}/dist/build/node_modules/**/.*js",
         "<node_internals>/**/*.js"

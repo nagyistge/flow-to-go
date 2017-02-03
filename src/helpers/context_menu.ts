@@ -40,8 +40,8 @@
   textEditingMenu.append(copy);
   textEditingMenu.append(paste);
 
-  document.addEventListener('contextmenu', function (e) {
-    const element: any = e.target;
+  document.addEventListener('contextmenu', (e: MouseEvent) => {
+    const element = e.target as Node;
     switch (element.nodeName) {
       case 'TEXTAREA':
       case 'INPUT':
@@ -54,5 +54,5 @@
           normalMenu.popup(remote.getCurrentWindow());
         }
     }
-  }, false);
+  });
 } ());

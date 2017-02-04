@@ -16,7 +16,8 @@ class App extends React.Component<{ initialState: globalState }, {}> {
     return <NodeRedView
       admin={this.props.initialState.nodeRedAdmin}
       ui={this.props.initialState.nodeRedUI}
-      />;
+      className="stretch"
+    />;
   }
 }
 

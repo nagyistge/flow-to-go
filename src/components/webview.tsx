@@ -4,7 +4,7 @@ import { openUrl } from '../helpers/window';
 import { join } from 'path';
 const preload = join(__dirname, '../helpers/preload.js');
 
-interface WebviewProps { src: string; }
+interface WebviewProps { src: string; className?: string; }
 
 export default class Webview extends React.Component<WebviewProps, {}> {
   
@@ -12,6 +12,7 @@ export default class Webview extends React.Component<WebviewProps, {}> {
     return React.createElement('webview', {
       src: this.props.src,
       preload: preload,
+      className: this.props.className
     });
   }
 

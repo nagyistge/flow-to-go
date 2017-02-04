@@ -7,6 +7,7 @@ import * as ipc from '../helpers/ipc';
 interface Properties {
   admin: string;
   ui: string;
+  className?: string;
 }
 
 interface State {
@@ -17,7 +18,7 @@ interface State {
 export default class NodeRedView extends React.Component<Properties,State> {
 
   render() {
-    return <Webview src={this.state.src}/>;
+    return <Webview src={this.state.src} className={this.props.className}/>;
   }
 
   constructor(props:Properties) {

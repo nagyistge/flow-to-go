@@ -1,5 +1,4 @@
 ﻿import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import Webview from './webview';
 import * as ipc from '../helpers/ipc';
 
@@ -37,8 +36,8 @@ export default class NodeRedView extends React.Component<Properties,State> {
     this.setState({ src: state.currentView });
   }
 
-  handleOnline = () => { this.setState({ online: true }); }
-  handleOffline = () => { this.setState({ online: false }); }
+  handleOnline = () => { this.setState({ online: true }); };
+  handleOffline = () => { this.setState({ online: false }); };
 
   componentDidMount() {
     window.addEventListener('online', this.handleOnline);

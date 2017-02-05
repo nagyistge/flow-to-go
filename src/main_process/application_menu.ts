@@ -1,4 +1,4 @@
-﻿import { setState } from '../helpers/ipc';
+﻿import { setState, publishMessage } from '../helpers/ipc';
 
 export function createTemplate(state: globalState, app: Electron.App, shell: Electron.Shell) {
   const template = [
@@ -25,6 +25,9 @@ export function createTemplate(state: globalState, app: Electron.App, shell: Ele
               focusedWindow.reload();
             }
           }
+        },
+        { label: 'Toggle Menu',
+          click() { publishMessage('toggleMenu'); }
         },
         { label: 'Toggle Full Screen', accelerator: (function() {
             if (process.platform === 'darwin') { return 'Ctrl+Command+F'; }

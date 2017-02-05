@@ -47,6 +47,14 @@ export function subscribeMessage(channel: string, listener: IpcEventListener) {
   }
 }
 
+export function unSubscribeMessage(channel: string, listener: IpcEventListener) {
+  if (isRenderer) {
+    ipcRenderer.removeListener(channel, listener);
+  } else {
+    ipcMain.removeListener(channel, listener);
+  };
+}
+
 const stateChannel = 'update_shared_state';
 let currentState: any = isRenderer ? remote.getGlobal(stateChannel) : undefined;
 const listeners = new Set<StateChangeListener<any>>();

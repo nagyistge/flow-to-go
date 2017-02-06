@@ -7,8 +7,6 @@ import * as ipc from './helpers/ipc';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
-import EditIcon from 'material-ui/svg-icons/action/build';
-import DashboardIcon from 'material-ui/svg-icons/notification/personal-video';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import uiTheme from './helpers/ui-theme';
 
@@ -23,24 +21,23 @@ debugger;
 nodeRedIpc.setupNotifications();
 nodeRedIpc.setupOnlineStatus();
 
-class App extends React.Component<{ init: globalState }, { menuOpen: boolean }> {
+class App extends React.Component<{ init: globalState }, { menuOpen: boolean, menuItems: MenuItem[] }> {
 
   constructor(initial: { init: globalState }) {
     super(initial);
-    this.state = {menuOpen: false};
+    this.state = {
+      menuOpen: initial.init.menuOpen,
+      menuItems: initial.init.menuItems
+    };
   }
 
-  toggleMenu = () => this.setMenuState(!this.state.menuOpen);
-  setMenuState = (menuOpen:boolean) => this.setState({ menuOpen });
-
+  toggleMenu = () => ipc.updateState({menuOpen: !this.state.menuOpen});
+  
   showAdmin = () => this.showView(this.props.init.nodeRedAdmin);
-  showDashboard = () => this.showView(this.props.init.nodeRedUI);
-  
-  showView = (view: string) => {
-    ipc.updateState({ currentView: view });
-    this.setMenuState(false);
-  }
-  
+  showView = (view: string) => ipc.updateState({ currentView: view, menuOpen:false});
+
+  globalStateUpdate = (state: globalState) => this.setState(state);
+
   render() {
     return <MuiThemeProvider muiTheme={getMuiTheme(uiTheme)}>
       <div className="stretch" >
@@ -48,26 +45,27 @@ class App extends React.Component<{ init: globalState }, { menuOpen: boolean }> 
           docked={false}
           width={64}
           open={this.state.menuOpen}
-          onRequestChange={(menuOpen) => this.setState({menuOpen})}
+          onRequestChange={(menuOpen) => this.setState({ menuOpen })}
         >
           <IconButton
             iconStyle={{ width: 24, height: 24 }}
             style={{ width: 64, height: 64, padding: 16 }}
-            onTouchTap={ this.showAdmin }
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            iconStyle={{ width: 24, height: 24 }}
-            style={{ width: 64, height: 64, padding: 16 }}
-            onTouchTap={ this.showDashboard }
-          >
-            <DashboardIcon />
-          </IconButton>
+            onTouchTap={this.showAdmin}
+            iconClassName= "fa fa-cogs"
+          />
+          {
+            this.state.menuItems.map(item =>
+              <IconButton
+                key= {item.id}
+                iconStyle={{ width: 24, height: 24 }}
+                style={{ width: 64, height: 64, padding: 16 }}
+                onTouchTap={() => this.showView("http://www.github.com")}
+                iconClassName={item.icon}/>
+            )
+          }
         </Drawer>
         <NodeRedView
           admin={this.props.init.nodeRedAdmin}
-          ui={this.props.init.nodeRedUI}
           className="stretch"
         />
       </div>
@@ -76,16 +74,21 @@ class App extends React.Component<{ init: globalState }, { menuOpen: boolean }> 
 
   componentDidMount() {
     ipc.subscribeMessage('toggleMenu', this.toggleMenu);
+    ipc.subscribeState<globalState>(this.globalStateUpdate);
   }
 
   componentWillUnmount() {
-    ipc.unSubscribeMessage('toggleMenu', this.toggleMenu);
+    ipc.unsubscribeMessage('toggleMenu', this.toggleMenu);
+    ipc.unsubscribeState<globalState>(this.globalStateUpdate);
   }
 }
 
-ipc.subscribeState<globalState>(state => {
+const renderApp = (state: globalState) => {
+  ipc.unsubscribeState(renderApp);
   render(
     <App init={state} />,
     document.getElementById('app')
   );
-});
+};
+
+ipc.subscribeState<globalState>(renderApp);

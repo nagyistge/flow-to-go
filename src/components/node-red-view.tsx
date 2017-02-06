@@ -6,7 +6,6 @@ import * as ipc from '../helpers/ipc';
 interface Properties {
   id?: string;
   admin: string;
-  ui: string;
   className?: string;
 }
 

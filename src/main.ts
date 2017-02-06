@@ -31,12 +31,12 @@ app.once('ready', async () => {
 
   const nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;
   const nodeRedAdmin = `${nodeRedUrl}/admin`;
-  const nodeRedUI = `${nodeRedUrl}/ui`;
-  const initialState = {
+  const initialState:globalState = {
     nodeRedUrl: `http://localhost:${settings.functionGlobalContext.port}`,
     nodeRedAdmin,
-    nodeRedUI,
-    currentView: nodeRedAdmin
+    currentView: nodeRedAdmin,
+    menuOpen: false,
+    menuItems: [{ id:'test', icon:'fa fa-spinner fa-pulse fa-3x fa-fw'}]
   };
 
   ipc.updateState<globalState>(initialState);

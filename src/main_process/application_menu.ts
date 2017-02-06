@@ -55,8 +55,6 @@ export function createTemplate(state: globalState, app: Electron.App, shell: Ele
       submenu: [
         { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
         { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' },
-        { label: 'NodeRED-UI', click() { updateState({ currentView: state.nodeRedUI }); } },
-        { label: 'NodeRED-Admin', click() { updateState({ currentView: state.nodeRedAdmin }); }}
       ]
     },
     { label: 'Help', role: 'help',

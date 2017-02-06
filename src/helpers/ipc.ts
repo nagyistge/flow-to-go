@@ -47,7 +47,7 @@ export function subscribeMessage(channel: string, listener: IpcEventListener) {
   }
 }
 
-export function unSubscribeMessage(channel: string, listener: IpcEventListener) {
+export function unsubscribeMessage(channel: string, listener: IpcEventListener) {
   if (isRenderer) {
     ipcRenderer.removeListener(channel, listener);
   } else {

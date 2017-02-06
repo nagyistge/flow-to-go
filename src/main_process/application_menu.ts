@@ -1,4 +1,4 @@
-﻿import { setState, publishMessage } from '../helpers/ipc';
+﻿import { updateState, publishMessage } from '../helpers/ipc';
 
 export function createTemplate(state: globalState, app: Electron.App, shell: Electron.Shell) {
   const template = [
@@ -26,7 +26,9 @@ export function createTemplate(state: globalState, app: Electron.App, shell: Ele
             }
           }
         },
-        { label: 'Toggle Menu',
+        {
+          label: 'Toggle Menu',
+          accelerator: 'CommandOrControl+M',
           click() { publishMessage('toggleMenu'); }
         },
         { label: 'Toggle Full Screen', accelerator: (function() {
@@ -53,8 +55,8 @@ export function createTemplate(state: globalState, app: Electron.App, shell: Ele
       submenu: [
         { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
         { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' },
-        { label: 'NodeRED-UI', click() { setState({ currentView: state.nodeRedUI }); } },
-        { label: 'NodeRED-Admin', click() { setState({ currentView: state.nodeRedAdmin }); }}
+        { label: 'NodeRED-UI', click() { updateState({ currentView: state.nodeRedUI }); } },
+        { label: 'NodeRED-Admin', click() { updateState({ currentView: state.nodeRedAdmin }); }}
       ]
     },
     { label: 'Help', role: 'help',

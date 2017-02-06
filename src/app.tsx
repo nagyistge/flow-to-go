@@ -23,18 +23,23 @@ debugger;
 nodeRedIpc.setupNotifications();
 nodeRedIpc.setupOnlineStatus();
 
-class App extends React.Component<{ init: globalState }, { open: boolean }> {
+class App extends React.Component<{ init: globalState }, { menuOpen: boolean }> {
 
   constructor(initial: { init: globalState }) {
     super(initial);
-    this.state = {open: false};
+    this.state = {menuOpen: false};
   }
 
-  handleToggle = () => this.setState({open: !this.state.open});
-  handleClose = () => this.setState({ open: false });
+  toggleMenu = () => this.setMenuState(!this.state.menuOpen);
+  setMenuState = (menuOpen:boolean) => this.setState({ menuOpen });
 
-  handleEdit = () => ipc.updateState({ currentView: this.props.init.nodeRedAdmin });
-  handleDashboard = () => ipc.updateState({ currentView: this.props.init.nodeRedUI });
+  showAdmin = () => this.showView(this.props.init.nodeRedAdmin);
+  showDashboard = () => this.showView(this.props.init.nodeRedUI);
+  
+  showView = (view: string) => {
+    ipc.updateState({ currentView: view });
+    this.setMenuState(false);
+  }
   
   render() {
     return <MuiThemeProvider muiTheme={getMuiTheme(uiTheme)}>
@@ -42,20 +47,20 @@ class App extends React.Component<{ init: globalState }, { open: boolean }> {
         <Drawer
           docked={false}
           width={64}
-          open={this.state.open}
-          onRequestChange={(open) => this.setState({open})}
+          open={this.state.menuOpen}
+          onRequestChange={(menuOpen) => this.setState({menuOpen})}
         >
           <IconButton
             iconStyle={{ width: 24, height: 24 }}
             style={{ width: 64, height: 64, padding: 16 }}
-            onTouchTap={ this.handleEdit }
+            onTouchTap={ this.showAdmin }
           >
             <EditIcon />
           </IconButton>
           <IconButton
             iconStyle={{ width: 24, height: 24 }}
             style={{ width: 64, height: 64, padding: 16 }}
-            onTouchTap={ this.handleEdit }
+            onTouchTap={ this.showDashboard }
           >
             <DashboardIcon />
           </IconButton>
@@ -70,11 +75,11 @@ class App extends React.Component<{ init: globalState }, { open: boolean }> {
   }
 
   componentDidMount() {
-    ipc.subscribeMessage('toggleMenu', this.handleToggle);
+    ipc.subscribeMessage('toggleMenu', this.toggleMenu);
   }
 
   componentWillUnmount() {
-    ipc.unSubscribeMessage('toggleMenu', this.handleToggle);
+    ipc.unSubscribeMessage('toggleMenu', this.toggleMenu);
   }
 }
 

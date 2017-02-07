@@ -6,6 +6,10 @@
     "removeComments": true,
     "jsx": "react",
     "diagnostics": true,
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "src/@types"
+    ]
   }
 }

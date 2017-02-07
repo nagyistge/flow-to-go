@@ -53,7 +53,7 @@ gulp.task('start:release', ['release'], function () {
   return proc;
 });
 
-gulp.task('build:debug', function() {
+gulp.task('build:debug', ['clean:build'], function() {
   preprocessContext.DEBUG = true;
   gutil.log(gutil.colors.yellow('DEBUG BUILD') );
   return gulp.tasks.build.fn();

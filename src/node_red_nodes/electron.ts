@@ -2,7 +2,7 @@ import { Observable, Subject, SerialDisposable } from 'rx';
 import * as uuid from 'uuid';
 
 module.exports = function (RED: any) {
-  const ipc = require('../../../../helpers/ipc');
+  const ipc = require('../../../../helpers/ipc') as Ipc;
 
   // Notification
 
@@ -23,6 +23,26 @@ module.exports = function (RED: any) {
   }
 
   RED.nodes.registerType('electron-notification', Notification);
+
+  // MenuItem
+
+  function MenuItem(config: any) {
+    RED.nodes.createNode(this, config);
+    const node = this;
+    node.icon = config.icon;
+    node.topic = config.topic;
+
+    const subscription = ipc.subscribeMessage(node.id, (event, payload) => {
+      node.send({ topic: node.topic, payload});
+    });
+    ipc.updateState((state: any) => state.menuItems.push({ id: node.id, icon: node.icon }));
+    node.on('close', () => {
+      subscription.Dispose();
+      ipc.updateState((state: any) => state.menuItems = state.menuItems.filter((item: any) => item.id !== node.id));
+    });
+  }
+
+  RED.nodes.registerType('electron-menu-item', MenuItem);
 
   // OnlineStatus
 
@@ -60,7 +80,7 @@ module.exports = function (RED: any) {
 
     const { BrowserWindow } = require('electron');
 
-    const node = this as { browser: Electron.BrowserWindow, on:any };
+    const node = this as { browser: Electron.BrowserWindow, on: any };
     node.browser = new BrowserWindow({
       title: config.name,
       width: 800,
@@ -97,9 +117,9 @@ module.exports = function (RED: any) {
     const browser = RED.nodes.getNode(config.window).browser as Electron.BrowserWindow;
     const loadFailureStream = Observable
       .fromEventPattern(
-        h => browser.webContents.addListener('did-fail-load', h),
-        h => browser.webContents.addListener('did-fail-load', h),
-        (event: Electron.Event, errorCode: number, errorDescription: string) => { return { errorCode, errorDescription }; }
+      h => browser.webContents.addListener('did-fail-load', h),
+      h => browser.webContents.addListener('did-fail-load', h),
+      (event: Electron.Event, errorCode: number, errorDescription: string) => { return { errorCode, errorDescription }; }
       )
       .filter(failure => failure.errorCode !== -3);
 
@@ -144,11 +164,11 @@ module.exports = function (RED: any) {
         .do(async data => {
           const [, pdfTask] = data;
           return await new Promise((reject, resolve) =>
-            browser.webContents.printToPDF(pdfTask.options,(error, buffer) => {
+            browser.webContents.printToPDF(pdfTask.options, (error, buffer) => {
               if (error) { reject(); }
               else {
                 pdfTask.msg.payload = buffer;
-                node.send([,pdfTask.msg]);
+                node.send([, pdfTask.msg]);
                 resolve();
               }
             })
@@ -162,7 +182,7 @@ module.exports = function (RED: any) {
 
     node.on('close', () => subscription.dispose());
     node.on('input', async function (msg: any) {
-      if (msg.url){
+      if (msg.url) {
         loadURL(msg.url);
       }
       pdfTasks.onNext({

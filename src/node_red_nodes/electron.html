@@ -53,6 +53,53 @@
   })
 </script>
 
+<!-- MenuItem -->
+
+<script type="text/x-red" data-template-name="electron-menu-item">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+    <input type="text" id="node-input-topic" placeholder="Topic">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-icon"><i class="fa fa-eye"></i> Icon</label>
+    <input type="text" id="node-input-icon" placeholder="class">
+  </div>
+
+</script>
+
+<script type="text/x-red" data-help-name="electron-menu-item">
+  <p></p>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('electron-menu-item',{
+    category: 'custom',
+    defaults: {
+      name: {value: ''},
+      topic: {value: ''},
+      icon: {value: 'fa fa-eye', required: true}
+    },
+    inputs:0,
+    outputs:1,
+    color: "#3FADB5",
+    icon: 'inject.png',
+    align: 'left',
+    paletteLabel: 'menu item',
+    label: function() {
+      return this.name || this.topic || 'menu item'
+    },
+    labelStyle: function() {
+      return this.name ? '' : 'node_label_italic'
+    }
+  })
+</script>
+
 <!-- OnlineStatus -->
 
 <script type="text/x-red" data-template-name="electron-online-status">

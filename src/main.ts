@@ -31,15 +31,15 @@ app.once('ready', async () => {
 
   const nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;
   const nodeRedAdmin = `${nodeRedUrl}/admin`;
-  const nodeRedUI = `${nodeRedUrl}/ui`;
-  const initialState = {
+  const initialState:globalState = {
     nodeRedUrl: `http://localhost:${settings.functionGlobalContext.port}`,
     nodeRedAdmin,
-    nodeRedUI,
-    currentView: nodeRedAdmin
+    currentView: nodeRedAdmin,
+    menuOpen: false,
+    menuItems: []
   };
 
-  ipc.updateState<globalState>(initialState);
+  ipc.mergeState<globalState>(initialState);
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.once('ready-to-show', mainWindow.show);

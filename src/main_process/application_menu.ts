@@ -1,4 +1,4 @@
-﻿import { publishMessage } from '../helpers/ipc';
+﻿import { updateState } from '../helpers/ipc';
 
 export function createTemplate(state: globalState, app: Electron.App, shell: Electron.Shell) {
   const template = [
@@ -29,7 +29,7 @@ export function createTemplate(state: globalState, app: Electron.App, shell: Ele
         {
           label: 'Toggle Menu',
           accelerator: 'CommandOrControl+M',
-          click() { publishMessage('toggleMenu'); }
+          click() { updateState<globalState>(state => state.menuOpen = !state.menuOpen); }
         },
         { label: 'Toggle Full Screen', accelerator: (function() {
             if (process.platform === 'darwin') { return 'Ctrl+Command+F'; }

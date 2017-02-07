@@ -21,20 +21,15 @@ debugger;
 nodeRedIpc.setupNotifications();
 nodeRedIpc.setupOnlineStatus();
 
-class App extends React.Component<{ init: globalState }, { menuOpen: boolean, menuItems: MenuItem[] }> {
+class App extends React.Component<{ init: globalState }, globalState> {
 
-  constructor(initial: { init: globalState }) {
-    super(initial);
-    this.state = {
-      menuOpen: initial.init.menuOpen,
-      menuItems: initial.init.menuItems
-    };
+  constructor(props: { init: globalState }) {
+    super(props);
+    this.state = props.init;
   }
 
-  toggleMenu = () => ipc.mergeState({ menuOpen: !this.state.menuOpen });
-  
-  showAdmin = () => this.showView(this.props.init.nodeRedAdmin);
-  showView = (view: string) => ipc.mergeState({ currentView: view, menuOpen:false});
+  showAdmin = () => this.showView(this.state.nodeRedAdmin);
+  showView = (view: string) => ipc.mergeState({ currentView: view, menuOpen: false });
 
   globalStateUpdate = (state: globalState) => this.setState(state);
 
@@ -45,27 +40,27 @@ class App extends React.Component<{ init: globalState }, { menuOpen: boolean, me
           docked={false}
           width={64}
           open={this.state.menuOpen}
-          onRequestChange={(menuOpen) => this.setState({ menuOpen })}
+          onRequestChange={ menuOpen => ipc.mergeState({ menuOpen })}
         >
           <IconButton
             iconStyle={{ width: 24, height: 24 }}
             style={{ width: 64, height: 64, padding: 16 }}
             onTouchTap={this.showAdmin}
-            iconClassName= "fa fa-cogs"
+            iconClassName="fa fa-cogs"
           />
           {
             this.state.menuItems.map(item =>
               <IconButton
-                key= {item.id}
+                key={item.id}
                 iconStyle={{ width: 24, height: 24 }}
                 style={{ width: 64, height: 64, padding: 16 }}
                 onTouchTap={() => this.showView("http://www.github.com")}
-                iconClassName={item.icon}/>
+                iconClassName={item.icon} />
             )
           }
         </Drawer>
         <NodeRedView
-          admin={this.props.init.nodeRedAdmin}
+          adminUI={this.state.nodeRedAdmin}
           className="stretch"
         />
       </div>
@@ -73,22 +68,14 @@ class App extends React.Component<{ init: globalState }, { menuOpen: boolean, me
   }
 
   componentDidMount() {
-    ipc.subscribeMessage('toggleMenu', this.toggleMenu);
     ipc.subscribeState<globalState>(this.globalStateUpdate);
   }
 
   componentWillUnmount() {
-    ipc.unsubscribeMessage('toggleMenu', this.toggleMenu);
     ipc.unsubscribeState<globalState>(this.globalStateUpdate);
   }
 }
 
-const renderApp = (state: globalState) => {
-  ipc.unsubscribeState(renderApp);
-  render(
-    <App init={state} />,
-    document.getElementById('app')
-  );
-};
-
-ipc.subscribeState<globalState>(renderApp);
+ipc
+  .getState<globalState>()
+  .then(state => render(<App init={state} />, document.getElementById('app')));

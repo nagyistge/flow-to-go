@@ -36,10 +36,10 @@ app.once('ready', async () => {
     nodeRedAdmin,
     currentView: nodeRedAdmin,
     menuOpen: false,
-    menuItems: [{ id:'test', icon:'fa fa-spinner fa-pulse fa-3x fa-fw'}]
+    menuItems: []
   };
 
-  ipc.updateState<globalState>(initialState);
+  ipc.mergeState<globalState>(initialState);
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.once('ready-to-show', mainWindow.show);

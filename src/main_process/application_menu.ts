@@ -1,4 +1,4 @@
-﻿import { updateState, publishMessage } from '../helpers/ipc';
+﻿import { publishMessage } from '../helpers/ipc';
 
 export function createTemplate(state: globalState, app: Electron.App, shell: Electron.Shell) {
   const template = [

@@ -29,7 +29,7 @@ export function publishMessage(channel:string,...args:any[]) {
   }
 }
 
-export function subscribeMessage(channel: string, listener: IpcEventListener) {
+export function subscribeMessage(channel: string, listener: IpcEventListener): Disposable {
   if (isRenderer) {
     ipcRenderer.on(channel, listener);
     return {
@@ -77,16 +77,21 @@ subscribeMessage(stateChannel, (event, newState) => {
     refreshState(newState);
 });
 
-export function setState<T>(newState: T) {
+export function setState<T>(newState: T): void{
   if (refreshState<T>(newState)) {
     // console.log('setState '+JSON.stringify(newState));
     publishMessage(stateChannel, currentState);
   }
 }
 
-export function updateState<T>(stateUpdate:T) {
+export function mergeState<T>(stateUpdate:T): void {
   const newState = Object.assign({}, currentState, stateUpdate);
-  // console.log('updateState '+JSON.stringify(newState));
+  setState<T>(newState);
+}
+
+export function updateState<T>(update: (state: T) => void): void {
+  const newState = Object.assign({}, currentState);
+  update(newState);
   setState<T>(newState);
 }
 
@@ -106,7 +111,7 @@ export async function getState<T>(filter?: (state: T) => boolean): Promise<T> {
   }
 }
 
-export function subscribeState<T>(listener: StateChangeListener<T>) {
+export function subscribeState<T>(listener: StateChangeListener<T>): Disposable {
   listeners.add(listener);
   listener(currentState);
   return {
@@ -114,18 +119,7 @@ export function subscribeState<T>(listener: StateChangeListener<T>) {
   };
 }
 
-export function unsubscribeState<T>(listener: StateChangeListener<T>) {
+export function unsubscribeState<T>(listener: StateChangeListener<T>): boolean {
   return listeners.delete(listener);
 }
 
-type StateChangeListener<T> = (newState: T) => void;
-
-interface IpcSender {
-  send(channel: string, ...args: any[]): void;
-}
-
-interface IpcEvent {
-  sender: IpcSender;
-}
-
-type IpcEventListener = (event: IpcEvent, ...args: any[]) => void;

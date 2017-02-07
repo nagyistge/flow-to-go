@@ -2,7 +2,7 @@ import { Observable, Subject, SerialDisposable } from 'rx';
 import * as uuid from 'uuid';
 
 module.exports = function (RED: any) {
-  const ipc = require('../../../../helpers/ipc');
+  const ipc= require('../../../../helpers/ipc');
 
   // Notification
 
@@ -23,6 +23,20 @@ module.exports = function (RED: any) {
   }
 
   RED.nodes.registerType('electron-notification', Notification);
+
+  // MenuItem
+
+    function MenuItem(config: any) {
+    RED.nodes.createNode(this, config);
+    const node = this;
+    node.topic = config.topic;
+    node.title = config.title;
+    node.icon = config.icon;
+    ipc.updateState((state: any) => state.menuItems.push({ id: node.id, icon: node.icon }));
+    node.on('close', () => ipc.updateState((state: any) => state.menuItems = state.menuItems.filter((item: any) => item.id !== node.id)));
+  }
+
+  RED.nodes.registerType('electron-menu-item', MenuItem);
 
   // OnlineStatus
 

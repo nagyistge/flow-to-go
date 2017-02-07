@@ -31,10 +31,10 @@ class App extends React.Component<{ init: globalState }, { menuOpen: boolean, me
     };
   }
 
-  toggleMenu = () => ipc.updateState({menuOpen: !this.state.menuOpen});
+  toggleMenu = () => ipc.mergeState({ menuOpen: !this.state.menuOpen });
   
   showAdmin = () => this.showView(this.props.init.nodeRedAdmin);
-  showView = (view: string) => ipc.updateState({ currentView: view, menuOpen:false});
+  showView = (view: string) => ipc.mergeState({ currentView: view, menuOpen:false});
 
   globalStateUpdate = (state: globalState) => this.setState(state);
 

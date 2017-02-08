@@ -54,12 +54,7 @@ class App extends React.Component<{ init: globalState }, globalState> {
                 key={item.id}
                 iconStyle={{ width: 24, height: 24 }}
                 style={{ width: 64, height: 64, padding: 16 }}
-                onTouchTap={() => {
-                  ipc.publishMessage(item.id, "onTouchTap");
-                  if (item.close) {
-                    ipc.mergeState({ menuOpen: false });
-                  }
-                 }}
+                onTouchTap={() => ipc.publishMessage(item.id, "onTouchTap")}
                 iconClassName={item.icon} />
             )
           }

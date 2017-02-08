@@ -35,6 +35,7 @@ module.exports = function (RED: any) {
     const button: MenuItem = { id: node.id, icon: node.icon, close: node.closeOnTap };
 
     const subscription = ipc.subscribeMessage(node.id, (event, payload) => {
+      if (node.closeOnTap) { ipc.updateState<globalState>(state => state.menuOpen = false); }
       node.send({ topic: node.topic, payload });
     });
     
@@ -57,7 +58,9 @@ module.exports = function (RED: any) {
     node.on('input', (msg:{ url:string }) => {
       ipc.updateState<globalState>(state => {
         const newUrl = msg.url || node.url;
-        if (newUrl) { state.currentView = newUrl; }
+        if (newUrl) {
+          state.currentView = newUrl;
+        }
         else { node.error('Url is required.'); }
       });
     });

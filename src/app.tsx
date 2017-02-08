@@ -9,6 +9,7 @@ import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import uiTheme from './helpers/ui-theme';
+import Badge from 'material-ui/Badge';
 
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -28,9 +29,6 @@ class App extends React.Component<{ init: globalState }, globalState> {
     this.state = props.init;
   }
 
-  showAdmin = () => this.showView(this.state.nodeRedAdmin);
-  showView = (view: string) => ipc.mergeState({ currentView: view, menuOpen: false });
-
   globalStateUpdate = (state: globalState) => this.setState(state);
 
   render() {
@@ -40,23 +38,27 @@ class App extends React.Component<{ init: globalState }, globalState> {
           docked={false}
           width={64}
           open={this.state.menuOpen}
-          onRequestChange={ menuOpen => ipc.mergeState({ menuOpen })}
+          onRequestChange={menuOpen => ipc.mergeState({ menuOpen })}
         >
-          <IconButton
-            iconStyle={{ width: 24, height: 24 }}
-            style={{ width: 64, height: 64, padding: 16 }}
-            onTouchTap={this.showAdmin}
-            iconClassName="fa fa-cogs"
-          />
           {
-            this.state.menuItems.map(item =>
-              <IconButton
+            this.state.menuItems.map(item => {
+              const button = <IconButton
                 key={item.id}
-                iconStyle={{ width: 24, height: 24 }}
-                style={{ width: 64, height: 64, padding: 16 }}
+                style={{ width: '100%', padding: 16 }}
                 onTouchTap={() => ipc.publishMessage(item.id, "onTouchTap")}
-                iconClassName={item.icon} />
-            )
+                iconClassName={item.icon} />;
+
+              return (item.badge === undefined)
+                ? button
+                : <Badge
+                  style={{ width: 64, height: 64, padding: 0 }}
+                  badgeContent={ item.badge }
+                  badgeStyle={{ fontSize: 10, top: 4, right: 4, width: 16, height: 16 }}
+                  primary={true}
+                >
+                { button }
+                </Badge>;
+            })
           }
         </Drawer>
         <NodeRedView

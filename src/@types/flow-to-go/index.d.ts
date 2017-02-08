@@ -11,6 +11,7 @@ interface MenuItem {
   id: string;
   icon: string;
   close: boolean;
+  badge?: number;
 }
 
 interface Ipc {

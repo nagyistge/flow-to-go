@@ -36,8 +36,9 @@ app.once('ready', async () => {
     nodeRedAdmin,
     currentView: nodeRedAdmin,
     menuOpen: false,
-    menuItems: []
+    menuItems: [{ id:'showAdmin', icon:'fa fa-cogs' } ] as MenuItem[]
   };
+  ipc.subscribeMessage('showAdmin',() => ipc.mergeState({ currentView: nodeRedAdmin, menuOpen: false }));
 
   ipc.mergeState<globalState>(initialState);
 

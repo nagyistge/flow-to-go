@@ -11,6 +11,8 @@ const { spawn, exec, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs-extra');
 
+const rebuild = require('electron-rebuild').rebuildNativeModules;
+
 const dirOutput = path.join(__dirname, 'dist');
 const dirLicense = `${dirOutput}/license`;
 const dirRelease = `${dirOutput}/release`;
@@ -21,6 +23,8 @@ const dirSourceNodes = `${dirSource}/node_red_nodes`;
 
 const commitId = execSync('git rev-parse HEAD').toString()
 
+const devPackageJson = require('./package.json');
+const electronVersion = `${/\d+.\d+.\d+/g.exec(devPackageJson.devDependencies.electron)}`;
 const packageJson = require(path.join(dirSource, 'package.json'));
 const preprocessContext = { DEBUG: false, packageJson, commitId };
 const licenseOptions = { directory: dirSource, production: true, depth: 0, summaryMode: 'detail' };
@@ -53,19 +57,36 @@ gulp.task('start:release', ['release'], function () {
   return proc;
 });
 
-gulp.task('build:debug', ['clean:build'], function() {
+gulp.task('build:debug', ['clean:build', 'rebuild'], function() {
   preprocessContext.DEBUG = true;
   gutil.log(gutil.colors.yellow('DEBUG BUILD') );
   return gulp.tasks.build.fn();
 });
 
-gulp.task('build', ['clean:build'], function () {
+gulp.task('rebuild', function (callback) {
+  const platform = require('os').platform()
+
+  const app = (platform === 'darwin')
+    ? `${__dirname}/node_modules/.bin/electron-rebuild`
+    : `${__dirname}/node_modules/.bin/electron-rebuild.cmd`;
+  
+  const commandline = `${app} --version ${electronVersion} --module-dir ${dirSource}`;
+  gutil.log(gutil.colors.yellow(`rebuilding packages`));
+  gutil.log(gutil.colors.yellow(commandline));
+
+  exec(commandline, { cwd: __dirname }, (error, stdout, stderr) => {
+    if (error) { throw new gutil.PluginError('rebuild', error) };
+    callback();
+  });
+});
+
+gulp.task('build', ['clean:build', 'rebuild'], function () {
   // build & copy application
   const copyApp = gulp.src([
     `${dirSource}/?(index.html|package.json)`
   ], { base: dirSource })
     .pipe(plumber())
-    .pipe(preprocess({ context: preprocessContext }))  
+    .pipe(preprocess({ context: preprocessContext }))
     .pipe(gulp.dest(dirBuild));
 
   const copyModules = gulp.src([
@@ -117,9 +138,6 @@ gulp.task('build', ['clean:build'], function () {
 });
 
 gulp.task('release', ['build', 'clean:release', 'license-info'], done => {
-  const devPackageJson = require('./package.json');
-  const electronVersion = `${/\d+.\d+.\d+/g.exec(devPackageJson.devDependencies.electron)}`;
-
   packager({
     dir: dirBuild,
     prune: true,

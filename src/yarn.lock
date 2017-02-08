@@ -463,7 +463,7 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-debug@2.x.x, debug@^2.1.2, debug@^2.4.5:
+debug@2.x.x, debug@^2.1.2, debug@^2.3.2, debug@^2.4.5:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.0.tgz#bc596bcabe7617f11d9fa15361eded5608b8499b"
   dependencies:
@@ -486,6 +486,13 @@ deep-extend@~0.4.0:
 default-shell@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/default-shell/-/default-shell-1.0.1.tgz#752304bddc6174f49eb29cb988feea0b8813c8bc"
+
+define-properties@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/define-properties/-/define-properties-1.1.2.tgz#83a73f2fea569898fb737193c8f873caf6d45c94"
+  dependencies:
+    foreach "^2.0.5"
+    object-keys "^1.0.8"
 
 delayed-stream@~1.0.0:
   version "1.0.0"
@@ -871,6 +878,10 @@ fstream@^1.0.0, fstream@^1.0.2, fstream@~1.0.10:
     inherits "~2.0.0"
     mkdirp ">=0.5 0"
     rimraf "2"
+
+function-bind@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.0.tgz#16176714c801798e4e8f2cf7f7529467bb4a5771"
 
 gauge@~2.7.1:
   version "2.7.2"
@@ -1349,6 +1360,12 @@ lie@3.0.2:
     inline-process-browser "^1.0.0"
     unreachable-branch-transform "^0.3.0"
 
+lie@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/lie/-/lie-3.1.0.tgz#65e0139eaef9ae791a1f5c8c53692c8d3b4718f4"
+  dependencies:
+    immediate "~3.0.5"
+
 localforage@^1.3.0:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/localforage/-/localforage-1.4.3.tgz#a212543c39c7c76424edd12bf474c489aaca494c"
@@ -1579,7 +1596,7 @@ mustache@2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/mustache/-/mustache-2.3.0.tgz#4028f7778b17708a489930a6e52ac3bca0da41d0"
 
-nan@2.5.0:
+nan@2.5.0, nan@^2.4.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.0.tgz#aa8f1e34531d807e9e27755b234b4a6ec0c152a8"
 
@@ -1618,7 +1635,7 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-node-pre-gyp@0.6.32:
+node-pre-gyp@0.6.32, node-pre-gyp@^0.6.32:
   version "0.6.32"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.32.tgz#fc452b376e7319b3d255f5f34853ef6fd8fe1fd5"
   dependencies:
@@ -1651,6 +1668,12 @@ node-red-node-feedparser@0.1.*:
 node-red-node-rbe@0.1.*:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/node-red-node-rbe/-/node-red-node-rbe-0.1.6.tgz#36c22f39c44dd13b5ca9b4e14f05dca001ac5539"
+
+node-red-node-serialport@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/node-red-node-serialport/-/node-red-node-serialport-0.4.2.tgz#7457ca7f76bd6c9f504f63da291924ce56690b27"
+  dependencies:
+    serialport "~4.0.7"
 
 node-red-node-twitter@0.1.*:
   version "0.1.9"
@@ -1791,9 +1814,17 @@ object-assign@^4.0.1, object-assign@^4.1.0:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
 
-object-keys@^1.0.6:
+object-keys@^1.0.10, object-keys@^1.0.6, object-keys@^1.0.8:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.0.11.tgz#c54601778ad560f1142ce0e01bcca8b56d13426d"
+
+object.assign@^4.0.3:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/object.assign/-/object.assign-4.0.4.tgz#b1c9cc044ef1b9fe63606fc141abbb32e14730cc"
+  dependencies:
+    define-properties "^1.1.2"
+    function-bind "^1.1.0"
+    object-keys "^1.0.10"
 
 object.omit@^2.0.0:
   version "2.0.1"
@@ -2263,6 +2294,18 @@ send@0.14.2:
 sentiment@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/sentiment/-/sentiment-2.1.0.tgz#33279100c35c38519ca5e435245186c512fe0fdc"
+
+serialport@~4.0.7:
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/serialport/-/serialport-4.0.7.tgz#421c618a8a612bd40cfa461b4a46154daf2229a5"
+  dependencies:
+    bindings "1.2.1"
+    commander "^2.9.0"
+    debug "^2.3.2"
+    lie "^3.1.0"
+    nan "^2.4.0"
+    node-pre-gyp "^0.6.32"
+    object.assign "^4.0.3"
 
 serve-static@~1.11.1, serve-static@~1.11.2:
   version "1.11.2"

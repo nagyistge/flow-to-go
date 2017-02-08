@@ -13,6 +13,7 @@
     "material-ui": "^0.16.7",
     "nedb": "^1.8.0",
     "node-red": "^0.16.2",
+    "node-red-node-serialport": "^0.4.2",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-tap-event-plugin": "^2.0.1",

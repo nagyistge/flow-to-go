@@ -1,7 +1,8 @@
  
 ## Features
 - embedded [NodeRED](https://github.com/node-red/node-red)
-- embedded [node-red-dashboard](https://github.com/node-red/node-red-dashboard)
+- embedded [node-red-node-serialport](https://github.com/node-red/node-red-nodes/tree/master/io/serialport) *rebuilt for electron*
+- embedded [node-red-contrib-gpio](https://github.com/monteslu/node-red-contrib-gpio) *rebuilt for electron*
 
 ### Custom Nodes
 - **NeDB** - NoSQL-Storage using [NeDB](https://github.com/louischatriot/nedb)

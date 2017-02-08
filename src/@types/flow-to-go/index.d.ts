@@ -10,6 +10,7 @@ interface globalState {
 interface MenuItem {
   id: string;
   icon: string;
+  close: boolean;
 }
 
 interface Ipc {

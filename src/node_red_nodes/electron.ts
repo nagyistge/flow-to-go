@@ -1,5 +1,4 @@
 import { Observable, Subject, SerialDisposable } from 'rx';
-import * as uuid from 'uuid';
 
 module.exports = function (RED: any) {
   const ipc = require('../../../../helpers/ipc') as Ipc;
@@ -31,11 +30,15 @@ module.exports = function (RED: any) {
     const node = this;
     node.icon = config.icon;
     node.topic = config.topic;
+    node.closeOnTap = config.close;
+
+    const button: MenuItem = { id: node.id, icon: node.icon, close: node.closeOnTap };
 
     const subscription = ipc.subscribeMessage(node.id, (event, payload) => {
-      node.send({ topic: node.topic, payload});
+      node.send({ topic: node.topic, payload });
     });
-    ipc.updateState((state: any) => state.menuItems.push({ id: node.id, icon: node.icon }));
+    
+    ipc.updateState((state: any) => state.menuItems.push(button));
     node.on('close', () => {
       subscription.Dispose();
       ipc.updateState((state: any) => state.menuItems = state.menuItems.filter((item: any) => item.id !== node.id));
@@ -43,6 +46,24 @@ module.exports = function (RED: any) {
   }
 
   RED.nodes.registerType('electron-menu-item', MenuItem);
+
+  // MainView
+
+  function MainView(config: any) {
+    RED.nodes.createNode(this, config);
+    const node = this;
+    node.url = config.url;
+
+    node.on('input', (msg:{ url:string }) => {
+      ipc.updateState<globalState>(state => {
+        const newUrl = msg.url || node.url;
+        if (newUrl) { state.currentView = newUrl; }
+        else { node.error('Url is required.'); }
+      });
+    });
+  }
+
+  RED.nodes.registerType('electron-main-view', MainView);
 
   // OnlineStatus
 
@@ -80,7 +101,7 @@ module.exports = function (RED: any) {
 
     const { BrowserWindow } = require('electron');
 
-    const node = this as { browser: Electron.BrowserWindow, on: any };
+    const node = this as { browser: Electron.BrowserWindow, on: any, id: string };
     node.browser = new BrowserWindow({
       title: config.name,
       width: 800,
@@ -94,7 +115,7 @@ module.exports = function (RED: any) {
         nodeIntegration: config.nodeIntegration,
         devTools: config.devtools && config.show,
         webSecurity: true,
-        partition: uuid.v1()
+        partition: node.id
       }
     });
 

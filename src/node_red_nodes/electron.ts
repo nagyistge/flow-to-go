@@ -30,16 +30,19 @@ module.exports = function (RED: any) {
     const node = this;
     node.icon = config.icon;
     node.topic = config.topic;
-    node.closeOnTap = config.close;
 
-    const subscription = ipc.subscribeMessage(node.id, (event, payload) => {
-      if (node.closeOnTap) { ipc.updateState<globalState>(state => state.menuOpen = false); }
-      node.send({ topic: node.topic, payload });
-    });
+    const onTap:IpcEventListener = config.close
+      ? (event, payload) => {
+        ipc.updateState<globalState>(state => state.menuOpen = false);
+        node.send({ topic: node.topic, payload });
+      }
+      : (event, payload) => node.send({ topic: node.topic, payload });
+
+    const subscription = ipc.subscribeMessage(node.id, onTap);
     
-    ipc.updateState((state: any) => state.menuItems.push({ id: node.id, icon: node.icon, close: node.closeOnTap }));
+    ipc.updateState((state: any) => state.menuItems.push({ id: node.id, icon: node.icon }));
 
-    node.on('input', (msg: { badge: number }) =>
+    node.on('input', (msg: { badge: string }) =>
       ipc.updateState((state: any) =>
         state.menuItems.forEach((item: MenuItem) => {
           if (item.id === node.id) { item.badge = msg.badge; }

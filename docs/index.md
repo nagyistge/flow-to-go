@@ -8,6 +8,8 @@
 - **notification** - send [System-Notifications](http://electron.atom.io/docs/tutorial/desktop-environment-integration/) from Flow using Electron
 - **online status** - handle [online/offline Events](http://electron.atom.io/docs/tutorial/online-offline-events/) from Electron in Flows
 - **print pdf** - PDF-Automation using [Electron's PDF-Features](http://electron.atom.io/docs/api/web-contents/)
+- **menu-item** - adds a custom icon button which can show a badge and trigger messages in your flow
+- **main-view** - can be used to set the displayed content
 
 ## Doc
 

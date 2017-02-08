@@ -163,7 +163,7 @@ module.exports = function (RED: any) {
         .debounce(500)
         .do(async data => {
           const [, pdfTask] = data;
-          return await new Promise((reject, resolve) =>
+          return await new Promise((resolve, reject) =>
             browser.webContents.printToPDF(pdfTask.options, (error, buffer) => {
               if (error) { reject(); }
               else {

@@ -23,6 +23,7 @@
       },
       "skipFiles": [
         "${workspaceRoot}/dist/build/node_modules/**/.*js",
+        "!${workspaceRoot}/dist/build/node_modules/node-red/nodes/**/.*js",
         "<node_internals>/**/*.js",
         "!<node_internals>/events.js"
       ],

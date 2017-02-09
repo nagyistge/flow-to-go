@@ -51,6 +51,7 @@ class App extends React.Component<{ init: globalState }, globalState> {
               return (item.badge === undefined)
                 ? button
                 : <Badge
+                  key={item.id}
                   style={{ width: 64, height: 64, padding: 0 }}
                   badgeContent={ item.badge }
                   badgeStyle={{ fontSize: 10, top: 4, right: 4, width: 16, height: 16 }}

@@ -1,4 +1,4 @@
-﻿language: cpp
+﻿language: python
 install:
   - nvm install v7.4.0
   - npm install -g gulp

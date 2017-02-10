@@ -47,9 +47,9 @@ gulp.task('start:debug', ['build:debug'], function () {
 gulp.task('start:release', ['release'], function () {
   const platform = require('os').platform()
 
-  const app = (platform === 'darwin')
-    ? `${dirRelease}/${packageJson.name}-${platform}-x64/${packageJson.name}.app/Contents/MacOS/${packageJson.name}`
-    : `${dirRelease}/${packageJson.name}-${platform}-x64/flow-to-go.exe`;
+  const app = (platform === 'win32')
+    ? `${dirRelease}/${packageJson.name}-${platform}-x64/flow-to-go.exe`
+    : `${dirRelease}/${packageJson.name}-${platform}-x64/${packageJson.name}.app/Contents/MacOS/${packageJson.name}`;
 
   gutil.log(gutil.colors.yellow(`starting release: ${app}`));
   const proc = spawn(app);
@@ -66,9 +66,9 @@ gulp.task('build:debug', ['clean:build', 'rebuild'], function() {
 gulp.task('rebuild', function (callback) {
   const platform = require('os').platform()
 
-  const app = (platform === 'darwin')
-    ? `${__dirname}/node_modules/.bin/electron-rebuild`
-    : `${__dirname}/node_modules/.bin/electron-rebuild.cmd`;
+  const app = (platform === 'win32')
+    ? `${__dirname}/node_modules/.bin/electron-rebuild.cmd`
+    : `${__dirname}/node_modules/.bin/electron-rebuild`;
   
   const commandline = `${app} --version ${electronVersion} --module-dir ${dirSource}`;
   gutil.log(gutil.colors.yellow(`rebuilding packages`));

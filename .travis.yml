@@ -1,9 +1,9 @@
 ﻿
 install:
   - nvm install node
-before_script:
   - npm install -g node-gyp
   - npm install -g gulp
   - npm install -g yarn
+before_script:
   - yarn restore
 script: gulp release

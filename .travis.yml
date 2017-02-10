@@ -1,6 +1,6 @@
 ﻿
-install: 
-  - nvm ls-remote
+install:
+  - yarn restore
 before_script:
   - npm install -g node-gyp
   - npm install -g gulp

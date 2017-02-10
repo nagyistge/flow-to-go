@@ -1,4 +1,6 @@
 ﻿
+language: node_js
+
 install:
   - yarn restore
 before_script:

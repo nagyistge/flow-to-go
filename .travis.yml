@@ -1,12 +1,7 @@
 ﻿language: node_js
-
-node_js:
-  - node
-
+node_js: node
 install: yarn restore
-
 before_script:
   - npm install -g node-gyp
   - npm install -g gulp
-
 script: gulp release

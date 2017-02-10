@@ -1,5 +1,7 @@
-﻿install:
-  - nvm install v7.4.0
+﻿language: node_js
+node_js:
+  - node
+install:
   - npm install -g gulp
   - npm install -g yarn
 before_script:

@@ -1,4 +1,9 @@
-﻿install:
+﻿addons:
+  apt:
+    packages:
+    - cmake
+
+install:
   - nvm install v7.4.0
   - npm install -g node-gyp
   - npm install -g gulp
@@ -6,10 +11,3 @@
 before_script:
   - yarn restore
 script: gulp release
-
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - gcc-4.8

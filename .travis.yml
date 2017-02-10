@@ -1,9 +1,0 @@
-﻿language: node_js
-node_js:
-  - node
-install:
-  - npm install -g gulp
-  - npm install -g yarn
-before_script:
-  - yarn restore
-script: gulp release

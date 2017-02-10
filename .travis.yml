@@ -1,7 +1,6 @@
 ﻿
-language: node_js
-
 install:
+  - nvm install node
   - yarn restore
 before_script:
   - npm install -g node-gyp

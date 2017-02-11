@@ -1,7 +1,5 @@
 ﻿import * as ipc from '../helpers/ipc';
 
-declare const Notification: any;
-
 export function setupNotifications() {
   ipc.subscribeMessage('notification', (event, arg) => new Notification(arg.title, { body: arg.body }));
 }

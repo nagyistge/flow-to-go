@@ -13,12 +13,13 @@ const fs = require('fs-extra');
 
 const rebuild = require('electron-rebuild').rebuildNativeModules;
 
-const dirOutput = path.join(__dirname, 'dist');
+const dirRoot = __dirname;
+const dirOutput = `${dirRoot}/dist`;
 const dirLicense = `${dirOutput}/license`;
 const dirRelease = `${dirOutput}/release`;
 const dirBuild = `${dirOutput}/build`;
 const dirBuildNodes = `${dirBuild}/node_modules/node-red/nodes/custom`;
-const dirSource = path.join(__dirname, 'src');
+const dirSource = `${dirRoot}/src`;
 const dirSourceNodes = `${dirSource}/node_red_nodes`;
 
 const commitId = execSync('git rev-parse HEAD').toString()
@@ -97,6 +98,10 @@ gulp.task('build', ['clean:build', 'rebuild'], function () {
   ], { base: dirSource })
     .pipe(gulp.dest(dirBuild));
 
+  const copyIcon = gulp
+    .src(`${dirRoot}/app.png`)
+    .pipe(gulp.dest(dirBuild));
+
   const tsAppProject = tsc.createProject('./tsconfig.json');
   tsAppProject.outDir = dirBuild;
   const transpileApp = gulp.src([
@@ -134,7 +139,7 @@ gulp.task('build', ['clean:build', 'rebuild'], function () {
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(dirBuildNodes));
 
-  return merge([copyApp, copyModules, copyNodes, transpileApp, transpileNodes]);
+  return merge([copyApp, copyIcon, copyModules, copyNodes, transpileApp, transpileNodes]);
 });
 
 gulp.task('release', ['build', 'clean:release', 'license-info'], done => {

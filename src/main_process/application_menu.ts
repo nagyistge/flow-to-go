@@ -1,4 +1,5 @@
 ﻿import { updateState } from '../helpers/ipc';
+import openAboutWindow from 'about-window';
 
 export function createTemplate(state: globalState, app: Electron.App, shell: Electron.Shell) {
   const template = [
@@ -69,7 +70,15 @@ export function createTemplate(state: globalState, app: Electron.App, shell: Ele
     template.unshift({
       label: name,
       submenu: [
-        { label: 'About ' + name, role: 'about' },
+        {
+          label: 'About ' + name, click() {
+            const appDir = `${__dirname}/..`;
+            openAboutWindow({
+              icon_path: `${appDir}/app.png`,
+              package_json_dir: appDir
+            });
+          }
+        },
         { type: 'separator' },
         { label: 'Services', role: 'services', submenu: [] },
         { type: 'separator' },

@@ -2,6 +2,10 @@
 const { BrowserWindow, shell } = require('electron').remote;
 
 export function openUrl(href: string): boolean {
+  if (!href) {
+    return false;
+  }
+
   const url = parse(href) as URL;
   if (url.hash) {
     return false;

@@ -1,6 +1,6 @@
-﻿sudo: false
+﻿language: node_js
 
-language: node_js
+sudo: false
 
 addons:
   apt:
@@ -14,7 +14,7 @@ addons:
 branches:
   only:
   - master
-  
+
 matrix:
   include:
   - os: linux

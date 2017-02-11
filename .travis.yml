@@ -1,47 +1,27 @@
 ﻿language: node_js
 node_js:
   - "6"
-
 sudo: false
-
+env:
+  - CXX=g++-4.8
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - build-essential
-    - clang
-    - g++-4.8
-
+      - g++-4.8
 branches:
   only:
   - master
-
-matrix:
-  include:
-  - os: linux
-    env: NODE_VERSION=7.4 CC=gcc-4.8 CXX=g++-4.8
-  - os: osx
-    env: NODE_VERSION=7.4 CC=clang CXX=clang++
-
 install:
-  - echo $CC
   - echo $CXX
-  - clang --version
-  - if [ "$CC" = "gcc-4.8" ]; then gcc-4.8 -v; else gcc -v; fi
-  - git clone https://github.com/creationix/nvm.git /tmp/.nvm
-  - source /tmp/.nvm/nvm.sh
-  - nvm install $NODE_VERSION
-  - nvm use --delete-prefix $NODE_VERSION
+  - nvm install node
   - npm install -g gulp
   - npm install -g yarn
-
 cache:
   directories:
     - node_modules
     - src/node_modules
-
 before_script:
   - yarn restore
-
 script: gulp release

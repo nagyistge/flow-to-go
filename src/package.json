@@ -9,7 +9,6 @@
     "url": "https://github.com/shortsn/flow-to-go/issues"
   },
   "dependencies": {
-    "about-window": "^1.6.1",
     "express": "^4.14.0",
     "fix-path": "^2.1.0",
     "material-ui": "^0.16.7",

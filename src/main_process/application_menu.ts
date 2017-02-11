@@ -1,27 +1,28 @@
 ﻿import { updateState } from '../helpers/ipc';
-import openAboutWindow from 'about-window';
+import { BrowserWindow } from 'electron';
 
 export function createTemplate(state: globalState, app: Electron.App, shell: Electron.Shell) {
   const template = [
     {
       label: 'Edit',
       submenu: [
-          { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
-          { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
-          { type: 'separator' },
-          { label: 'Cut', accelerator: 'CmdOrCtrl+X', role: 'cut' },
-          { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
-          { label: 'Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' },
-          { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
-          { type: 'separator' },
-          { label: 'Open Working Directory', click() { shell.openItem(app.getPath('userData')); } }
+        { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
+        { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
+        { type: 'separator' },
+        { label: 'Cut', accelerator: 'CmdOrCtrl+X', role: 'cut' },
+        { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
+        { label: 'Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' },
+        { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' },
+        { type: 'separator' },
+        { label: 'Open Working Directory', click() { shell.openItem(app.getPath('userData')); } }
       ]
     },
     {
       label: 'View',
       submenu: [
-        { label: 'Reload', accelerator: 'CmdOrCtrl+R',
-          click(item:Electron.MenuItem, focusedWindow:Electron.BrowserWindow) {
+        {
+          label: 'Reload', accelerator: 'CmdOrCtrl+R',
+          click(item: Electron.MenuItem, focusedWindow: Electron.BrowserWindow) {
             if (focusedWindow) {
               focusedWindow.reload();
             }
@@ -32,33 +33,37 @@ export function createTemplate(state: globalState, app: Electron.App, shell: Ele
           accelerator: 'CommandOrControl+M',
           click() { updateState<globalState>(state => state.menuOpen = !state.menuOpen); }
         },
-        { label: 'Toggle Full Screen', accelerator: (function() {
+        {
+          label: 'Toggle Full Screen', accelerator: (function () {
             if (process.platform === 'darwin') { return 'Ctrl+Command+F'; }
             else { return 'F11'; }
           })(),
-          click(item:Electron.MenuItem, focusedWindow:Electron.BrowserWindow) {
+          click(item: Electron.MenuItem, focusedWindow: Electron.BrowserWindow) {
             if (focusedWindow) {
               focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
             }
           }
         },
-        { label: 'Toggle Developer Tools', accelerator: (function() {
+        {
+          label: 'Toggle Developer Tools', accelerator: (function () {
             if (process.platform === 'darwin') { return 'Alt+Command+I'; }
             else { return 'Ctrl+Shift+I'; }
           })(),
-          click(item:Electron.MenuItem, focusedWindow:Electron.BrowserWindow) {
+          click(item: Electron.MenuItem, focusedWindow: Electron.BrowserWindow) {
             if (focusedWindow) { focusedWindow.webContents.toggleDevTools(); }
           }
         },
       ]
     },
-    { label: 'Window', role: 'window',
+    {
+      label: 'Window', role: 'window',
       submenu: [
         { label: 'Minimize', accelerator: 'CmdOrCtrl+M', role: 'minimize' },
         { label: 'Close', accelerator: 'CmdOrCtrl+W', role: 'close' },
       ]
     },
-    { label: 'Help', role: 'help',
+    {
+      label: 'Help', role: 'help',
       submenu: [
         { label: 'Learn More', click() { shell.openExternal('http://electron.atom.io'); } },
       ]
@@ -72,11 +77,20 @@ export function createTemplate(state: globalState, app: Electron.App, shell: Ele
       submenu: [
         {
           label: 'About ' + name, click() {
-            const appDir = `${__dirname}/..`;
-            openAboutWindow({
-              icon_path: `${appDir}/app.png`,
-              package_json_dir: appDir
-            });
+            new BrowserWindow({
+              parent: BrowserWindow.getFocusedWindow(),
+              width: 400,
+              height: 400,
+              useContentSize: true,
+              modal: false,
+              show: true,
+              skipTaskbar: true,
+              webPreferences: {
+                nodeIntegration: false,
+                webSecurity: true,
+                preload: `${__dirname}/../helpers/preload.js`
+              }
+            }).loadURL(`file://${__dirname}/../about.html`);
           }
         },
         { type: 'separator' },

@@ -10,7 +10,7 @@ const merge = require('merge2');
 const { spawn, exec, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs-extra');
-
+const moment = require('moment');
 const rebuild = require('electron-rebuild').rebuildNativeModules;
 
 const dirRoot = __dirname;
@@ -27,7 +27,7 @@ const commitId = execSync('git rev-parse HEAD').toString()
 const devPackageJson = require('./package.json');
 const electronVersion = `${/\d+.\d+.\d+/g.exec(devPackageJson.devDependencies.electron)}`;
 const packageJson = require(path.join(dirSource, 'package.json'));
-const preprocessContext = { DEBUG: false, packageJson, commitId };
+const preprocessContext = { DEBUG: false, packageJson, commitId, electronVersion, timestamp: moment().format() };
 const licenseOptions = { directory: dirSource, production: true, depth: 0, summaryMode: 'detail' };
 
 fs.ensureDirSync(dirOutput);
@@ -84,7 +84,7 @@ gulp.task('rebuild', function (callback) {
 gulp.task('build', ['clean:build', 'rebuild'], function () {
   // build & copy application
   const copyApp = gulp.src([
-    `${dirSource}/?(index.html|package.json)`
+    `${dirSource}/?(index.html|about.html|package.json)`,
   ], { base: dirSource })
     .pipe(plumber())
     .pipe(preprocess({ context: preprocessContext }))

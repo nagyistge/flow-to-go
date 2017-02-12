@@ -1,21 +1,7 @@
-﻿const { webContents, ipcRenderer, ipcMain, remote } = require('electron');
+﻿import { isRendererProcess } from './is-renderer';
+const { webContents, ipcRenderer, ipcMain, remote } = require('electron');
 
-const isRenderer = (function () {
-  // running in a web browser
-  if (typeof process === 'undefined') {
-    return true;
-  }
-
-  // node-integration is disabled
-  if (!process) {
-    return true;
-  }
-  // We're in node.js somehow
-  if (!process.type) {
-    return false;
-  }
-  return process.type === 'renderer';
-})();
+const isRenderer = isRendererProcess();
 
 export function publishMessage(channel:string,...args:any[]) {
     if (isRenderer) {

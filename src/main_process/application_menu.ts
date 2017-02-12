@@ -1,7 +1,8 @@
 ﻿import { updateState } from '../helpers/ipc';
-import { BrowserWindow } from 'electron';
+import { openUrl } from '../helpers/window';
+import { shell } from 'electron';
 
-export function createTemplate(state: globalState, app: Electron.App, shell: Electron.Shell) {
+export function createTemplate(state: globalState, app: Electron.App) {
   const template = [
     {
       label: 'Edit',
@@ -77,20 +78,7 @@ export function createTemplate(state: globalState, app: Electron.App, shell: Ele
       submenu: [
         {
           label: 'About ' + name, click() {
-            new BrowserWindow({
-              parent: BrowserWindow.getFocusedWindow(),
-              width: 400,
-              height: 400,
-              useContentSize: true,
-              modal: false,
-              show: true,
-              skipTaskbar: true,
-              webPreferences: {
-                nodeIntegration: false,
-                webSecurity: true,
-                preload: `${__dirname}/../helpers/preload.js`
-              }
-            }).loadURL(`file://${__dirname}/../about.html`);
+            openUrl(`file://${__dirname}/../about.html`);
           }
         },
         { type: 'separator' },

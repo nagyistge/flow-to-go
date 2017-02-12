@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as nodeRed from './main_process/node_red';
 import * as ApplicationMenu from './main_process/application_menu';
 import * as ipc from './helpers/ipc';
-import { app, shell, Menu, BrowserWindow } from 'electron';
+import { app, Menu, BrowserWindow } from 'electron';
 
 app.once('ready', async () => {
   const defaultSettings = nodeRed.getDefaultSettings();
@@ -45,6 +45,6 @@ app.once('ready', async () => {
   mainWindow.loadURL(`file://${__dirname}/index.html`);
   mainWindow.once('ready-to-show', mainWindow.show);
   
-  const menuTemplate = ApplicationMenu.createTemplate(initialState, app, shell);
+  const menuTemplate = ApplicationMenu.createTemplate(initialState, app);
   Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 });

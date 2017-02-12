@@ -1,5 +1,5 @@
 ﻿import { updateState } from '../helpers/ipc';
-import { openUrl } from '../helpers/window';
+import { openWindow } from '../helpers/window';
 import { shell } from 'electron';
 
 export function createTemplate(state: globalState, app: Electron.App) {
@@ -78,7 +78,13 @@ export function createTemplate(state: globalState, app: Electron.App) {
       submenu: [
         {
           label: 'About ' + name, click() {
-            openUrl(`file://${__dirname}/../about.html`);
+            openWindow(`file://${__dirname}/../views/about.html`, {
+              width: 400,
+              height: 400,
+              webPreferences: {
+                nodeIntegration: true
+              }
+            });
           }
         },
         { type: 'separator' },

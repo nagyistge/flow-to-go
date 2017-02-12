@@ -2,7 +2,12 @@
 import { isMainProcess } from './is-renderer';
 const { BrowserWindow, shell } = isMainProcess() ? require('electron') : require('electron').remote;
 
-export function openWindow(url: URL, options?: Electron.BrowserWindowOptions): Electron.BrowserWindow {
+export function openWindow(url: string, customOptions?: Electron.BrowserWindowOptions): Electron.BrowserWindow {
+  const defaultPreferences = {
+    nodeIntegration: false,
+    webSecurity: true,
+    preload: `${__dirname}/preload.js`
+  };
   const defaultOptions = {
     parent: BrowserWindow.getFocusedWindow(),
     width: 800,
@@ -10,21 +15,20 @@ export function openWindow(url: URL, options?: Electron.BrowserWindowOptions): E
     show: false,
     modal: false,
     autoHideMenuBar: true,
-    skipTaskbar: false,
-    webPreferences: {
-      nodeIntegration: false,
-      webSecurity: true,
-      preload: `${__dirname}/preload.js`
-    }
+    skipTaskbar: false
   };
-  let win = new BrowserWindow(Object.assign(defaultOptions, options));
-  win.loadURL(url.href);
+
+  const options = Object.assign(defaultOptions, customOptions);
+  options.webPreferences = Object.assign(defaultPreferences, options.webPreferences);
+  let win = new BrowserWindow(options);
+
+  win.loadURL(url);
   win.once('ready-to-show', win.show);
   win.on('closed', () => { win = null; });
   return win;
 }
 
-export function openUrl(href: string, options?: Electron.BrowserWindowOptions): boolean {
+export function openUrl(href: string, customOptions?: Electron.BrowserWindowOptions): boolean {
   if (!href) {
     return false;
   }
@@ -38,7 +42,7 @@ export function openUrl(href: string, options?: Electron.BrowserWindowOptions): 
   // @endif
 
   if (url.hostname === 'localhost' || url.protocol === 'file:') {
-    openWindow(url);
+    openWindow(url.href, customOptions);
   } else {
     shell.openExternal(url.href);
   }

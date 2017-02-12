@@ -84,7 +84,8 @@ gulp.task('rebuild', function (callback) {
 gulp.task('build', ['clean:build', 'rebuild'], function () {
   // build & copy application
   const copyApp = gulp.src([
-    `${dirSource}/?(index.html|about.html|package.json)`,
+    `${dirSource}/?(index.html|package.json)`,
+    `${dirSource}/views/**/*.html`,
   ], { base: dirSource })
     .pipe(plumber())
     .pipe(preprocess({ context: preprocessContext }))

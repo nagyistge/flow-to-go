@@ -20,7 +20,12 @@ debugger;
 nodeRedIpc.setupNotifications();
 nodeRedIpc.setupOnlineStatus();
 
-class App extends React.Component<{ init: globalState }, globalState> {
+interface AppState {
+  menuOpen: boolean;
+  menuItems: MenuItem[];
+}
+
+class App extends React.Component<{ init: globalState }, AppState> {
 
   constructor(props: { init: globalState }) {
     super(props);
@@ -29,12 +34,14 @@ class App extends React.Component<{ init: globalState }, globalState> {
 
   globalStateUpdate = (state: globalState) => this.setState(state);
 
+  onShowAdmin = () => ipc.mergeState({ currentView: this.props.init.nodeRedAdmin, menuOpen: false });
+
   render() {
     return <MuiThemeProvider muiTheme={getMuiTheme(uiTheme)}>
       <div className="stretch" >
-        <Menu menuOpen={this.state.menuOpen} menuItems={this.state.menuItems}/>
+        <Menu menuOpen={this.state.menuOpen} menuItems={this.state.menuItems} />
         <NodeRedView
-          adminUI={this.state.nodeRedAdmin}
+          adminUI={this.props.init.nodeRedAdmin}
           className="stretch"
         />
       </div>
@@ -43,10 +50,12 @@ class App extends React.Component<{ init: globalState }, globalState> {
 
   componentDidMount() {
     ipc.subscribeState<globalState>(this.globalStateUpdate);
+    ipc.subscribeMessage('onShowAdmin', this.onShowAdmin);
   }
 
   componentWillUnmount() {
     ipc.unsubscribeState<globalState>(this.globalStateUpdate);
+    ipc.unsubscribeMessage('onShowAdmin', this.onShowAdmin);
   }
 }
 

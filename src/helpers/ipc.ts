@@ -5,10 +5,10 @@ const isRenderer = isRendererProcess();
 
 export function publishMessage(channel:string,...args:any[]) {
     if (isRenderer) {
-      // console.log('publishMessage renderer '+JSON.stringify(args));
+      // // console.log(`publishMessage renderer channel:${channel} payload:${JSON.stringify(args)}`);
       ipcRenderer.send(channel, ...args);
     } else {
-      // console.log('publishMessage main '+JSON.stringify(args));
+      // console.log(`publishMessage main channel:${channel} payload:${JSON.stringify(args)}`);
       webContents.getAllWebContents().forEach(item => {
       item.send(channel, ...args);
     });

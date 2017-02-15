@@ -1,17 +1,19 @@
 ﻿import { isRendererProcess } from './is-renderer';
-const { webContents, ipcRenderer, ipcMain, remote } = require('electron');
-
 const isRenderer = isRendererProcess();
+
+
+const { remote, ipcRenderer } = require('electron');
+const { webContents, ipcMain } = isRenderer ? remote : require('electron');
 
 export function publishMessage(channel:string,...args:any[]) {
     if (isRenderer) {
-      // // console.log(`publishMessage renderer channel:${channel} payload:${JSON.stringify(args)}`);
+      // console.log(`publishMessage renderer channel:${channel} payload:${JSON.stringify(args)}`);
       ipcRenderer.send(channel, ...args);
+      webContents.getAllWebContents().forEach(item => item.send(channel, ...args));
     } else {
       // console.log(`publishMessage main channel:${channel} payload:${JSON.stringify(args)}`);
-      webContents.getAllWebContents().forEach(item => {
-      item.send(channel, ...args);
-    });
+      webContents.getAllWebContents().forEach(item => item.send(channel, ...args));
+      ipcMain.listeners(channel).forEach(listener => listener(channel, ...args));
   }
 }
 
@@ -59,9 +61,8 @@ function refreshState<T>(newState:T):boolean {
   return true;
 }
 
-subscribeMessage(stateChannel, (event, newState) => {
-    refreshState(newState);
-});
+// subscribe current process on state changes
+subscribeMessage(stateChannel, (event, newState) => refreshState(newState));
 
 export function setState<T>(newState: T): void{
   if (refreshState<T>(newState)) {

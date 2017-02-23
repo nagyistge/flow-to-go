@@ -292,6 +292,20 @@
 
 </script>
 
+<script type="text/x-red" data-help-name="electron-print-pdf">
+  <p>
+    This node renders a webpage into a pdf document using electron.
+    You can set the webpage statically (configuration) or dynamically within the flow (msg.url).
+  </p>
+  <p>
+    The node provides 2 outputs
+    <ul>
+      <li>1: current status of the connected browser window</li>
+      <li>2: rendered pdf as byte array</li>
+    </ul>
+  </p>
+</script>
+
 <script type="text/javascript">
   RED.nodes.registerType('electron-print-pdf', {
     category: 'custom',

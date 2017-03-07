@@ -33,6 +33,10 @@
   dependencies:
     "@types/node" "*"
 
+"@types/graphql@^0.8.6":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.8.6.tgz#b34fb880493ba835b0c067024ee70130d6f9bb68"
+
 "@types/material-ui@^0.16.49":
   version "0.16.51"
   resolved "https://registry.yarnpkg.com/@types/material-ui/-/material-ui-0.16.51.tgz#14d0b95f1765d6e650246b73aba1a5e22d4ec0ee"

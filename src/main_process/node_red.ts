@@ -1,5 +1,6 @@
 ﻿import * as express from 'express';
 import * as http from 'http';
+import { graphql, buildSchema } from 'graphql';
 
 const { app } = require('electron');
 const RED = require('node-red');
@@ -70,6 +71,24 @@ export async function initialize(nodeSettings: NodeRedSettings) {
 
   redApp.use(nodeSettings.httpAdminRoot, RED.httpAdmin);
   redApp.use(nodeSettings.httpNodeRoot, RED.httpNode);
+
+  // Construct a schema, using GraphQL schema language
+  var schema = buildSchema(`
+    type Query {
+      hello: String
+    }
+  `);
+
+  // The root provides a resolver function for each API endpoint
+  var root = {
+    hello: () => {
+      return 'Hello world!';
+    },
+  };
+
+  graphql(schema, '{ hello }', root).then((response) => {
+    console.log(response);
+  });
 
   const redInitialization = RED.start();
   return new Promise<NodeRedSettings>((resolve, reject) => {

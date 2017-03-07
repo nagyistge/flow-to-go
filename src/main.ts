@@ -31,13 +31,18 @@ app.once('ready', async () => {
 
   const nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;
   const nodeRedAdmin = `${nodeRedUrl}/admin`;
+  const nodeRedUI = `${nodeRedUrl}/ui`;
   const initialState:globalState = {
     nodeRedUrl: `http://localhost:${settings.functionGlobalContext.port}`,
     nodeRedAdmin,
+    nodeRedUI,
+    graphiQL: 'GraphiQL',
     currentView: nodeRedAdmin,
     menuOpen: false,
     menuItems: [
-      { id: 'onShowAdmin', icon: 'fa fa-cogs' }
+      { id: 'onShowAdmin', icon: 'fa fa-cogs' },
+      { id: 'onShowUI', icon: 'fa fa-eye' },
+      { id: 'onShowGraphiQL', icon: 'fa fa-flash' }
     ] as MenuItem[]
   };
   

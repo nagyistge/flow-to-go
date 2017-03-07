@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import Webview from './webview';
 import * as ipc from '../helpers/ipc';
-
+const GraphiQL = require('graphiql') as any;
 
 interface Properties {
   id?: string;
@@ -11,13 +11,20 @@ interface Properties {
 
 interface State {
   src?: string;
+  showGraphiQL: boolean;
   online?: boolean;
+}
+
+function graphQLFetcher(graphQLParams:any) {
+  return { foo:'bar'} ;
 }
 
 export default class NodeRedView extends React.Component<Properties,State> {
 
   render() {
-    return <Webview src={this.state.src} className={this.props.className}/>;
+    return this.state.showGraphiQL
+      ? <GraphiQL fetcher={graphQLFetcher} />
+      : <Webview src={this.state.src} className={this.props.className} />;
   }
 
   constructor(props:Properties) {
@@ -25,6 +32,7 @@ export default class NodeRedView extends React.Component<Properties,State> {
     this.state = {
       src: props.adminUI,
       online: navigator.onLine,
+      showGraphiQL: false,
     };
   }
 
@@ -32,7 +40,7 @@ export default class NodeRedView extends React.Component<Properties,State> {
     if (state.currentView === this.state.src) {
       return;
     }
-    this.setState({ src: state.currentView });
+    this.setState({ src: state.currentView, showGraphiQL: state.currentView===state.graphiQL });
   }
 
   handleOnline = () => { this.setState({ online: true }); };

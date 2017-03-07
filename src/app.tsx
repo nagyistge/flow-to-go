@@ -35,6 +35,8 @@ class App extends React.Component<{ init: globalState }, AppState> {
   globalStateUpdate = (state: globalState) => this.setState(state);
 
   onShowAdmin = () => ipc.mergeState({ currentView: this.props.init.nodeRedAdmin, menuOpen: false });
+  onShowUI = () => ipc.mergeState({ currentView: this.props.init.nodeRedUI, menuOpen: false });
+  onShowGraphiQL = () => ipc.mergeState({ currentView: this.props.init.graphiQL, menuOpen: false });
 
   render() {
     return <MuiThemeProvider muiTheme={getMuiTheme(uiTheme)}>
@@ -51,11 +53,15 @@ class App extends React.Component<{ init: globalState }, AppState> {
   componentDidMount() {
     ipc.subscribeState<globalState>(this.globalStateUpdate);
     ipc.subscribeMessage('onShowAdmin', this.onShowAdmin);
+    ipc.subscribeMessage('onShowUI', this.onShowUI);
+    ipc.subscribeMessage('onShowGraphiQL', this.onShowGraphiQL);
   }
 
   componentWillUnmount() {
     ipc.unsubscribeState<globalState>(this.globalStateUpdate);
     ipc.unsubscribeMessage('onShowAdmin', this.onShowAdmin);
+    ipc.unsubscribeMessage('onShowUI', this.onShowUI);
+    ipc.unsubscribeMessage('onShowGraphiQL', this.onShowGraphiQL);
   }
 }
 

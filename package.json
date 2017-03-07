@@ -20,7 +20,7 @@
     "@types/rx": "^4.1.1",
     "@types/uuid": "^2.0.29",
     "devtron": "^1.4.0",
-    "electron": "^1.6.1",
+    "electron": "1.6.2",
     "electron-packager": "^8.5.1",
     "electron-rebuild": "^1.5.7",
     "fs-extra": "^2.0.0",

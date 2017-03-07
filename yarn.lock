@@ -954,7 +954,7 @@ electron-rebuild@^1.5.7:
     spawn-rx "^2.0.7"
     yargs "^3.31.0"
 
-electron@^1.6.1:
+electron@1.6.2:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/electron/-/electron-1.6.2.tgz#b0ccd7703f86d09c4d2a7273455c3f993f158994"
   dependencies:
@@ -3402,13 +3402,9 @@ typedarray@~0.0.5:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@2.2.0:
+typescript@2.2.0, typescript@^2.1.4:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.0.tgz#626f2fc70087d2480f21ebb12c1888288c8614e3"
-
-typescript@^2.1.4:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.2.1.tgz#4862b662b988a4c8ff691cc7969622d24db76ae9"
 
 typings-core@^2.2.0:
   version "2.3.2"

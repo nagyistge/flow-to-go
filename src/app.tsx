@@ -25,25 +25,30 @@ interface AppState {
   menuItems: MenuItem[];
 }
 
-class App extends React.Component<{ init: globalState }, AppState> {
+interface AppProps {
+  init: globalState;
+}
 
-  constructor(props: { init: globalState }) {
+class App extends React.Component<AppProps, AppState> {
+
+  constructor(props: AppProps) {
     super(props);
     this.state = props.init;
   }
 
-  globalStateUpdate = (state: globalState) => this.setState(state);
+  globalStateUpdate = (state: any) => this.setState(state);
 
   onShowAdmin = () => ipc.mergeState({ currentView: this.props.init.nodeRedAdmin, menuOpen: false });
   onShowUI = () => ipc.mergeState({ currentView: this.props.init.nodeRedUI, menuOpen: false });
-  onShowGraphiQL = () => ipc.mergeState({ currentView: this.props.init.graphiQL, menuOpen: false });
+  onShowGraphiQL = () => ipc.mergeState({ currentView: 'GraphiQL', menuOpen: false });
 
   render() {
     return <MuiThemeProvider muiTheme={getMuiTheme(uiTheme)}>
       <div className="stretch" >
         <Menu menuOpen={this.state.menuOpen} menuItems={this.state.menuItems} />
         <NodeRedView
-          adminUI={this.props.init.nodeRedAdmin}
+          initialView={this.props.init.nodeRedAdmin}
+          graphQL={this.props.init.graphQL}
           className="stretch"
         />
       </div>
@@ -67,4 +72,4 @@ class App extends React.Component<{ init: globalState }, AppState> {
 
 ipc
   .getState<globalState>()
-  .then(state => render(<App init={state} />, document.getElementById('app')));
+  .then(state => render(<App init={state}/>, document.getElementById('app')));

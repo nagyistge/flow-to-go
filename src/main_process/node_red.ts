@@ -1,17 +1,24 @@
 ﻿import * as express from 'express';
 import * as http from 'http';
-import { graphql, buildSchema } from 'graphql';
+import { buildSchema } from 'graphql';
+import * as graphqlHTTP from 'express-graphql';
 
 const { app } = require('electron');
 const RED = require('node-red');
 
 export interface NodeRedGlobals {
   port: number;
+  graphQL: string;
+  administration: string;
+  dashboard: string;
+  rootUrl: string;
 }
 
 export interface NodeRedSettings {
   httpAdminRoot: string;
   httpNodeRoot: string;
+  httpGraphQLRoot: string;
+  httpUIRoot: string;
   userDir: string;
   functionGlobalContext: NodeRedGlobals;
 }
@@ -19,6 +26,8 @@ export interface NodeRedSettings {
 export function getDefaultSettings() {
   return <NodeRedSettings>{
     httpAdminRoot: '/admin',
+    httpGraphQLRoot: '/graphql',
+    httpUIRoot: '/ui',
     httpNodeRoot: '/',
     userDir: app.getPath('userData'),
     flowFile: 'flows.json',
@@ -50,6 +59,10 @@ export function getDefaultSettings() {
     },
     functionGlobalContext: {
       port: 0,
+      graphQL: null,
+      administration: null,
+      dashboard: null,
+      rootUrl:null
     }
   };
 }
@@ -86,14 +99,22 @@ export async function initialize(nodeSettings: NodeRedSettings) {
     },
   };
 
-  graphql(schema, '{ hello }', root).then((response) => {
-    console.log(response);
+  const graphQL = graphqlHTTP({
+    schema: schema,
+    graphiql:false
   });
+
+  redApp.use(nodeSettings.httpGraphQLRoot, graphQL);
 
   const redInitialization = RED.start();
   return new Promise<NodeRedSettings>((resolve, reject) => {
     server.listen(nodeSettings.functionGlobalContext.port, '127.0.0.1', async () => {
-      nodeSettings.functionGlobalContext.port = server.address().port;
+      const port = server.address().port;
+      const rootUrl = `http://localhost:${port}`;
+      nodeSettings.functionGlobalContext.port = port;
+      nodeSettings.functionGlobalContext.administration = `${rootUrl}${nodeSettings.httpAdminRoot}`;
+      nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${nodeSettings.httpUIRoot}`;
+      nodeSettings.functionGlobalContext.graphQL = `${rootUrl}${nodeSettings.httpGraphQLRoot}`;
       await redInitialization;
       app.on('before-quit', () => RED.stop());
       RED.log.info(`port: ${nodeSettings.functionGlobalContext.port}`);

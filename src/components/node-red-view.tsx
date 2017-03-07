@@ -1,46 +1,49 @@
 ﻿import * as React from 'react';
 import Webview from './webview';
 import * as ipc from '../helpers/ipc';
+
+import * as fetch from 'isomorphic-fetch';
 const GraphiQL = require('graphiql') as any;
 
 interface Properties {
   id?: string;
-  adminUI: string;
+  initialView: string;
   className?: string;
+  graphQL: string;
 }
 
 interface State {
-  src?: string;
-  showGraphiQL: boolean;
+  view?: string;
   online?: boolean;
 }
 
-function graphQLFetcher(graphQLParams:any) {
-  return { foo:'bar'} ;
-}
-
 export default class NodeRedView extends React.Component<Properties,State> {
-
   render() {
-    return this.state.showGraphiQL
+    const graphQLFetcher = (graphQLParams: any) => {
+      return fetch(this.props.graphQL, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(graphQLParams),
+      }).then((response: any) => response.json());
+    }
+    return this.state.view === 'GraphiQL'
       ? <GraphiQL fetcher={graphQLFetcher} />
-      : <Webview src={this.state.src} className={this.props.className} />;
+      : <Webview src={this.state.view} className={this.props.className} />;
   }
 
   constructor(props:Properties) {
     super(props);
-    this.state = {
-      src: props.adminUI,
-      online: navigator.onLine,
-      showGraphiQL: false,
+    this.state ={
+      view: props.initialView,
+      online: navigator.onLine
     };
   }
 
   handleStateChange = (state: globalState) => {
-    if (state.currentView === this.state.src) {
+    if (state.currentView === this.state.view) {
       return;
     }
-    this.setState({ src: state.currentView, showGraphiQL: state.currentView===state.graphiQL });
+    this.setState({ view: state.currentView });
   }
 
   handleOnline = () => { this.setState({ online: true }); };

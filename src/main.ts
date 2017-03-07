@@ -29,15 +29,12 @@ app.once('ready', async () => {
 
   const settings = await redInitialization;
 
-  const nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;
-  const nodeRedAdmin = `${nodeRedUrl}/admin`;
-  const nodeRedUI = `${nodeRedUrl}/ui`;
   const initialState:globalState = {
-    nodeRedUrl: `http://localhost:${settings.functionGlobalContext.port}`,
-    nodeRedAdmin,
-    nodeRedUI,
-    graphiQL: 'GraphiQL',
-    currentView: nodeRedAdmin,
+    nodeRedUrl: settings.functionGlobalContext.rootUrl,
+    nodeRedAdmin: settings.functionGlobalContext.administration,
+    nodeRedUI: settings.functionGlobalContext.dashboard,
+    graphQL: settings.functionGlobalContext.graphQL,
+    currentView: settings.functionGlobalContext.administration,
     menuOpen: false,
     menuItems: [
       { id: 'onShowAdmin', icon: 'fa fa-cogs' },

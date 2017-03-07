@@ -6,7 +6,7 @@ abbrev@1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
 
-accepts@~1.3.3:
+accepts@1.3.3, accepts@~1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/accepts/-/accepts-1.3.3.tgz#c3ca7434938648c3e0d9c1e328dd68b622c284ca"
   dependencies:
@@ -175,6 +175,10 @@ base62@0.1.1:
 base64-arraybuffer@0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/base64-arraybuffer/-/base64-arraybuffer-0.1.5.tgz#73926771923b5a19747ad666aa5cd4bf9c6e9ce8"
+
+base64id@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/base64id/-/base64id-1.0.0.tgz#47688cb99bb6804f0e06d3e763b1c32e57d8e6b6"
 
 basic-auth@1.1.0:
   version "1.1.0"
@@ -691,6 +695,17 @@ engine.io-parser@1.3.2:
     blob "0.0.4"
     has-binary "0.1.7"
     wtf-8 "1.0.0"
+
+engine.io@1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/engine.io/-/engine.io-1.8.3.tgz#8de7f97895d20d39b85f88eeee777b2bd42b13d4"
+  dependencies:
+    accepts "1.3.3"
+    base64id "1.0.0"
+    cookie "0.3.1"
+    debug "2.3.3"
+    engine.io-parser "1.3.2"
+    ws "1.1.2"
 
 entities@^1.1.1, entities@~1.1.1:
   version "1.1.1"
@@ -1910,6 +1925,13 @@ node-red-contrib-gpio@^0.9.2:
   optionalDependencies:
     mqtt "^2.1.1"
 
+node-red-dashboard@^2.3.5:
+  version "2.3.5"
+  resolved "https://registry.yarnpkg.com/node-red-dashboard/-/node-red-dashboard-2.3.5.tgz#dfe836098d547e38aad132c97eecec851d51a896"
+  dependencies:
+    serve-static "^1.11.2"
+    socket.io "^1.7.3"
+
 node-red-node-email@0.1.*:
   version "0.1.21"
   resolved "https://registry.yarnpkg.com/node-red-node-email/-/node-red-node-email-0.1.21.tgz#63baed16d538e786ddadc169b23552d9eb9abc30"
@@ -2077,6 +2099,10 @@ oauth2orize@1.7.0:
 oauth@0.9.14, oauth@>=0.9.9:
   version "0.9.14"
   resolved "https://registry.yarnpkg.com/oauth/-/oauth-0.9.14.tgz#c5748883a40b53de30ade9cabf2100414b8a0971"
+
+object-assign@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.0.tgz#7a3b3d0e98063d43f4c03f2e8ae6cd51a86883a0"
 
 object-assign@^4.0.1, object-assign@^4.1.0:
   version "4.1.1"
@@ -2632,7 +2658,7 @@ serialport@^4.0.0, serialport@^4.0.7, serialport@~4.0.7:
     node-pre-gyp "^0.6.32"
     object.assign "^4.0.3"
 
-serve-static@1.12.1:
+serve-static@1.12.1, serve-static@^1.11.2:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.12.1.tgz#7443a965e3ced647aceb5639fa06bf4d1bbe0039"
   dependencies:
@@ -2704,7 +2730,14 @@ sntp@1.x.x:
   dependencies:
     hoek "2.x.x"
 
-socket.io-client@^1.3.5:
+socket.io-adapter@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/socket.io-adapter/-/socket.io-adapter-0.5.0.tgz#cb6d4bb8bec81e1078b99677f9ced0046066bb8b"
+  dependencies:
+    debug "2.3.3"
+    socket.io-parser "2.3.1"
+
+socket.io-client@1.7.3, socket.io-client@^1.3.5:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-1.7.3.tgz#b30e86aa10d5ef3546601c09cde4765e381da377"
   dependencies:
@@ -2728,6 +2761,18 @@ socket.io-parser@2.3.1:
     debug "2.2.0"
     isarray "0.0.1"
     json3 "3.3.2"
+
+socket.io@^1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-1.7.3.tgz#b8af9caba00949e568e369f1327ea9be9ea2461b"
+  dependencies:
+    debug "2.3.3"
+    engine.io "1.8.3"
+    has-binary "0.1.7"
+    object-assign "4.1.0"
+    socket.io-adapter "0.5.0"
+    socket.io-client "1.7.3"
+    socket.io-parser "2.3.1"
 
 source-map@0.1.31:
   version "0.1.31"

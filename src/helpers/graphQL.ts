@@ -3,7 +3,7 @@ import { buildSchema, GraphQLSchema } from 'graphql';
 import * as graphqlHTTP from 'express-graphql';
 
 let schema: GraphQLSchema = null;
-let rootValue: Object = null;
+const rootValue: any = {};
 
 function getHttpOptions(req: express.Request) {
   return {
@@ -17,8 +17,12 @@ export function getHttpMiddleware() {
   return graphqlHTTP(getHttpOptions);
 }
 
-export function setRootValue(newValue: Object) {
-  rootValue = newValue;
+export function addResolver(name:string, resolver: () => any) {
+  rootValue[name] = resolver;
+}
+
+export function removeResolver(name:string) {
+  delete rootValue[name];
 }
 
 export function setSchema(newSchema: string) {

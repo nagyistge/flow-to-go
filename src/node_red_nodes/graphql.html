@@ -51,13 +51,13 @@
 <script type="text/x-red" data-template-name="graphql-resolver">
 
   <div class="form-row">
-    <label for="node-input-schema"><i class="fa fa-database"></i> Schema</label>
-    <input type="graphql-schema" id="node-input-schema">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
   </div>
 
   <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-input-name" placeholder="Name">
+    <label for="node-input-schema"><i class="fa fa-database"></i> Schema</label>
+    <input type="graphql-schema" id="node-input-schema">
   </div>
 
   <div class="form-tips"><b>See:</b>
@@ -73,7 +73,7 @@
   RED.nodes.registerType('graphql-resolver', {
     category: 'custom',
     defaults: {
-      name: { value: '' },
+      name: { value: '', required: true },
       schema: { value: '', type: 'graphql-schema', required: true }
     },
     inputs: 0,

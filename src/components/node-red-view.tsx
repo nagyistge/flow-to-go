@@ -25,7 +25,7 @@ export default class NodeRedView extends React.Component<Properties,State> {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(graphQLParams),
       }).then((response: any) => response.json());
-    }
+    };
     return this.state.view === 'GraphiQL'
       ? <GraphiQL fetcher={graphQLFetcher} />
       : <Webview src={this.state.view} className={this.props.className} />;

@@ -1,6 +1,6 @@
 ﻿import * as express from 'express';
 import * as http from 'http';
-import { getHttpMiddleware, setRootValue, setSchema } from '../helpers/graphQL';
+import { getHttpMiddleware } from '../helpers/graphQL';
 
 const { app } = require('electron');
 const RED = require('node-red');
@@ -83,14 +83,6 @@ export async function initialize(nodeSettings: NodeRedSettings) {
 
   redApp.use(nodeSettings.httpAdminRoot, RED.httpAdmin);
   redApp.use(nodeSettings.httpNodeRoot, RED.httpNode);
-
-  setRootValue({
-    foobar: false,
-    hello: () => {
-      this.foobar = !this.foobar;
-      return this.foobar ? 'foo' : 'bar';
-    },
-  });
   
   redApp.use(nodeSettings.httpGraphQLRoot, getHttpMiddleware());
 
@@ -103,6 +95,7 @@ export async function initialize(nodeSettings: NodeRedSettings) {
       nodeSettings.functionGlobalContext.administration = `${rootUrl}${nodeSettings.httpAdminRoot}`;
       nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${nodeSettings.httpUIRoot}`;
       nodeSettings.functionGlobalContext.graphQL = `${rootUrl}${nodeSettings.httpGraphQLRoot}`;
+      nodeSettings.functionGlobalContext.rootUrl = rootUrl;
       await redInitialization;
       app.on('before-quit', () => RED.stop());
       RED.log.info(`port: ${nodeSettings.functionGlobalContext.port}`);

@@ -54,38 +54,27 @@
   </div>
 
   <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> Type</label>
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name">
   </div>
 
-  <div class="form-row node-input-properties-container-row">
-    <ol id="node-input-properties-container"></ol>
-  </div>
-
-</script>
-
-<script type="text/x-red" data-help-name="graphql-resolver">
-  <p></p>
 </script>
 
 <script type="text/javascript">
   RED.nodes.registerType('graphql-resolver', {
-    category: 'custom',
+    category: 'GraphQL',
     defaults: {
       schema: { value: '', type: 'graphql-schema', required: true },
       name: { value: '', required: true },
-      properties: {
-        value: [],
-        required: false
-      },
     },
     inputs: 0,
     outputs: 1,
     color: "#3FADB5",
+    icon: 'function.png',
     align: 'left',
-    paletteLabel: 'GraphQL Resolver',
+    paletteLabel: 'Resolver',
     label: function () {
-      return this.name || 'GraphQL Resolver'
+      return this.name || 'Resolver'
     },
     labelStyle: function () {
       return this.schema ? '' : 'node_label_italic'
@@ -97,39 +86,6 @@
         }
       }
       $('select#node-input-schema').on('DOMNodeInserted','option[value="_ADD_"]', removeAdd);
-
-      // Properties Container
-      const propertiesContainer = $('#node-input-properties-container')
-      propertiesContainer.css('min-height', '250px').css('min-width', '450px').editableList({
-        addItem: function (container, index, data) {
-          data = (typeof data === 'string' ) ? JSON.parse(data) : { name: '' }
-          const row1 = $('<div/>').appendTo(container);
-          
-          $('<input/>', {
-            id:`property-name-${index}`,
-            type: 'text',
-            style: 'width: 100%',
-            placeholder: 'property name'
-          }).val(data.name).appendTo(row1);
-        
-        },
-        removable: true,
-        addButton: 'add Index'
-      });
-      this.properties.forEach(data => {
-        propertiesContainer.editableList('addItem', data);
-      });
-    },
-    oneditsave: function() {
-      const items = $('#node-input-properties-container').editableList('items');
-      const results = [];
-      items.each(function(i) {
-        const value = {
-          name: $(this).find(`#property-name-${i}`).val(),
-        }
-        results.push(JSON.stringify(value));
-      });
-      this.properties = $.unique(results);
     }
   })
 </script>
@@ -147,15 +103,16 @@
 
 <script type="text/javascript">
   RED.nodes.registerType('graphql-resolve', {
-    category: 'custom',
+    category: 'GraphQL',
     defaults: {
       name: { value: '', required: false },
     },
     inputs: 1,
     outputs: 0,
     color: "#3FADB5",
+    icon: 'envelope.png',
     align: 'right',
-    paletteLabel: 'GraphQL resolve',
+    paletteLabel: 'resolve',
     label: function () {
       return this.name || 'resolve'
     },
@@ -178,15 +135,16 @@
 
 <script type="text/javascript">
   RED.nodes.registerType('graphql-reject', {
-    category: 'custom',
+    category: 'GraphQL',
     defaults: {
       name: { value: '', required: false },
     },
     inputs: 1,
     outputs: 0,
     color: "#3FADB5",
+    icon: 'alert.png',
     align: 'right',
-    paletteLabel: 'GraphQL reject',
+    paletteLabel: 'reject',
     label: function () {
       return this.name || 'reject'
     },

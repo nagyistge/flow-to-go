@@ -46,23 +46,22 @@
 </script>
 
 
-
-
 <script type="text/x-red" data-template-name="graphql-resolver">
-
-  <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-input-name" placeholder="Name">
-  </div>
 
   <div class="form-row">
     <label for="node-input-schema"><i class="fa fa-database"></i> Schema</label>
     <input type="graphql-schema" id="node-input-schema">
   </div>
 
-  <div class="form-tips"><b>See:</b>
-    
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Type</label>
+    <input type="text" id="node-input-name" placeholder="Name">
   </div>
+
+  <div class="form-row node-input-properties-container-row">
+    <ol id="node-input-properties-container"></ol>
+  </div>
+
 </script>
 
 <script type="text/x-red" data-help-name="graphql-resolver">
@@ -73,14 +72,17 @@
   RED.nodes.registerType('graphql-resolver', {
     category: 'custom',
     defaults: {
+      schema: { value: '', type: 'graphql-schema', required: true },
       name: { value: '', required: true },
-      schema: { value: '', type: 'graphql-schema', required: true }
+      properties: {
+        value: [],
+        required: false
+      },
     },
     inputs: 0,
     outputs: 1,
     color: "#3FADB5",
-    icon: 'db.png',
-    align: 'right',
+    align: 'left',
     paletteLabel: 'GraphQL Resolver',
     label: function () {
       return this.name || 'GraphQL Resolver'
@@ -90,12 +92,106 @@
     },
     oneditprepare: function () {
       const removeAdd = () => {
-        console.log('remove called');
         if (this.schema || $('select#node-input-schema option').length > 1) {
           $('select#node-input-schema option[value="_ADD_"]').remove();
         }
       }
       $('select#node-input-schema').on('DOMNodeInserted','option[value="_ADD_"]', removeAdd);
+
+      // Properties Container
+      const propertiesContainer = $('#node-input-properties-container')
+      propertiesContainer.css('min-height', '250px').css('min-width', '450px').editableList({
+        addItem: function (container, index, data) {
+          data = (typeof data === 'string' ) ? JSON.parse(data) : { name: '' }
+          const row1 = $('<div/>').appendTo(container);
+          
+          $('<input/>', {
+            id:`property-name-${index}`,
+            type: 'text',
+            style: 'width: 100%',
+            placeholder: 'property name'
+          }).val(data.name).appendTo(row1);
+        
+        },
+        removable: true,
+        addButton: 'add Index'
+      });
+      this.properties.forEach(data => {
+        propertiesContainer.editableList('addItem', data);
+      });
+    },
+    oneditsave: function() {
+      const items = $('#node-input-properties-container').editableList('items');
+      const results = [];
+      items.each(function(i) {
+        const value = {
+          name: $(this).find(`#property-name-${i}`).val(),
+        }
+        results.push(JSON.stringify(value));
+      });
+      this.properties = $.unique(results);
+    }
+  })
+</script>
+
+<!--resolve-->
+
+<script type="text/x-red" data-template-name="graphql-resolve">
+
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('graphql-resolve', {
+    category: 'custom',
+    defaults: {
+      name: { value: '', required: false },
+    },
+    inputs: 1,
+    outputs: 0,
+    color: "#3FADB5",
+    align: 'right',
+    paletteLabel: 'GraphQL resolve',
+    label: function () {
+      return this.name || 'resolve'
+    },
+    labelStyle: function () {
+      return this.name ? '' : 'node_label_italic'
+    }
+  })
+</script>
+
+<!--reject-->
+
+<script type="text/x-red" data-template-name="graphql-reject">
+
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('graphql-reject', {
+    category: 'custom',
+    defaults: {
+      name: { value: '', required: false },
+    },
+    inputs: 1,
+    outputs: 0,
+    color: "#3FADB5",
+    align: 'right',
+    paletteLabel: 'GraphQL reject',
+    label: function () {
+      return this.name || 'reject'
+    },
+    labelStyle: function () {
+      return this.name ? '' : 'node_label_italic'
     }
   })
 </script>

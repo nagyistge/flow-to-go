@@ -17,7 +17,7 @@ export function getHttpMiddleware() {
   return graphqlHTTP(getHttpOptions);
 }
 
-export function addResolver(name:string, resolver: () => any) {
+export function addResolver(name:string, resolver: (args:any) => Promise<any>) {
   rootValue[name] = resolver;
 }
 

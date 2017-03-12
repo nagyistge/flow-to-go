@@ -27,6 +27,7 @@
     };
 
     let runningTasks = 0;
+    setStatus(runningTasks);
     addResolver(node.name, (args:any) => new Promise((resolve, reject) => {
       setStatus(++runningTasks);
         // @if DEBUG

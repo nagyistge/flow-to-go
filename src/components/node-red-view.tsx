@@ -1,8 +1,8 @@
 ﻿import * as React from 'react';
 import Webview from './webview';
 import * as ipc from '../helpers/ipc';
+import { fetchData } from '../helpers/graphQL';
 
-import * as fetch from 'isomorphic-fetch';
 const GraphiQL = require('graphiql') as any;
 
 interface Properties {
@@ -19,15 +19,8 @@ interface State {
 
 export default class NodeRedView extends React.Component<Properties,State> {
   render() {
-    const graphQLFetcher = (graphQLParams: any) => {
-      return fetch(this.props.graphQL, {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(graphQLParams),
-      }).then((response: any) => response.json());
-    };
     return this.state.view === 'GraphiQL'
-      ? <GraphiQL fetcher={graphQLFetcher} />
+      ? <GraphiQL fetcher={(params:any) => fetchData(this.props.graphQL, params)} />
       : <Webview src={this.state.view} className={this.props.className} />;
   }
 

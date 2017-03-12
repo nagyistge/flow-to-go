@@ -77,6 +77,25 @@
   }
   RED.nodes.registerType('graphql-reject', GraphQLReject);
 
+  // query
+  function GraphQLQuery(config: any) {
+    const { fetchData } = require('../../../../helpers/graphQL');
+    RED.nodes.createNode(this, config);
+    const node = this;
+    node.query = config.query;
+    const endpoint = node.context().global.get('graphQL');
+    
+    node.on('input', (msg: { query: string, payload: any }) => {
+      const query = {
+        query: node.query || msg.query,
+      };
+      fetchData(endpoint, query).then((result:any) => {
+        msg.payload = result;
+        node.send(msg);
+      });
+    });
+  }
+  RED.nodes.registerType('graphql-query', GraphQLQuery);
 };
 
 

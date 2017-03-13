@@ -14,8 +14,13 @@
     <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-config-input-schema-editor"></div>
   </div>
 
-</script>
+  <div class="form-tips"><b>See:</b>
+    <ul>
+      <li><a href="http://graphql.org/graphql-js/basic-types/">Basic Types</a></li>
+    </ul>
+  </div>
 
+</script>
 
 <script type="text/javascript">
   RED.nodes.registerType('graphql-schema', {
@@ -54,10 +59,16 @@
   </div>
 
   <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-    <input type="text" id="node-input-name" placeholder="Name">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Method</label>
+    <input type="text" id="node-input-name" placeholder="Method">
   </div>
 
+</script>
+
+<script type="text/x-red" data-help-name="graphql-resolver">
+  Use this node to implement the correspondig method of your graphQL schema.
+  On every access, the resolver will emit a message. The property <code>msg.args</code> will contain the arguments.
+  To finish the resolving process, connect a resolve / reject node.
 </script>
 
 <script type="text/javascript">
@@ -102,6 +113,11 @@
 
 </script>
 
+<script type="text/x-red" data-help-name="graphql-resolve">
+  This Node will finish a resolver call successfully and returns the <code>msg.payload</code> as result.
+</script>
+
+
 <script type="text/javascript">
   RED.nodes.registerType('graphql-resolve', {
     category: 'GraphQL',
@@ -132,6 +148,11 @@
     <input type="text" id="node-input-name" placeholder="Name">
   </div>
 
+</script>
+
+
+<script type="text/x-red" data-help-name="graphql-reject">
+  This node will abort a resolver call and returns the <code>msg.payload</code> as errormessage.
 </script>
 
 <script type="text/javascript">
@@ -173,6 +194,10 @@
     <div style="height: 250px; min-height:150px;" class="node-text-editor" id="node-input-query-editor"></div>
   </div>
 
+</script>
+
+<script type="text/x-red" data-help-name="graphql-query">
+  Executes a graphQL query and emits the result as <code>msg.payload</code>.
 </script>
 
 <script type="text/javascript">

@@ -32,15 +32,15 @@ export default class NodeRedView extends React.Component<Properties,State> {
     };
   }
 
-  handleStateChange = (state: globalState) => {
-    if (state.currentView === this.state.view) {
+  handleStateChange = (newState: globalState) => {
+    if (newState.currentView === this.state.view) {
       return;
     }
-    this.setState({ view: state.currentView });
+    this.setState((state) => state.view= newState.currentView);
   }
 
-  handleOnline = () => { this.setState({ online: true }); };
-  handleOffline = () => { this.setState({ online: false }); };
+  handleOnline = () => { this.setState((state) => state.online = true); };
+  handleOffline = () => { this.setState((state) => state.online = false); };
 
   componentDidMount() {
     window.addEventListener('online', this.handleOnline);

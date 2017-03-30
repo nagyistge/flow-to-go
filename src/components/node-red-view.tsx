@@ -1,42 +1,46 @@
 ﻿import * as React from 'react';
 import Webview from './webview';
 import * as ipc from '../helpers/ipc';
+import { fetchData } from '../helpers/graphQL';
 
+const GraphiQL = require('graphiql') as any;
 
 interface Properties {
   id?: string;
-  adminUI: string;
+  initialView: string;
   className?: string;
+  graphQL: string;
 }
 
 interface State {
-  src?: string;
+  view?: string;
   online?: boolean;
 }
 
 export default class NodeRedView extends React.Component<Properties,State> {
-
   render() {
-    return <Webview src={this.state.src} className={this.props.className}/>;
+    return this.state.view === 'GraphiQL'
+      ? <GraphiQL fetcher={(params:any) => fetchData(this.props.graphQL, params)} />
+      : <Webview src={this.state.view} className={this.props.className} />;
   }
 
   constructor(props:Properties) {
     super(props);
-    this.state = {
-      src: props.adminUI,
-      online: navigator.onLine,
+    this.state ={
+      view: props.initialView,
+      online: navigator.onLine
     };
   }
 
-  handleStateChange = (state: globalState) => {
-    if (state.currentView === this.state.src) {
+  handleStateChange = (newState: globalState) => {
+    if (newState.currentView === this.state.view) {
       return;
     }
-    this.setState({ src: state.currentView });
+    this.setState((state) => state.view= newState.currentView);
   }
 
-  handleOnline = () => { this.setState({ online: true }); };
-  handleOffline = () => { this.setState({ online: false }); };
+  handleOnline = () => { this.setState((state) => state.online = true); };
+  handleOffline = () => { this.setState((state) => state.online = false); };
 
   componentDidMount() {
     window.addEventListener('online', this.handleOnline);

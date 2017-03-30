@@ -29,15 +29,17 @@ app.once('ready', async () => {
 
   const settings = await redInitialization;
 
-  const nodeRedUrl = `http://localhost:${settings.functionGlobalContext.port}`;
-  const nodeRedAdmin = `${nodeRedUrl}/admin`;
   const initialState:globalState = {
-    nodeRedUrl: `http://localhost:${settings.functionGlobalContext.port}`,
-    nodeRedAdmin,
-    currentView: nodeRedAdmin,
+    nodeRedUrl: settings.functionGlobalContext.rootUrl,
+    nodeRedAdmin: settings.functionGlobalContext.administration,
+    nodeRedUI: settings.functionGlobalContext.dashboard,
+    graphQL: settings.functionGlobalContext.graphQL,
+    currentView: settings.functionGlobalContext.administration,
     menuOpen: false,
     menuItems: [
-      { id: 'onShowAdmin', icon: 'fa fa-cogs' }
+      { id: 'onShowAdmin', icon: 'fa fa-cogs' },
+      { id: 'onShowUI', icon: 'fa fa-eye' },
+      { id: 'onShowGraphiQL', icon: 'fa fa-flash' }
     ] as MenuItem[]
   };
   

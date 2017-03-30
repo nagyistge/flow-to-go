@@ -2,6 +2,8 @@
 interface globalState {
   nodeRedUrl: string;
   nodeRedAdmin: string;
+  nodeRedUI: string;
+  graphQL: string;
   currentView: string;
   menuOpen: boolean;
   menuItems: MenuItem[];

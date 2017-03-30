@@ -11,6 +11,7 @@ const { spawn, exec, execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs-extra');
 const moment = require('moment');
+const ava = require('gulp-ava');
 const rebuild = require('electron-rebuild').rebuildNativeModules;
 
 const dirRoot = __dirname;
@@ -142,6 +143,11 @@ gulp.task('build', ['clean:build', 'rebuild'], function () {
 
   return merge([copyApp, copyIcon, copyModules, copyNodes, transpileApp, transpileNodes]);
 });
+
+gulp.task('test', ['build'], () =>
+  gulp.src(`${dirBuild}/**/*spec.js`)
+    .pipe(ava({verbose: true}))
+);
 
 gulp.task('release', ['build', 'clean:release', 'license-info'], done => {
   packager({

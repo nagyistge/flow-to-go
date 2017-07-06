@@ -47,7 +47,7 @@ export default class Webview extends React.Component<Props, {}> {
   }
 
   componentWillUnmount() {
-    const node = ReactDOM.findDOMNode(this);
+    const node = ReactDOM.findDOMNode(this) as Electron.WebviewTag;
     node.removeEventListener('new-window', this.handleNewWindow);
     node.removeEventListener('console-message', this.handleConsoleMessage);
   }

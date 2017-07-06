@@ -1,29 +1,15 @@
 {
   "name": "flow-to-go",
-  "version": "0.0.1-alpha",
+  "version": "0.0.2-alpha",
   "license": "MIT",
   "description": "nodeRED + electron = awesome",
-  "main": "main.js",
+  "main": "electron.bundle.js",
   "homepage": "https://shortsn.github.io/flow-to-go/",
   "bugs": {
     "url": "https://github.com/shortsn/flow-to-go/issues"
   },
   "dependencies": {
-    "express": "^4.14.0",
-    "express-graphql": "^0.6.3",
-    "fix-path": "^2.1.0",
-    "graphiql": "^0.9.3",
-    "graphql": "^0.9.1",
-    "isomorphic-fetch": "^2.2.1",
-    "material-ui": "^0.17.1",
-    "nedb": "^1.8.0",
-    "node-red": "^0.16.2",
-    "node-red-contrib-gpio": "^0.9.2",
-    "node-red-dashboard": "^2.3.5",
-    "node-red-node-serialport": "^0.4.2",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "react-tap-event-plugin": "^2.0.1",
-    "rx": "^4.1.0"
+    "node-red": "^0.17.3",
+    "node-red-node-serialport": "^0.4.4"
   }
 }

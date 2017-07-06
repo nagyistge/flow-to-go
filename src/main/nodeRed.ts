@@ -1,0 +1,93 @@
+﻿import * as express from 'express';
+import * as http from 'http';
+import { app } from 'electron';
+import { NodeRed } from '../types';
+
+const RED = require('node-red');
+
+export interface NodeRedSettings {
+  httpAdminRoot: string;
+  httpNodeRoot: string;
+  httpUIRoot: string;
+  userDir: string;
+  functionGlobalContext: NodeRed;
+}
+
+export function getDefaultSettings() {
+  return <NodeRedSettings> {
+    httpAdminRoot: '/admin',
+    httpUIRoot: '/ui',
+    httpNodeRoot: '/',
+    userDir: app.getPath('userData'),
+    flowFile: 'flows.json',
+    editorTheme: {
+      page: {
+        title: 'Administration'
+      },
+      header: {
+        title: 'Administration',
+        image: ''
+      },
+      deployButton: {
+        type: 'simple',
+        label: 'Save'
+      },
+      menu: {
+        'menu-item-import-library': true,
+        'menu-item-export-library': true,
+        'menu-item-keyboard-shortcuts': true,
+        'menu-item-help': false
+      },
+      userMenu: false,
+      palette: {
+        catalogues: [
+          'http://catalogue.nodered.org/catalogue.json',
+        ],
+        editable: true
+      }
+    },
+    functionGlobalContext: {
+      port: 0,
+      administration: '',
+      dashboard: '',
+      rootUrl: ''
+    }
+  };
+}
+
+export async function initialize(nodeSettings: NodeRedSettings) {
+  const redApp = express();
+  const server = http.createServer(redApp);
+
+  RED.init(server, nodeSettings);
+
+  redApp.all(nodeSettings.httpAdminRoot + '*', (req, res, next) => {
+    // admin access only from localhost
+    if (req.ip === '::1' || req.ip === '127.0.0.1') {
+      next();
+      return;
+    }
+    res.sendStatus(403).end();
+  });
+
+  redApp.use(nodeSettings.httpAdminRoot, RED.httpAdmin);
+  redApp.use(nodeSettings.httpNodeRoot, RED.httpNode);
+
+  const redInitialization = RED.start().catch(console.error);
+  return new Promise<NodeRedSettings>((resolve, reject) => {
+    server.listen(nodeSettings.functionGlobalContext.port, '127.0.0.1', async () => {
+      const port = server.address().port;
+      const rootUrl = `http://localhost:${port}`;
+      nodeSettings.functionGlobalContext.port = port;
+      nodeSettings.functionGlobalContext.administration = `${rootUrl}${nodeSettings.httpAdminRoot}`;
+      nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${nodeSettings.httpUIRoot}`;
+      nodeSettings.functionGlobalContext.rootUrl = rootUrl;
+      await redInitialization;
+      app.on('before-quit', () => RED.stop());
+      RED.log.info(`port: ${nodeSettings.functionGlobalContext.port}`);
+      RED.log.info(`userDir: ${nodeSettings.userDir}`);
+      RED.log.info('private access on localhost');
+      resolve(nodeSettings);
+    });
+  });
+}

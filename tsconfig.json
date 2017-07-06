@@ -1,15 +1,15 @@
 ﻿{
   "compilerOptions": {
     "module": "commonjs",
-    "target": "ES6",
+    "target": "es2016",
     "noImplicitAny": true,
     "removeComments": true,
     "jsx": "react",
-    "diagnostics": true,
-    "noEmitOnError": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "src/@types"
-    ]
-  }
+    "noEmitOnError": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/node_modules"
+  ]
 }

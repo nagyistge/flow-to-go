@@ -2,7 +2,7 @@
 const { execSync } = require('child_process');
 const webpack = require('webpack');
 const Merge = require('webpack-merge');
-const ElectronPackager = require("webpack-electron-packager");
+const ElectronPackager = require('webpack-electron-packager');
 const CommonConfig = require('./webpack.common.js');
 
 const rootDir = path.resolve(__dirname, '..');
@@ -32,9 +32,12 @@ module.exports = Merge(CommonConfig, {
       },
       prune: false,
       overwrite: true,
-      arch: "x64",
+      arch: 'x64',
       asar: true,
-      platform: "darwin",
+      platform: 'darwin',
+      packageManager: 'yarn',
+      prune: true,
+      tmpdir: false,
       electronVersion,
       icon: path.join(rootDir, 'app'),
       out: path.join(rootDir, 'release')

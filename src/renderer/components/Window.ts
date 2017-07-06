@@ -28,7 +28,8 @@ export function openWindow(url: string, customOptions?: Electron.BrowserWindowCo
   return win;
 }
 
-export function openUrl(href: string, customOptions?: Electron.BrowserWindowConstructorOptions): boolean {
+export function openUrl(href: string, customOptions?: Electron.BrowserWindowConstructorOptions)
+  : boolean | Electron.BrowserWindow {
   if (!href) {
     return false;
   }
@@ -39,7 +40,7 @@ export function openUrl(href: string, customOptions?: Electron.BrowserWindowCons
   }
 
   if (url.hostname === 'localhost' || url.protocol === 'file:') {
-    openWindow(url.href, customOptions);
+    return openWindow(url.href, customOptions);
   } else {
     shell.openExternal(url.href);
   }

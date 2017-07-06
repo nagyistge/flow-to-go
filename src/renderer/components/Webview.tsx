@@ -11,6 +11,7 @@ interface Props {
 
 export default class Webview extends React.Component<Props, {}> {
 
+  node: Electron.WebviewTag;
   handleNewWindow = (event: Electron.NewWindowEvent) => openUrl(event.url);
 
   handleConsoleMessage = (event: Electron.ConsoleMessageEvent) => {
@@ -40,16 +41,16 @@ export default class Webview extends React.Component<Props, {}> {
   }
 
   componentDidMount() {
-    const node = ReactDOM.findDOMNode(this) as Electron.WebviewTag;
-    node.setAttribute('disablewebsecurity', 'true');
-    node.addEventListener('new-window', this.handleNewWindow);
-    node.addEventListener('console-message', this.handleConsoleMessage);
+    this.node = ReactDOM.findDOMNode(this) as Electron.WebviewTag;
+    this.node.setAttribute('disablewebsecurity', 'true');
+    this.node.addEventListener('new-window', this.handleNewWindow);
+    this.node.addEventListener('console-message', this.handleConsoleMessage);
   }
 
   componentWillUnmount() {
-    const node = ReactDOM.findDOMNode(this) as Electron.WebviewTag;
-    node.removeEventListener('new-window', this.handleNewWindow);
-    node.removeEventListener('console-message', this.handleConsoleMessage);
+    this.node.removeEventListener('new-window', this.handleNewWindow);
+    this.node.removeEventListener('console-message', this.handleConsoleMessage);
+    delete this.node;
   }
 
 }

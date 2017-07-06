@@ -7,6 +7,8 @@ export interface Props {
 
 export default function MainView({ src }: Props) {
   return (
-    <Webview src={src} style={{ width: '100%', height: '100%'}} />
+    !src
+      ? <h1>loading ...</h1>
+      : <Webview src={src} style={{ width: '100%', height: '100%'}} />
   );
 }

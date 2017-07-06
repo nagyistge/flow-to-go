@@ -2,7 +2,8 @@
 
 export interface AppState {
   mainViewSrc: string;
-  nodeRed: NodeRed;
+  nodeRedAdministration: string;
+  nodeRedDashboard: string;
 }
 
 export interface NodeRed {

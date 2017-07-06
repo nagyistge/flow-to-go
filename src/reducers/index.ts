@@ -1,22 +1,31 @@
 ﻿import { combineReducers } from 'redux';
 import { handleActions, Action } from 'redux-actions';
-import { AppState } from '../types';
-import { DEFAULT_STATE, SET_VIEW } from '../constants';
+import { AppState, NodeRed } from '../types';
+import { DEFAULT_STATE, LOAD_VIEW, UPDATE_NODE_RED } from '../constants';
 
 const mainViewSrc = handleActions<string>({
 
-  [SET_VIEW]: (state: string, action: Action<string>): string =>
+  [LOAD_VIEW]: (state: string, action: Action<string>): string =>
     action.payload || state,
 
 }, DEFAULT_STATE.mainViewSrc);
 
-const combinedReducers = combineReducers<AppState>({
-  mainViewSrc
-});
+const nodeRedAdministration = handleActions<string>({
 
-export default function rootReducer(state: AppState = DEFAULT_STATE, action: Action<AppState>) {
-  switch (action.type) {
-    default:
-      return combinedReducers(state, action);
-  }
-}
+  [UPDATE_NODE_RED]: (state: string, action: Action<NodeRed>): string =>
+    (action.payload !== undefined) ? action.payload.administration : state,
+
+}, DEFAULT_STATE.nodeRedAdministration);
+
+const nodeRedDashboard = handleActions<string>({
+
+  [UPDATE_NODE_RED]: (state: string, action: Action<NodeRed>): string =>
+    (action.payload !== undefined) ? action.payload.dashboard : state,
+
+}, DEFAULT_STATE.nodeRedDashboard);
+
+export default combineReducers<AppState>({
+  mainViewSrc,
+  nodeRedAdministration,
+  nodeRedDashboard
+});

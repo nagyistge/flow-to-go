@@ -73,7 +73,11 @@ module.exports = {
         context: outputDir,
         from: path.join(srcDir, 'node_modules'),
         to: path.join(outputDir, 'node_modules'),
-        ignore: ['*.md', '**/.bin/**', '**/test/**']
+        ignore: [
+          '*.md',
+          '**/test/**',
+          '**/.bin/**', '**/bin/**',
+          '**/node-red/nodes/core/hardware/**']
       },
       {
         from: path.join(srcDir, 'package.json'),

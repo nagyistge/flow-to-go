@@ -11,5 +11,8 @@
   "dependencies": {
     "node-red": "^0.17.3",
     "node-red-node-serialport": "^0.4.4"
+  },
+  "optionalDependencies": {
+    "node-red-dashboard": "^2.4.1"
   }
 }

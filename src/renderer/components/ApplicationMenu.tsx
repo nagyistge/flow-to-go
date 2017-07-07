@@ -5,7 +5,8 @@ const { shell, app, webContents } = remote;
 const { buildFromTemplate, setApplicationMenu } = remote.Menu;
 
 interface Props {
-  menuItems: Electron.MenuItemConstructorOptions[];
+  showAdministration: () => void;
+  showDashboard: () => void;
 }
 
 export default class ApplicationMenu extends React.Component<Props, {}> {
@@ -13,14 +14,14 @@ export default class ApplicationMenu extends React.Component<Props, {}> {
   domNode: HTMLDivElement;
 
   componentDidMount() {
-    this.renderMenu(this.props.menuItems);
+    this.renderMenu(buildMenuTemplate(this.props));
     this.domNode.remove();
     this.domNode = null;
   }
 
   componentDidUpdate() {
     console.warn('menu update');
-    this.renderMenu(this.props.menuItems);
+    this.renderMenu(buildMenuTemplate(this.props));
   }
 
   componentWillUnmount() {
@@ -32,11 +33,11 @@ export default class ApplicationMenu extends React.Component<Props, {}> {
   }
 
   render() {
-    return <div ref={(div) => this.domNode = div}>{this.props.children}</div>;
+    return <div ref={(div) => this.domNode = div}/>;
   }
 }
 
-export function buildMenuTemplate(): Electron.MenuItemConstructorOptions[] {
+function buildMenuTemplate({ showAdministration, showDashboard}: Props): Electron.MenuItemConstructorOptions[] {
   // tslint:disable-next-line:no-any
   const template: any[] = [
     {
@@ -71,7 +72,16 @@ export function buildMenuTemplate(): Electron.MenuItemConstructorOptions[] {
         { role: 'zoomin' },
         { role: 'zoomout' },
         { type: 'separator' },
-        { role: 'togglefullscreen' }
+        { role: 'togglefullscreen' },
+        { type: 'separator' },
+        {
+          label: 'Show Administration',
+          click: showAdministration
+        },
+        {
+          label: 'Show Dashboard',
+          click: showDashboard
+        }
       ]
     },
     {

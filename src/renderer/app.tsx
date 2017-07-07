@@ -5,17 +5,14 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { initializeStore } from './InitializeStore';
 import MainView from './containers/MainView';
-import ApplicationMenu, { buildMenuTemplate } from './components/ApplicationMenu';
+import ApplicationMenu from './containers/ApplicationMenu';
 
 const store = initializeStore();
 
-const template = buildMenuTemplate();
 render(
   <Provider store={store}>
     <div>
-      <ApplicationMenu
-        menuItems={template}
-      />
+      <ApplicationMenu/>
       <MainView />
     </div>
   </Provider>,

@@ -51,7 +51,9 @@ function buildMenuTemplate({ showAdministration, showDashboard}: Props): Electro
         { role: 'paste' },
         { role: 'pasteandmatchstyle' },
         { role: 'delete' },
-        { role: 'selectall' }
+        { role: 'selectall' },
+        { type: 'separator' },
+        { label: 'Open Working Directory', click() { shell.openItem(app.getPath('userData')); } }
       ]
     },
     {

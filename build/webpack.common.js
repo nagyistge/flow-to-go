@@ -74,9 +74,9 @@ module.exports = {
         from: path.join(srcDir, 'node_modules'),
         to: path.join(outputDir, 'node_modules'),
         ignore: [
-          '*.md',
+          '*.md*',
           '**/test/**',
-          '**/.bin/**', '**/bin/**',
+          '.bin/**', '**/.bin/**', '**/bin/**',
           '**/node-red/nodes/core/hardware/**']
       },
       {

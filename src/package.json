@@ -9,7 +9,9 @@
     "url": "https://github.com/shortsn/flow-to-go/issues"
   },
   "dependencies": {
+    "fix-path": "^2.1.0",
     "node-red": "^0.17.3",
+    "node-red-contrib-gpio": "^0.10.0",
     "node-red-node-serialport": "^0.4.4"
   },
   "optionalDependencies": {

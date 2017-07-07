@@ -14,7 +14,5 @@
     "node-red-contrib-gpio": "^0.10.0",
     "node-red-node-serialport": "^0.4.4"
   },
-  "optionalDependencies": {
-    "node-red-dashboard": "^2.4.1"
-  }
+  "optionalDependencies": {}
 }

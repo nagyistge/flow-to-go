@@ -1,10 +1,11 @@
 ﻿import { Dispatch } from 'redux';
 import { createAction, Action } from 'redux-actions';
-import { LOAD_VIEW, UPDATE_NODE_RED } from '../constants/ActionTypes';
-import { AppState, NodeRed} from '../types';
+import { LOAD_VIEW, UPDATE_NODE_RED, UPDATE_ONLINE_STATE } from '../constants/ActionTypes';
+import { AppState, NodeRed } from '../types';
 
 const loadView = createAction<string>(LOAD_VIEW);
 export const updateNodeRED = createAction<NodeRed>(UPDATE_NODE_RED);
+export const updateOnlineState = createAction<boolean>(UPDATE_ONLINE_STATE);
 
 export function showAdministration() {
   return (dispatch: Dispatch<Action<{}>>, getState: () => AppState) => {

@@ -1,6 +1,7 @@
 ﻿import { Store, Action } from 'redux';
 
 export interface AppState {
+  isOnline: boolean;
   mainViewSrc: string;
   nodeRedAdministration: string;
   nodeRedDashboard: string;

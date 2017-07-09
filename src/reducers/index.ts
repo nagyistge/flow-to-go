@@ -1,7 +1,7 @@
 ﻿import { combineReducers } from 'redux';
 import { handleActions, Action } from 'redux-actions';
 import { AppState, NodeRed } from '../types';
-import { DEFAULT_STATE, LOAD_VIEW, UPDATE_NODE_RED } from '../constants';
+import { DEFAULT_STATE, LOAD_VIEW, UPDATE_NODE_RED, UPDATE_ONLINE_STATE } from '../constants';
 
 const mainViewSrc = handleActions<string>({
 
@@ -24,7 +24,15 @@ const nodeRedDashboard = handleActions<string>({
 
 }, DEFAULT_STATE.nodeRedDashboard);
 
+const isOnline = handleActions<boolean>({
+
+  [UPDATE_ONLINE_STATE]: (state: boolean, action: Action<boolean>): boolean =>
+    (action.payload !== undefined) ? action.payload : state,
+
+}, DEFAULT_STATE.isOnline);
+
 export default combineReducers<AppState>({
+  isOnline,
   mainViewSrc,
   nodeRedAdministration,
   nodeRedDashboard

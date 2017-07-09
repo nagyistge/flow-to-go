@@ -3,7 +3,7 @@
   "version": "0.0.2-alpha",
   "license": "MIT",
   "description": "nodeRED + electron = awesome",
-  "main": "electron.bundle.js",
+  "main": "electron.js",
   "homepage": "https://shortsn.github.io/flow-to-go/",
   "bugs": {
     "url": "https://github.com/shortsn/flow-to-go/issues"

@@ -36,7 +36,7 @@ export default class Webview extends React.Component<Props, {}> {
     // tslint:disable-next-line:no-any
     return React.createElement<any, any>('Webview', {
       ... this.props,
-      preload: `${__dirname}/preload.bundle.js`
+      preload: `${__dirname}/preload.js`
     });
   }
 

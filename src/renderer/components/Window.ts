@@ -6,7 +6,7 @@ export function openWindow(url: string, customOptions?: Electron.BrowserWindowCo
   const defaultPreferences = {
     nodeIntegration: false,
     webSecurity: true,
-    preload: `${__dirname}/preload.bundle.js`
+    preload: `${__dirname}/preload.js`
   };
   const defaultOptions = {
     parent: BrowserWindow.getFocusedWindow(),

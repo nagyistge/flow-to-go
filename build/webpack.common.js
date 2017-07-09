@@ -5,8 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader')
 
 const rootDir = path.resolve(__dirname, '..');
-const srcDir = path.resolve(rootDir, 'src');
-const outputDir = path.resolve(rootDir, 'dist');
+const srcDir = path.join(rootDir, 'src');
+const outputDir = path.join(rootDir, 'dist');
 
 const embeddedPackages = Object
   .keys(require(path.join(srcDir, 'package.json')).dependencies)
@@ -23,7 +23,7 @@ module.exports = {
     'preload': path.join(srcDir, 'renderer', 'components', 'Preload.ts'),
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: '[name].js',
     sourceMapFilename: '[name].map',
     path: outputDir
   },

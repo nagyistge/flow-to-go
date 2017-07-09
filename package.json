@@ -6,7 +6,7 @@
     "restore": "yarn && cd src && yarn --production && cd .. && node build/RebuildNativeModules.js",
     "build-dev": "webpack --config build/webpack.config.js --env=dev",
     "build-prod": "webpack --config build/webpack.config.js --env=prod",
-    "start": "electron dist/electron.bundle.js"
+    "start": "electron dist/electron.js"
   },
   "dependencies": {
     "electron-redux": "^1.2.10",

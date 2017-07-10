@@ -81,6 +81,9 @@ module.exports = {
       },
       {
         from: path.join(srcDir, 'package.json'),
+      },
+      {
+        from: path.join(rootDir, 'icons', 'cog*.png'),
       }
     ])
   ]

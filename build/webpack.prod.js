@@ -39,7 +39,7 @@ module.exports = Merge(CommonConfig, {
       prune: true,
       tmpdir: false,
       electronVersion,
-      icon: path.join(rootDir, 'app'),
+      icon: path.join(rootDir, 'app', 'icons'),
       out: path.join(rootDir, 'release')
     })
   ]

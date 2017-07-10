@@ -1,5 +1,6 @@
 ﻿require('fix-path')();
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Tray } from 'electron';
+import { join } from 'path';
 import * as nodeRed from './nodeRed';
 import { initializeStore } from './InitializeStore';
 import { updateNodeRED, showAdministration } from '../actions';
@@ -31,5 +32,16 @@ app.once('ready', () => {
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
   mainWindow.once('close', () => app.quit());
-  mainWindow.once('ready-to-show', mainWindow.show);
+  mainWindow.once('ready-to-show', () => {
+    const tray = new Tray(join(__dirname, 'icons', 'cog.png'));
+    const showWindow = () => {
+      mainWindow.show();
+      mainWindow.focus();
+    };
+    const toggleWindow = () => mainWindow.isVisible() ? mainWindow.hide() : showWindow();
+    tray.on('right-click', toggleWindow);
+    tray.on('double-click', toggleWindow);
+    tray.on('click', toggleWindow);
+    showWindow();
+  });
 });

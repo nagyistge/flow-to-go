@@ -12,7 +12,7 @@ export interface NodeRedSettings extends RED.UserSettings {
 export function getDefaultSettings() {
   return <NodeRedSettings> {
     httpAdminRoot: '/admin',
-    ui : { path: '/ui' },
+    ui: { path: '/ui' },
     httpNodeRoot: '/',
     logging: {
       console: {
@@ -25,27 +25,17 @@ export function getDefaultSettings() {
     flowFile: 'flows.json',
     editorTheme: {
       page: {
-        title: 'Administration'
+        title: app.getName(),
       },
       header: {
-        title: 'Administration',
-        image: ''
-      },
-      deployButton: {
-        type: 'simple',
-        label: 'Save'
-      },
-      menu: {
-        'menu-item-import-library': true,
-        'menu-item-export-library': true,
-        'menu-item-keyboard-shortcuts': true,
-        'menu-item-help': false
+        title: app.getName(),
+        image: '',
+        url: ''
       },
       palette: {
         catalogues: [
-          'http://catalogue.nodered.org/catalogue.json',
+          'https://catalogue.nodered.org/catalogue.json',
         ],
-        editable: true
       }
     },
     functionGlobalContext: {
@@ -80,7 +70,7 @@ export async function initialize(nodeSettings: NodeRedSettings) {
       const rootUrl = `http://localhost:${port}`;
       nodeSettings.functionGlobalContext.port = port;
       nodeSettings.functionGlobalContext.administration = `${rootUrl}${nodeSettings.httpAdminRoot}`;
-      nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${ nodeSettings.ui.path }`;
+      nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${nodeSettings.ui.path}`;
       nodeSettings.functionGlobalContext.rootUrl = rootUrl;
       await redInitialization;
       app.on('before-quit', () => RED.stop());

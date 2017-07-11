@@ -3,21 +3,24 @@ import * as http from 'http';
 import { app } from 'electron';
 import { NodeRed } from '../types';
 
-const RED = require('node-red');
+import * as RED from 'node-red';
 
-export interface NodeRedSettings {
-  httpAdminRoot: string;
-  httpNodeRoot: string;
-  httpUIRoot: string;
-  userDir: string;
+export interface NodeRedSettings extends RED.UserSettings {
   functionGlobalContext: NodeRed;
 }
 
 export function getDefaultSettings() {
-  return <NodeRedSettings> {
+  return <NodeRedSettings>{
     httpAdminRoot: '/admin',
     httpUIRoot: '/ui',
     httpNodeRoot: '/',
+    logging: {
+      console: {
+        level: 'trace',
+        metrics: false,
+        audit: false,
+      }
+    },
     userDir: app.getPath('userData'),
     flowFile: 'flows.json',
     editorTheme: {
@@ -57,9 +60,7 @@ export function getDefaultSettings() {
 
 export async function initialize(nodeSettings: NodeRedSettings) {
   const redApp = express();
-  const server = http.createServer(redApp);
-
-  RED.init(server, nodeSettings);
+  RED.init(http.createServer(redApp), nodeSettings);
 
   redApp.all(nodeSettings.httpAdminRoot + '*', (req, res, next) => {
     // admin access only from localhost
@@ -75,8 +76,8 @@ export async function initialize(nodeSettings: NodeRedSettings) {
 
   const redInitialization = RED.start().catch(console.error);
   return new Promise<NodeRedSettings>((resolve, reject) => {
-    server.listen(nodeSettings.functionGlobalContext.port, '127.0.0.1', async () => {
-      const port = server.address().port;
+    RED.server.listen(nodeSettings.functionGlobalContext.port, '127.0.0.1', async () => {
+      const port = RED.server.address().port;
       const rootUrl = `http://localhost:${port}`;
       nodeSettings.functionGlobalContext.port = port;
       nodeSettings.functionGlobalContext.administration = `${rootUrl}${nodeSettings.httpAdminRoot}`;
@@ -87,6 +88,7 @@ export async function initialize(nodeSettings: NodeRedSettings) {
       RED.log.info(`port: ${nodeSettings.functionGlobalContext.port}`);
       RED.log.info(`userDir: ${nodeSettings.userDir}`);
       RED.log.info('private access on localhost');
+      RED.log.debug('debug');
       resolve(nodeSettings);
     });
   });

@@ -12,11 +12,11 @@ export interface NodeRedSettings extends RED.UserSettings {
 export function getDefaultSettings() {
   return <NodeRedSettings> {
     httpAdminRoot: '/admin',
-    ui : { path: 'ui' },
+    ui : { path: '/ui' },
     httpNodeRoot: '/',
     logging: {
       console: {
-        level: 'trace',
+        level: 'info',
         metrics: false,
         audit: false,
       }
@@ -80,7 +80,7 @@ export async function initialize(nodeSettings: NodeRedSettings) {
       const rootUrl = `http://localhost:${port}`;
       nodeSettings.functionGlobalContext.port = port;
       nodeSettings.functionGlobalContext.administration = `${rootUrl}${nodeSettings.httpAdminRoot}`;
-      nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${nodeSettings.ui.path }`;
+      nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${ nodeSettings.ui.path }`;
       nodeSettings.functionGlobalContext.rootUrl = rootUrl;
       await redInitialization;
       app.on('before-quit', () => RED.stop());

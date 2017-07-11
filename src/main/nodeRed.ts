@@ -10,7 +10,7 @@ export interface NodeRedSettings extends RED.UserSettings {
 }
 
 export function getDefaultSettings() {
-  return <NodeRedSettings>{
+  return <NodeRedSettings> {
     httpAdminRoot: '/admin',
     httpUIRoot: '/ui',
     httpNodeRoot: '/',

@@ -12,7 +12,7 @@ export interface NodeRedSettings extends RED.UserSettings {
 export function getDefaultSettings() {
   return <NodeRedSettings> {
     httpAdminRoot: '/admin',
-    httpUIRoot: '/ui',
+    ui : { path: 'ui' },
     httpNodeRoot: '/',
     logging: {
       console: {
@@ -41,7 +41,6 @@ export function getDefaultSettings() {
         'menu-item-keyboard-shortcuts': true,
         'menu-item-help': false
       },
-      userMenu: false,
       palette: {
         catalogues: [
           'http://catalogue.nodered.org/catalogue.json',
@@ -81,7 +80,7 @@ export async function initialize(nodeSettings: NodeRedSettings) {
       const rootUrl = `http://localhost:${port}`;
       nodeSettings.functionGlobalContext.port = port;
       nodeSettings.functionGlobalContext.administration = `${rootUrl}${nodeSettings.httpAdminRoot}`;
-      nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${nodeSettings.httpUIRoot}`;
+      nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${nodeSettings.ui.path }`;
       nodeSettings.functionGlobalContext.rootUrl = rootUrl;
       await redInitialization;
       app.on('before-quit', () => RED.stop());

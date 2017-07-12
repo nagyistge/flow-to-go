@@ -50,6 +50,7 @@ export function getDefaultSettings(): NodeRedSettings {
 export async function initialize(nodeSettings: NodeRedSettings) {
   const redApp = express();
   RED.init(http.createServer(redApp), nodeSettings);
+  const redInitialization = RED.start().catch(console.error);
 
   redApp.all(RED.settings.httpAdminRoot + '*', (req, res, next) => {
     // admin access only from localhost
@@ -62,8 +63,7 @@ export async function initialize(nodeSettings: NodeRedSettings) {
 
   redApp.use(RED.settings.httpAdminRoot, RED.httpAdmin);
   redApp.use(RED.settings.httpNodeRoot, RED.httpNode);
-
-  const redInitialization = RED.start().catch(console.error);
+ 
   return new Promise<NodeRedSettings>((resolve, reject) => {
     RED.server.listen(RED.settings.functionGlobalContext.port, '127.0.0.1', async () => {
       const port = RED.server.address().port;
@@ -77,6 +77,7 @@ export async function initialize(nodeSettings: NodeRedSettings) {
       RED.log.info(`port: ${RED.settings.functionGlobalContext.port}`);
       RED.log.info(`userDir: ${RED.settings.userDir}`);
       RED.log.info('private access on localhost');
+
       resolve(RED.settings as NodeRedSettings);
     });
   });

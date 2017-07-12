@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { join } from 'path';
 
-const { Tray } = remote;
+const { Tray, Menu } = remote;
 
 interface Props {
   showAdministration: () => void;
@@ -40,9 +40,13 @@ export default class TrayMenu extends React.Component<Props, {}> {
       this.tray = null;
     }
     const tray = new Tray(this.props.icon);
-    tray.on('right-click', () => this.props.toggleWindow());
-    tray.on('double-click', () => this.props.toggleWindow());
-    tray.on('click', () => this.props.toggleWindow());
+    const contextMenu = Menu.buildFromTemplate([
+      { label: 'Toggle Window', click: this.props.toggleWindow },
+      { type: 'separator' },
+      { label: 'Show Administration', click: this.props.showAdministration },
+      { label: 'Show Dashboard', click: this.props.showDashboard },
+    ]);
+    tray.setContextMenu(contextMenu);
     this.tray = tray;
   }
 

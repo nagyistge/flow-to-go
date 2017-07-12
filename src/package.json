@@ -9,6 +9,7 @@
     "url": "https://github.com/shortsn/flow-to-go/issues"
   },
   "dependencies": {
+    "electron-devtools-installer": "^2.2.0",
     "fix-path": "^2.1.0",
     "node-red": "^0.17.3",
     "node-red-contrib-gpio": "^0.10.0",

@@ -47,8 +47,6 @@ export function getDefaultSettings() {
   };
 }
 
-import { EventEmitter } from 'events';
-
 export async function initialize(nodeSettings: NodeRedSettings) {
   const redApp = express();
   RED.init(http.createServer(redApp), nodeSettings);

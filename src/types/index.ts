@@ -3,8 +3,7 @@
 export interface AppState {
   isOnline: boolean;
   mainViewSrc: string;
-  nodeRedAdministration: string;
-  nodeRedDashboard: string;
+  nodeRed: NodeRed;
 }
 
 export interface NodeRed {
@@ -12,6 +11,7 @@ export interface NodeRed {
   administration: string;
   dashboard: string;
   rootUrl: string;
+  flowFile: string;
 }
 
 export interface ExtendedStore<A> extends Store<A> {

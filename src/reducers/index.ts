@@ -10,19 +10,12 @@ const mainViewSrc = handleActions<string>({
 
 }, DEFAULT_STATE.mainViewSrc);
 
-const nodeRedAdministration = handleActions<string>({
+const nodeRed = handleActions<NodeRed>({
 
-  [UPDATE_NODE_RED]: (state: string, action: Action<NodeRed>): string =>
-    (action.payload !== undefined) ? action.payload.administration : state,
+  [UPDATE_NODE_RED]: (state: NodeRed, action: Action<NodeRed>): NodeRed =>
+    (action.payload !== undefined) ? action.payload : state,
 
-}, DEFAULT_STATE.nodeRedAdministration);
-
-const nodeRedDashboard = handleActions<string>({
-
-  [UPDATE_NODE_RED]: (state: string, action: Action<NodeRed>): string =>
-    (action.payload !== undefined) ? action.payload.dashboard : state,
-
-}, DEFAULT_STATE.nodeRedDashboard);
+}, DEFAULT_STATE.nodeRed);
 
 const isOnline = handleActions<boolean>({
 
@@ -34,6 +27,5 @@ const isOnline = handleActions<boolean>({
 export default combineReducers<AppState>({
   isOnline,
   mainViewSrc,
-  nodeRedAdministration,
-  nodeRedDashboard
+  nodeRed
 });

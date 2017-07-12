@@ -10,8 +10,8 @@ export const updateOnlineState = createAction<boolean>(UPDATE_ONLINE_STATE);
 export function showAdministration() {
   return (dispatch: Dispatch<Action<{}>>, getState: () => AppState) => {
     const currentState = getState();
-    if (currentState.mainViewSrc !== currentState.nodeRedAdministration) {
-      dispatch(loadView(currentState.nodeRedAdministration));
+    if (currentState.mainViewSrc !== currentState.nodeRed.administration) {
+      dispatch(loadView(currentState.nodeRed.administration));
     }
   };
 }
@@ -19,8 +19,8 @@ export function showAdministration() {
 export function showDashboard() {
   return (dispatch: Dispatch<Action<{}>>, getState: () => AppState) => {
     const currentState = getState();
-    if (currentState.mainViewSrc !== currentState.nodeRedDashboard) {
-      dispatch(loadView(currentState.nodeRedDashboard));
+    if (currentState.mainViewSrc !== currentState.nodeRed.dashboard) {
+      dispatch(loadView(currentState.nodeRed.dashboard));
     }
   };
 }

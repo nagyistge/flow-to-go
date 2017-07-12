@@ -28,7 +28,8 @@ app.once('ready', () => {
         port: settings.port,
         rootUrl,
         administration: `${rootUrl}${settings.httpAdminRoot}`,
-        dashboard: `${rootUrl}${settings.ui.path}`
+        dashboard: `${rootUrl}${settings.ui.path}`,
+        flowFile: join(settings.userDir, settings.flowFile)
       }));
       store.dispatch(showDashboard());
     })

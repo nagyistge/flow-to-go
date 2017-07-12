@@ -20,7 +20,6 @@ export default class ApplicationMenu extends React.Component<Props, {}> {
   }
 
   componentDidUpdate() {
-    console.warn('menu update');
     this.renderMenu(buildMenuTemplate(this.props));
   }
 

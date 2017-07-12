@@ -9,8 +9,8 @@ export interface NodeRedSettings extends RED.UserSettings {
   functionGlobalContext: NodeRed;
 }
 
-export function getDefaultSettings() {
-  return <NodeRedSettings> {
+export function getDefaultSettings(): NodeRedSettings {
+  return {
     httpAdminRoot: '/admin',
     ui: { path: '/ui' },
     httpNodeRoot: '/',
@@ -51,7 +51,7 @@ export async function initialize(nodeSettings: NodeRedSettings) {
   const redApp = express();
   RED.init(http.createServer(redApp), nodeSettings);
 
-  redApp.all(nodeSettings.httpAdminRoot + '*', (req, res, next) => {
+  redApp.all(RED.settings.httpAdminRoot + '*', (req, res, next) => {
     // admin access only from localhost
     if (req.ip === '::1' || req.ip === '127.0.0.1') {
       next();
@@ -60,25 +60,24 @@ export async function initialize(nodeSettings: NodeRedSettings) {
     res.sendStatus(403).end();
   });
 
-  redApp.use(nodeSettings.httpAdminRoot, RED.httpAdmin);
-  redApp.use(nodeSettings.httpNodeRoot, RED.httpNode);
+  redApp.use(RED.settings.httpAdminRoot, RED.httpAdmin);
+  redApp.use(RED.settings.httpNodeRoot, RED.httpNode);
 
   const redInitialization = RED.start().catch(console.error);
   return new Promise<NodeRedSettings>((resolve, reject) => {
-    RED.server.listen(nodeSettings.functionGlobalContext.port, '127.0.0.1', async () => {
+    RED.server.listen(RED.settings.functionGlobalContext.port, '127.0.0.1', async () => {
       const port = RED.server.address().port;
       const rootUrl = `http://localhost:${port}`;
-      nodeSettings.functionGlobalContext.port = port;
-      nodeSettings.functionGlobalContext.administration = `${rootUrl}${nodeSettings.httpAdminRoot}`;
-      nodeSettings.functionGlobalContext.dashboard = `${rootUrl}${nodeSettings.ui.path}`;
-      nodeSettings.functionGlobalContext.rootUrl = rootUrl;
+      RED.settings.functionGlobalContext.port = port;
+      RED.settings.functionGlobalContext.administration = `${rootUrl}${RED.settings.httpAdminRoot}`;
+      RED.settings.functionGlobalContext.dashboard = `${rootUrl}${RED.settings.ui.path}`;
+      RED.settings.functionGlobalContext.rootUrl = rootUrl;
       await redInitialization;
       app.on('before-quit', () => RED.stop());
-      RED.log.info(`port: ${nodeSettings.functionGlobalContext.port}`);
-      RED.log.info(`userDir: ${nodeSettings.userDir}`);
+      RED.log.info(`port: ${RED.settings.functionGlobalContext.port}`);
+      RED.log.info(`userDir: ${RED.settings.userDir}`);
       RED.log.info('private access on localhost');
-      RED.log.debug('debug');
-      resolve(nodeSettings);
+      resolve(RED.settings as NodeRedSettings);
     });
   });
 }

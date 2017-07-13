@@ -33,7 +33,7 @@
     "tslint": "^5.4.3",
     "tslint-react": "^3.0.0",
     "typescript": "^2.4.1",
-    "webpack": "^3.0.0",
+    "webpack": "^3.2.0",
     "webpack-electron-packager": "^1.0.0",
     "webpack-merge": "^4.1.0"
   }

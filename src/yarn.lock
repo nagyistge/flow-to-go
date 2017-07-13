@@ -1712,9 +1712,9 @@ node-red-node-twitter@0.1.*:
     request "^2.75.0"
     twitter-ng "0.6.2"
 
-node-red@^0.17.3:
-  version "0.17.3"
-  resolved "https://registry.yarnpkg.com/node-red/-/node-red-0.17.3.tgz#d54a726c199d690253846877f8de973a393ddee8"
+node-red@^0.17.4:
+  version "0.17.4"
+  resolved "https://registry.yarnpkg.com/node-red/-/node-red-0.17.4.tgz#087a2819f6b59700166be29b04946ad40ac513d2"
   dependencies:
     basic-auth "1.1.0"
     bcryptjs "2.4.3"

@@ -16,19 +16,6 @@ app.once('ready', () => {
     autoHideMenuBar: true,
   });
 
-  // if (process.env.NODE_ENV !== 'production') {
-  if (true) {
-    const { default: installExtension,
-      REACT_DEVELOPER_TOOLS,
-      REDUX_DEVTOOLS
-    } = require('electron-devtools-installer');
-
-    Promise.all([
-      installExtension(REACT_DEVELOPER_TOOLS),
-      installExtension(REDUX_DEVTOOLS)
-    ]);
-  }
-
   const store = initializeStore();
 
   redInitialization

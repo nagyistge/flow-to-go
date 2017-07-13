@@ -6,7 +6,9 @@
     "restore": "yarn && cd src && yarn --production && cd .. && node build/RebuildNativeModules.js",
     "build-dev": "webpack --config build/webpack.config.js --env=dev",
     "build-prod": "webpack --config build/webpack.config.js --env=prod",
-    "start": "electron dist/electron.js"
+    "build-test": "webpack --config build/webpack.config.js --env=test",
+    "start-dev": "yarn build-dev && electron dist/electron.js",
+    "test": "yarn build-test && jest dist"
   },
   "dependencies": {
     "electron-redux": "^1.2.10",
@@ -19,6 +21,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.0.36",
+    "@types/jest": "^20.0.2",
     "@types/react": "^15.0.34",
     "@types/react-dom": "^15.5.1",
     "@types/react-redux": "^4.4.46",
@@ -29,6 +32,7 @@
     "electron": "^1.6.11",
     "electron-rebuild": "^1.5.11",
     "html-webpack-plugin": "^2.29.0",
+    "jest": "^20.0.4",
     "style-loader": "^0.18.2",
     "tslint": "^5.5.0",
     "tslint-react": "^3.0.0",

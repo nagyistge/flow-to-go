@@ -2,6 +2,7 @@
 const { execSync } = require('child_process');
 const webpack = require('webpack');
 const Merge = require('webpack-merge');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ElectronPackager = require('webpack-electron-packager');
 const CommonConfig = require('./webpack.common.js');
 
@@ -15,6 +16,14 @@ const commitId = execSync('git rev-parse HEAD').toString()
 
 module.exports = Merge(CommonConfig, {
   plugins: [
+    new CleanWebpackPlugin([
+      outputDir
+    ], {
+      root: rootDir,
+      exclude: [],
+      verbose: true,
+      dry: false
+    }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false
@@ -40,7 +49,7 @@ module.exports = Merge(CommonConfig, {
       tmpdir: false,
       electronVersion,
       icon: path.join(rootDir, 'icons', 'app'),
-      out: path.join(rootDir, 'release')
+      out: path.join(outputDir, 'release')
     })
   ]
 });

@@ -1,5 +1,4 @@
 ﻿import { connect } from 'react-redux';
-import { AppState } from '../../types';
 import View from '../components/TrayMenu';
 import { join } from 'path';
 import { showAdministration, showDashboard } from '../../actions';
@@ -7,7 +6,7 @@ import { remote } from 'electron';
 
 const window = remote.getCurrentWindow();
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = () => ({
   icon: join(__dirname, 'icons', 'cog.png')
 });
 

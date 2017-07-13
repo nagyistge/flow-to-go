@@ -11,12 +11,14 @@ interface Props {
 
 export default class ApplicationMenu extends React.Component<Props, {}> {
 
-  domNode: HTMLDivElement;
+  domNode: HTMLDivElement | null;
 
   componentDidMount() {
     this.renderMenu(buildMenuTemplate(this.props));
-    this.domNode.remove();
-    this.domNode = null;
+    if (this.domNode) {
+      this.domNode.remove();
+      this.domNode = null;
+    }  
   }
 
   componentDidUpdate() {

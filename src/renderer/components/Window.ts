@@ -18,9 +18,9 @@ export function openWindow(url: string, customOptions?: Electron.BrowserWindowCo
     skipTaskbar: false
   };
 
-  const options = { ...defaultOptions, ...customOptions };
+  const options: Electron.BrowserWindowConstructorOptions = { ...defaultOptions, ...customOptions };
   options.webPreferences = { ...defaultPreferences, ...options.webPreferences };
-  let win = new BrowserWindow(options);
+  let win: Electron.BrowserWindow | null = new BrowserWindow(options);
 
   win.loadURL(url);
   win.once('ready-to-show', win.show);

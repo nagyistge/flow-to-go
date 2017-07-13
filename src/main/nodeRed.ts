@@ -1,13 +1,17 @@
 ﻿import * as express from 'express';
 import * as http from 'http';
 import { app } from 'electron';
-import { NodeRed } from '../types';
 
 import * as RED from 'node-red';
 
 export interface NodeRedSettings extends RED.UserSettings {
+  userDir: string;
+  ui: { path: string };
+  httpAdminRoot: string;
+  httpNodeRoot: string;
   hostname: string;
   port: number;
+  flowFile: string;
 }
 
 export function getDefaultSettings(): NodeRedSettings {
@@ -44,7 +48,7 @@ export function getDefaultSettings(): NodeRedSettings {
   };
 }
 
-export async function initialize(nodeSettings: NodeRedSettings = getDefaultSettings()) {
+export async function initialize(nodeSettings: NodeRedSettings = getDefaultSettings()): Promise<NodeRedSettings> {
   const redApp = express();
   const server = http.createServer(redApp);
   return new Promise<NodeRedSettings>((resolve, reject) => {

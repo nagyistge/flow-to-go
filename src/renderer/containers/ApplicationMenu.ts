@@ -1,9 +1,8 @@
 ﻿import { connect } from 'react-redux';
-import { AppState } from '../../types';
 import View from '../components/ApplicationMenu';
 import { showAdministration, showDashboard } from '../../actions';
 
-const mapStateToProps = (state: AppState) => ({
+const mapStateToProps = () => ({
 });
 
 // tslint:disable-next-line:no-any

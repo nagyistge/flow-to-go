@@ -1,6 +1,5 @@
 ﻿import { remote } from 'electron';
 import * as React from 'react';
-import { join } from 'path';
 
 const { Tray, Menu } = remote;
 
@@ -13,13 +12,15 @@ interface Props {
 
 export default class TrayMenu extends React.Component<Props, {}> {
 
-  domNode: HTMLDivElement;
-   tray: Electron.Tray;
+  domNode: HTMLDivElement | null;
+  tray: Electron.Tray | null;
 
   componentDidMount() {
     this.createTray();
-    this.domNode.remove();
-    this.domNode = null;
+    if (this.domNode) {
+      this.domNode.remove();
+      this.domNode = null;
+    }  
   }
 
   componentDidUpdate() {
@@ -27,11 +28,10 @@ export default class TrayMenu extends React.Component<Props, {}> {
   }
 
   componentWillUnmount() {
-    if (!this.tray || this.tray.isDestroyed) {
-      return;
+    if (this.tray && !this.tray.isDestroyed) {
+      this.tray.destroy();
+      this.tray = null;
     }
-    this.tray.destroy();
-    this.tray = null;
   }
 
   createTray() {

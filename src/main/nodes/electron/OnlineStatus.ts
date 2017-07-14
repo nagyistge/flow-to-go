@@ -1,16 +1,17 @@
 ﻿import * as RED from 'node-red';
+import { Observable } from 'rxjs';
 
-export const RegisterOnlineStatus = () => {
+export const RegisterOnlineStatus = (isOnlineStream: Observable<boolean>) => {
   RED.nodes.registerType('electron', 'online-status', function(config: {}) {
 
     RED.nodes.createNode(this, config);
-    var node = this;
-    // tslint:disable-next-line:no-any
-    node.on('input', function (msg: any) {
-      msg.payload = msg.payload.toLowerCase();
-      alert(msg.payload);
-      node.send(msg);
-    });
+    var node: RED.Node = this;
+
+    const subscription = isOnlineStream
+      .do(payload => node.send({ payload }))
+      .subscribe();
+    
+    node.on('close', () => subscription.unsubscribe());
 
   });
 };

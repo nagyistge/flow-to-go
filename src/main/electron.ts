@@ -1,12 +1,11 @@
 ﻿require('fix-path')();
 import { app, BrowserWindow } from 'electron';
-import { join } from 'path';
+
 import * as nodeRed from './nodeRed';
 import { initializeStore } from './InitializeStore';
-import { updateNodeRED, showDashboard } from '../actions';
+import { showAdministration } from '../actions';
 
 app.once('ready', () => {
-  const redInitialization = nodeRed.initialize();
 
   const mainWindow = new BrowserWindow({
     width: 1024,
@@ -17,19 +16,9 @@ app.once('ready', () => {
   });
 
   const store = initializeStore();
-
-  redInitialization
-    .then(settings => {
-      const rootUrl = `http://${settings.hostname}:${settings.port}`;
-      store.dispatch(updateNodeRED({
-        port: settings.port,
-        rootUrl,
-        administration: `${rootUrl}${settings.httpAdminRoot}`,
-        dashboard: `${rootUrl}${settings.ui.path}`,
-        flowFile: join(settings.userDir, settings.flowFile)
-      }));
-      store.dispatch(showDashboard());
-    })
+  nodeRed
+    .initialize(store)
+    .then(() => store.dispatch(showAdministration()))
     .catch(error => {
       console.error(error);
       app.quit();

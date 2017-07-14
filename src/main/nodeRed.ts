@@ -1,8 +1,13 @@
 ﻿import * as express from 'express';
 import * as http from 'http';
 import { app } from 'electron';
+import { join } from 'path';
+
+import { toObservable } from './InitializeStore';
+import { AppState, ExtendedStore } from '../types';
 
 import * as RED from 'node-red';
+import { updateNodeRED } from '../actions';
 import { RegisterOnlineStatus } from './nodes/electron/OnlineStatus';
 
 export interface NodeRedSettings extends RED.UserSettings {
@@ -49,9 +54,11 @@ export function getDefaultSettings(): NodeRedSettings {
   };
 }
 
-export async function initialize(nodeSettings: NodeRedSettings = getDefaultSettings()): Promise<NodeRedSettings> {
+export async function initialize(store: ExtendedStore<AppState>): Promise<NodeRedSettings> {
   const redApp = express();
   const server = http.createServer(redApp);
+  const nodeSettings = getDefaultSettings();
+  
   return new Promise<NodeRedSettings>((resolve, reject) => {
     server.listen(nodeSettings.port, nodeSettings.hostname, async () => {
       try {
@@ -76,7 +83,20 @@ export async function initialize(nodeSettings: NodeRedSettings = getDefaultSetti
         RED.log.info(`hostname: ${settings.hostname}`);
         RED.log.info(`port: ${settings.port}`);
 
-        RegisterOnlineStatus();
+        RegisterOnlineStatus(
+          toObservable(store)
+            .map(state => state.isOnline)
+            .distinctUntilChanged()
+        );
+
+        const rootUrl = `http://${settings.hostname}:${settings.port}`;
+        store.dispatch(updateNodeRED({
+          port: settings.port,
+          rootUrl,
+          administration: `${rootUrl}${settings.httpAdminRoot}`,
+          dashboard: `${rootUrl}${settings.ui.path}`,
+          flowFile: join(settings.userDir, settings.flowFile)
+        }));
 
         // tslint:disable-next-line:no-any
         resolve(settings as any);

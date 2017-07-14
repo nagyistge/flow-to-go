@@ -1,0 +1,26 @@
+﻿<script type="text/javascript">
+    RED.nodes.registerType('online-status',{
+        category: 'system',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "file.png",
+        label: function() {
+            return this.name||"online-status";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="online-status">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="online-status">
+    <p>A simple node that converts the message payloads into all online-status characters</p>
+</script>

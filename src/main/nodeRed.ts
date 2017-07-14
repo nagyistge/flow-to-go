@@ -3,6 +3,7 @@ import * as http from 'http';
 import { app } from 'electron';
 
 import * as RED from 'node-red';
+import { RegisterOnlineStatus } from './nodes/electron/OnlineStatus';
 
 export interface NodeRedSettings extends RED.UserSettings {
   userDir: string;
@@ -74,6 +75,9 @@ export async function initialize(nodeSettings: NodeRedSettings = getDefaultSetti
         app.on('before-quit', () => RED.stop());
         RED.log.info(`hostname: ${settings.hostname}`);
         RED.log.info(`port: ${settings.port}`);
+
+        RegisterOnlineStatus();
+
         // tslint:disable-next-line:no-any
         resolve(settings as any);
       } catch (error) {

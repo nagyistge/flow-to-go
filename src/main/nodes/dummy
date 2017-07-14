@@ -1,0 +1,3 @@
+﻿/* DUMMYFILE
+* NodeRed does not load node html until there is an js file - even if the node is loaded via api
+*/

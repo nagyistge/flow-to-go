@@ -1,7 +1,9 @@
 ﻿const path = require('path');
 const webpack = require('webpack');
+const glob = require('glob');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ConcatPlugin = require('webpack-concat-plugin');
 const { CheckerPlugin } = require('awesome-typescript-loader')
 
 const rootDir = path.resolve(__dirname, '..');
@@ -21,6 +23,7 @@ module.exports = {
     'electron': path.join(srcDir, 'main', 'electron.ts'),
     'app': path.join(srcDir, 'renderer', 'app.tsx'),
     'preload': path.join(srcDir, 'renderer', 'components', 'Preload.ts'),
+    'node_modules/node-red/nodes/flow-to-go': glob.sync(path.join(srcDir, 'nodes', '**', '*.ts')),
   },
   output: {
     filename: '[name].js',
@@ -68,6 +71,10 @@ module.exports = {
       package: require(path.join(rootDir, 'package.json'))
     }),
     new CheckerPlugin(),
+    new ConcatPlugin({
+      fileName: 'node_modules/node-red/nodes/flow-to-go.html',
+      filesToConcat: glob.sync(path.join(srcDir, 'nodes', '**', '*.html'))
+    }),
     new CopyWebpackPlugin([
       {
         context: outputDir,

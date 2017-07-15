@@ -4,6 +4,7 @@ import { app, BrowserWindow } from 'electron';
 import * as nodeRed from './nodeRed';
 import { initializeStore } from './InitializeStore';
 import { showAdministration } from '../actions';
+// import { showDashboard } from '../actions';
 
 app.once('ready', () => {
 

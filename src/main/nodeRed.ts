@@ -3,12 +3,13 @@ import * as http from 'http';
 import { app } from 'electron';
 import { join } from 'path';
 
-import { toObservable } from './InitializeStore';
 import { AppState, ExtendedStore } from '../types';
 
 import * as RED from 'node-red';
 import { updateNodeRED } from '../actions';
 import { RegisterOnlineStatus } from './nodes/electron/OnlineStatus';
+
+import { Observable, Observer } from 'rxjs';
 
 export interface NodeRedSettings extends RED.UserSettings {
   userDir: string;
@@ -58,7 +59,7 @@ export async function initialize(store: ExtendedStore<AppState>): Promise<NodeRe
   const redApp = express();
   const server = http.createServer(redApp);
   const nodeSettings = getDefaultSettings();
-  
+
   return new Promise<NodeRedSettings>((resolve, reject) => {
     server.listen(nodeSettings.port, nodeSettings.hostname, async () => {
       try {
@@ -86,7 +87,6 @@ export async function initialize(store: ExtendedStore<AppState>): Promise<NodeRe
         RegisterOnlineStatus(
           toObservable(store)
             .map(state => state.isOnline)
-            .distinctUntilChanged()
         );
 
         const rootUrl = `http://${settings.hostname}:${settings.port}`;
@@ -105,4 +105,20 @@ export async function initialize(store: ExtendedStore<AppState>): Promise<NodeRe
       }
     });
   });
+}
+
+function toObservable(store: ExtendedStore<AppState>): Observable<AppState> {
+  const stream: Observable<AppState> = Observable
+    .create((observer: Observer<AppState>) => {
+      const unsubscribe = store.subscribe(() => observer.next(store.getState()));
+      let dispose = () => {
+        unsubscribe();
+      };
+      observer.next(store.getState());
+      return dispose;
+    });
+
+  return stream
+    .publishReplay(1)
+    .refCount();
 }

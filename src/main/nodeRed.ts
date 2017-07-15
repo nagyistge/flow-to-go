@@ -110,15 +110,13 @@ export async function initialize(store: ExtendedStore<AppState>): Promise<NodeRe
 function toObservable(store: ExtendedStore<AppState>): Observable<AppState> {
   const stream: Observable<AppState> = Observable
     .create((observer: Observer<AppState>) => {
-      const unsubscribe = store.subscribe(() => observer.next(store.getState()));
-      let dispose = () => {
-        unsubscribe();
-      };
+      let dispose = store.subscribe(() => observer.next(store.getState()));
       observer.next(store.getState());
       return dispose;
     });
 
   return stream
-    .publishReplay(1)
-    .refCount();
+    .do(() => console.log('PING'))  
+    .shareReplay(1)
+    .do(() => console.log('PONG'));
 }

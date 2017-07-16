@@ -17,15 +17,15 @@ const nodeRed = handleActions<NodeRed>({
 
 }, DEFAULT_STATE.nodeRed);
 
-const isOnline = handleActions<boolean>({
+const isConnected = handleActions<boolean>({
 
   [UPDATE_ONLINE_STATE]: (state: boolean, action: Action<boolean>): boolean =>
     (action.payload !== undefined) ? action.payload : state,
 
-}, DEFAULT_STATE.isOnline);
+}, DEFAULT_STATE.isConnected);
 
 export default combineReducers<AppState>({
-  isOnline,
+  isConnected,
   mainViewSrc,
   nodeRed
 });

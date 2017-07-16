@@ -1,8 +1,8 @@
 ﻿import * as RED from 'node-red';
 import { Observable } from 'rxjs';
 
-export const RegisterOnlineStatus = (isOnlineStream: Observable<boolean>) => {
-  RED.nodes.registerType('electron', 'online-status', function (config: RED.NodeDefinition) {
+export const RegisterOnlineStatus = (isConnectedStream: Observable<boolean>) => {
+  RED.nodes.registerType('electron', 'network-status', function (config: RED.NodeDefinition) {
     RED.nodes.createNode(this, config);
     const node: RED.Node = this;
 
@@ -15,8 +15,8 @@ export const RegisterOnlineStatus = (isOnlineStream: Observable<boolean>) => {
       node.send(msg);
     };
 
-    const subscription = isOnlineStream
-      .do(isOnline => onNext({ payload: isOnline }), node.error)
+    const subscription = isConnectedStream
+      .do(isConnected => onNext({ payload: isConnected }), node.error)
       .subscribe();
 
     node.on('close', () => subscription.unsubscribe());

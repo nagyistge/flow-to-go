@@ -1,5 +1,5 @@
 ﻿<script type="text/javascript">
-  RED.nodes.registerType('online-status', {
+  RED.nodes.registerType('network-status', {
     category: 'system',
     color: '#a6bbcf',
     defaults: {
@@ -8,21 +8,24 @@
     inputs: 0,
     outputs: 1,
     icon: "white-globe.png",
-    outputLabels: ["is online"],
+    outputLabels: ["is connected"],
+    paletteLabel: function () {
+      return "network";
+    },
     label: function () {
-      return this.name || "online-status";
+      return this.name || "network";
     }
   });
 
 </script>
 
-<script type="text/x-red" data-template-name="online-status">
+<script type="text/x-red" data-template-name="network-status">
   <div class="form-row">
     <label for="node-input-name"><i class="icon-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name">
   </div>
 </script>
 
-<script type="text/x-red" data-help-name="online-status">
-  <p>A simple node that converts the message payloads into all online-status characters</p>
+<script type="text/x-red" data-help-name="network-status">
+  <p></p>
 </script>

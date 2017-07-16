@@ -1,7 +1,7 @@
 ﻿import { Store, Action } from 'redux';
 
 export interface AppState {
-  isOnline: boolean;
+  isConnected: boolean;
   mainViewSrc: string;
   nodeRed: NodeRed;
 }

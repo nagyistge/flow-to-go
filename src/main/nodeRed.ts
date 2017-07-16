@@ -7,7 +7,7 @@ import { AppState, ExtendedStore } from '../types';
 
 import * as RED from 'node-red';
 import { updateNodeRED } from '../actions';
-import { RegisterOnlineStatus } from './nodes/electron/OnlineStatus';
+import { RegisterOnlineStatus } from './nodes/electron/NetworkStatus';
 
 import { Observable, Observer } from 'rxjs';
 
@@ -87,7 +87,7 @@ export async function initialize(store: ExtendedStore<AppState>): Promise<NodeRe
 
         RegisterOnlineStatus(
           toObservable(store)
-            .map(state => state.isOnline)
+            .map(state => state.isConnected)
         );
 
         const rootUrl = `http://${settings.hostname}:${settings.port}`;

@@ -21,7 +21,7 @@ export function printToPDF(url: string): Observable<Buffer> {
 
   const pdfOptions: Electron.PrintToPDFOptions = {
     landscape: false,
-    marginsType: 0,
+    marginsType: 1,
     pageSize: 'A4',
     printBackground: true,
     printSelectionOnly: false

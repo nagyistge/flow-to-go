@@ -1,7 +1,7 @@
 ﻿import * as RED from 'node-red';
 import { Observable } from 'rxjs';
 
-export const RegisterOnlineStatus = (isConnectedStream: Observable<boolean>) => {
+export const RegisterNetworkStatus = (isConnectedStream: Observable<boolean>) => {
   RED.nodes.registerType('electron', 'network-status', function (config: RED.NodeDefinition) {
     RED.nodes.createNode(this, config);
     const node: RED.Node = this;

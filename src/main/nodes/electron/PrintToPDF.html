@@ -1,0 +1,31 @@
+﻿<script type="text/javascript">
+  RED.nodes.registerType('render-pdf', {
+    category: 'browser',
+    color: '#a6bbcf',
+    defaults: {
+      name: { value: "" }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "white-globe.png",
+    outputLabels: ["buffer"],
+    paletteLabel: function () {
+      return "render pdf";
+    },
+    label: function () {
+      return this.name || "render pdf";
+    }
+  });
+
+</script>
+
+<script type="text/x-red" data-template-name="render-pdf">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+</script>
+
+<script type="text/x-red" data-help-name="render-pdf">
+  <p></p>
+</script>

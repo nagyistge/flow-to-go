@@ -79,7 +79,8 @@ export async function initialize(store: ExtendedStore<AppState>): Promise<NodeRe
           .use(settings.httpAdminRoot, RED.httpAdmin)
           .use(settings.httpNodeRoot, RED.httpNode);
 
-        await RED.start();
+        await RED.start().then(() => getFlows());
+        
         app.on('before-quit', () => RED.stop());
         RED.log.info(`hostname: ${settings.hostname}`);
         RED.log.info(`port: ${settings.port}`);
@@ -107,6 +108,14 @@ export async function initialize(store: ExtendedStore<AppState>): Promise<NodeRe
   });
 }
 
+// tslint:disable-next-line:no-any
+function getFlows(): Promise<{}> {
+  const flows = RED.nodes.getFlows();
+  return !flows
+    ? Observable.timer(100).map(_ => getFlows()).flatMap(_ => _).toPromise()
+    : Promise.resolve(flows);
+}
+
 function toObservable(store: ExtendedStore<AppState>): Observable<AppState> {
   const stream: Observable<AppState> = Observable
     .create((observer: Observer<AppState>) => {
@@ -116,7 +125,5 @@ function toObservable(store: ExtendedStore<AppState>): Observable<AppState> {
     });
 
   return stream
-    .do(() => console.log('PING'))  
-    .shareReplay(1)
-    .do(() => console.log('PONG'));
+    .shareReplay(1);
 }

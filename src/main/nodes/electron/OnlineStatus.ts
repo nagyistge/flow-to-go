@@ -2,25 +2,23 @@
 import { Observable } from 'rxjs';
 
 export const RegisterOnlineStatus = (isOnlineStream: Observable<boolean>) => {
-  RED.nodes.registerType('electron', 'online-status', function (config: {}) {
-
+  RED.nodes.registerType('electron', 'online-status', function (config: RED.NodeDefinition) {
     RED.nodes.createNode(this, config);
-    var node: RED.Node = this;
+    const node: RED.Node = this;
 
-    const onNext = (isOnline: boolean) => {
-      if (isOnline) {
+    const onNext = (msg: RED.Message) => {
+      if (msg.payload) {
         node.status({ fill: 'green', shape: 'dot', text: 'connected' });
       } else {
         node.status({ fill: 'red', shape: 'ring', text: 'disconnected' });
       }
-      node.send({ payload: isOnline });
+      node.send(msg);
     };
 
     const subscription = isOnlineStream
-      .do(onNext, node.error)
+      .do(isOnline => onNext({ payload: isOnline }), node.error)
       .subscribe();
 
     node.on('close', () => subscription.unsubscribe());
-
   });
 };

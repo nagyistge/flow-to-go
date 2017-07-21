@@ -20,10 +20,12 @@ export interface NodeRedSettings extends RED.UserSettings {
   hostname: string;
   port: number;
   flowFile: string;
+  store: ExtendedStore<AppState>;
 }
 
-export function getDefaultSettings(): NodeRedSettings {
+export function getDefaultSettings(store: ExtendedStore<AppState>): NodeRedSettings {
   return {
+    store,
     hostname: '127.0.0.1',
     port: 0,
     httpAdminRoot: '/admin',
@@ -59,7 +61,7 @@ export function getDefaultSettings(): NodeRedSettings {
 export async function initialize(store: ExtendedStore<AppState>): Promise<NodeRedSettings> {
   const redApp = express();
   const server = http.createServer(redApp);
-  const nodeSettings = getDefaultSettings();
+  const nodeSettings = getDefaultSettings(store);
 
   return new Promise<NodeRedSettings>((resolve, reject) => {
     server.listen(nodeSettings.port, nodeSettings.hostname, async () => {

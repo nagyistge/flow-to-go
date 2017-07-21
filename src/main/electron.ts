@@ -16,10 +16,9 @@ app.once('ready', () => {
     autoHideMenuBar: true,
   });
 
-  const store = initializeStore();
   nodeRed
-    .initialize(store)
-    .then(() => store.dispatch(initialView()))
+    .initialize(initializeStore())
+    .then(settings => settings.store.dispatch(initialView()))
     .catch(error => {
       console.error(error);
       app.quit();

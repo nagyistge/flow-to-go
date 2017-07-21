@@ -3,6 +3,7 @@ const { execSync } = require('child_process');
 const webpack = require('webpack');
 const Merge = require('webpack-merge');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ElectronPackager = require('webpack-electron-packager');
 const CommonConfig = require('./webpack.common.js');
 
@@ -23,7 +24,8 @@ module.exports = Merge(CommonConfig, {
       exclude: [],
       verbose: true,
       dry: false
-    }),
+      }),
+    new UglifyJsPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false

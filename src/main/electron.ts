@@ -3,8 +3,8 @@ import { app, BrowserWindow } from 'electron';
 
 import * as nodeRed from './nodeRed';
 import { initializeStore } from './InitializeStore';
-// import { showAdministration } from '../actions';
-import { showDashboard } from '../actions';
+import { showAdministration as initialView } from '../actions';
+// import { showDashboard as initialView } from '../actions';
 
 app.once('ready', () => {
 
@@ -19,7 +19,7 @@ app.once('ready', () => {
   const store = initializeStore();
   nodeRed
     .initialize(store)
-    .then(() => store.dispatch(showDashboard()))
+    .then(() => store.dispatch(initialView()))
     .catch(error => {
       console.error(error);
       app.quit();
